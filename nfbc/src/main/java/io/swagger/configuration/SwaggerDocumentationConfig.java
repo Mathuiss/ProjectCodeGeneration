@@ -15,26 +15,17 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-            .title("404&#x27;s Project Code Generation")
-            .description("Dit is het project van groep 404")
-            .license("")
-            .licenseUrl("http://unlicense.org")
-            .termsOfServiceUrl("")
-            .version("0.1")
-            .contact(new Contact("","", ""))
-            .build();
+        return new ApiInfoBuilder().title("404&#x27;s Project Code Generation")
+                .description("Dit is het project van groep 404").license("").licenseUrl("http://unlicense.org")
+                .termsOfServiceUrl("").version("0.1").contact(new Contact("", "", "")).build();
     }
 
     @Bean
-    public Docket customImplementation(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                    .apis(RequestHandlerSelectors.basePackage("io.swagger.api"))
-                    .build()
+    public Docket customImplementation() {
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                .apis(RequestHandlerSelectors.basePackage("io.swagger.api")).build()
                 .directModelSubstitute(org.threeten.bp.LocalDate.class, java.sql.Date.class)
-                .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class)
-                .apiInfo(apiInfo());
+                .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class).apiInfo(apiInfo());
     }
 
 }
