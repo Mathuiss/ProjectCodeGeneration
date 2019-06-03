@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.services.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,18 +32,31 @@ public class TransactionsApiController implements TransactionsApi {
 
     private final HttpServletRequest request;
 
+    private TransactionService service;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService service) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.service = service;
     }
 
+    //Create a new transaction with POST
     public ResponseEntity<Transaction> createTransaction(
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Transaction>(HttpStatus.NOT_IMPLEMENTED);
+
+        try {
+            service.createTransaction(body);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return new ResponseEntity<Transaction>(HttpStatus.CREATED);
     }
 
+    //Get list of all transactions with GET and http params
     public ResponseEntity<List<Transaction>> fetchTransaction(
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
@@ -57,6 +71,7 @@ public class TransactionsApiController implements TransactionsApi {
         return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    //Get certain transaction by id
     public ResponseEntity<Transaction> getTransactionById(
             @ApiParam(value = "Id of the transactions you want to get", required = true) @PathVariable("id") Integer id) {
         String accept = request.getHeader("Accept");

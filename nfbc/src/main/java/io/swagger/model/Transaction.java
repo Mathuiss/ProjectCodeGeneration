@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -20,7 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Transaction {
   @JsonProperty("TransactionId")
-  private Integer transactionId = null;
+  @Id
+  private long transactionId = 0;
 
   @JsonProperty("sender")
   private String sender = null;
@@ -49,7 +51,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getTransactionId() {
+  public long getTransactionId() {
     return transactionId;
   }
 
