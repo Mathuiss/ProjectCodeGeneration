@@ -17,6 +17,7 @@ import io.swagger.model.Body;
 import io.swagger.model.InlineResponse2001;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
+//@Controller
 @Controller
 public class LoginApiController implements LoginApi {
 
@@ -37,5 +38,6 @@ public class LoginApiController implements LoginApi {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<InlineResponse2001>(HttpStatus.NOT_IMPLEMENTED);
     }
+
 
 }
