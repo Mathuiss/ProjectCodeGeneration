@@ -57,7 +57,7 @@ public class TransactionsApiController implements TransactionsApi {
     }
 
     //Get list of all transactions with GET and http params
-    public ResponseEntity<List<Transaction>> fetchTransaction(
+    public ResponseEntity<Iterable<Transaction>> fetchTransaction(
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
             @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
@@ -67,8 +67,9 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "minvalue", required = false) BigDecimal minvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+
+        Iterable<Transaction> transactions = service.getTransactions();
+        return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
     }
 
     //Get certain transaction by id

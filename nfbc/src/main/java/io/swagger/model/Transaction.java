@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Transaction
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Transaction {
