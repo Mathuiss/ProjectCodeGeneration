@@ -42,7 +42,7 @@ public class TransactionsApiControllerIntegrationTest {
         BigDecimal maxvalue = new BigDecimal(0);
         String transactiontype = "transactiontype_example";
 
-        ResponseEntity<List<Transaction>> responseEntity = api.fetchTransaction(datetimestart, datetimeend, user,
+        ResponseEntity<Iterable<Transaction>> responseEntity = api.fetchTransaction(datetimestart, datetimeend, user,
                 sender, reciever, accounttype, minvalue, maxvalue, transactiontype);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }

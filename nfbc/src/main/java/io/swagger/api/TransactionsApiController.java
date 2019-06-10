@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.services.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,19 +32,29 @@ public class TransactionsApiController implements TransactionsApi {
 
     private final HttpServletRequest request;
 
+    private TransactionService service;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request,
+            TransactionService service) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.service = service;
     }
 
+    // Create a new transaction with POST
     public ResponseEntity<Transaction> createTransaction(
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Transaction>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            service.createTransaction(body);
+            return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    public ResponseEntity<List<Transaction>> fetchTransaction(
+    // Get list of all transactions with GET and http params
+    public ResponseEntity<Iterable<Transaction>> fetchTransaction(
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
             @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
@@ -53,14 +64,20 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "minvalue", required = false) BigDecimal minvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+
+        Iterable<Transaction> transactions = service.getTransactions();
+        return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
     }
 
+    // Get certain transaction by id
     public ResponseEntity<Transaction> getTransactionById(
             @ApiParam(value = "Id of the transactions you want to get", required = true) @PathVariable("id") Integer id) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Transaction>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Transaction transaction = service.getTransaction(Integer.toUnsignedLong(id));
+            return new ResponseEntity<Transaction>(transaction, HttpStatus.valueOf(200));
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

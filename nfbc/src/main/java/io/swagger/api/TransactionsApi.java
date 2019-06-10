@@ -45,7 +45,7 @@ public interface TransactionsApi {
             @ApiResponse(code = 200, message = "Get all transactions", response = Transaction.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/transactions", produces = { "application/json" }, method = RequestMethod.GET)
-    ResponseEntity<List<Transaction>> fetchTransaction(
+    ResponseEntity<Iterable<Transaction>> fetchTransaction(
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
             @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
