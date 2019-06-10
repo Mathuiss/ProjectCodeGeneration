@@ -1,1 +1,10 @@
-[{"TransactionId": 1, "sender": "NL00 NFBC 0000000002", "reciever": "NL00 NFBC 0000000001", "user": 1, "amount": 24.5, "timestamp": "2019-06-06T15:00:50:00"}]
+[
+    {
+        "TransactionId": 0,
+        "sender": "NL00INHO0000000002",
+        "reciever": "NL00INHO0000000001",
+        "user": 1,
+        "amount": 24.5,
+        "timestamp": "2019-06-10T12:13:24.603"
+    }
+]

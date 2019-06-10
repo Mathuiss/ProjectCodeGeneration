@@ -39,7 +39,7 @@ public class Transaction {
   private BigDecimal amount = null;
 
   @JsonProperty("timestamp")
-  private OffsetDateTime timestamp = null;
+  private String timestamp = null;
 
   public Transaction transactionId(Integer transactionId) {
     this.transactionId = transactionId;
@@ -144,7 +144,7 @@ public class Transaction {
     this.amount = amount;
   }
 
-  public Transaction timestamp(OffsetDateTime timestamp) {
+  public Transaction timestamp(String timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -157,11 +157,11 @@ public class Transaction {
   @ApiModelProperty(value = "")
 
   @Valid
-  public OffsetDateTime getTimestamp() {
+  public String getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(OffsetDateTime timestamp) {
+  public void setTimestamp(String timestamp) {
     this.timestamp = timestamp;
   }
 
