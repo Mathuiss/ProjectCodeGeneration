@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -16,10 +18,12 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * User
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class User {
   @JsonProperty("id")
+  @Id
   private Integer id = null;
 
   @JsonProperty("name")
@@ -371,6 +375,19 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public User(){
+  public User(Integer id, String name, String email, String hash, String streetname, String zipcode, Integer addressnumber, String appendix, String phoneNumber, @Valid List<CurrentAccount> currentAccounts, @Valid List<SavingsAccount> savingsAccounts, Boolean isEmployee) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.hash = hash;
+    this.streetname = streetname;
+    this.zipcode = zipcode;
+    this.addressnumber = addressnumber;
+    this.appendix = appendix;
+    this.phoneNumber = phoneNumber;
+    this.currentAccounts = currentAccounts;
+    this.savingsAccounts = savingsAccounts;
+    this.isEmployee = isEmployee;
   }
+  public User(){}
 }

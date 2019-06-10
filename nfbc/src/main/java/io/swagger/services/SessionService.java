@@ -1,29 +1,36 @@
 package io.swagger.services;
 
 import io.swagger.model.User;
+import io.swagger.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import io.swagger.repositories.SessionRepositories;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
 public class SessionService {
-    @Autowired
-    private SessionRepositories sessionRepos;
+    private SessionRepository sessionRepository;
 
-    private Collection<User> GetAllUsers(){
-        return sessionRepos.getAllUsers();
+    public SessionService(SessionRepository sessionRepos) {
+        this.sessionRepository = sessionRepos;
     }
-    private ArrayList<User> getUserLijst(){
-        //ArrayList<User> userLijst = new ArrayList<>(GetAllUsers());
-        return new ArrayList<>(GetAllUsers());
+
+    public Collection<User> getAllUsers(){
+
+        //return sessionRepository.getAllUsers();
+        return null;
+    }
+    private ArrayList<User> getUserList(){
+        ArrayList<User> userList = new ArrayList<>(getAllUsers());
+        //return new ArrayList<>(getAllUsers());
+
+        return  userList;
     }
 
     public boolean userExist(String email){
 
-        for (User user : getUserLijst()) {
+        for (User user : getUserList()) {
             if (user.getEmail().equals(email)){
                 return true;
             }
@@ -32,7 +39,7 @@ public class SessionService {
     }
 
     public int getUserIdByEmail(String email){
-        for (User user : getUserLijst()) {
+        for (User user : getUserList()) {
             if (user.getEmail().equals(email)){
                 return user.getId();
             }
@@ -41,7 +48,7 @@ public class SessionService {
     }
 
     public boolean passwordCheck(int id, String password){
-        for (User user : getUserLijst()) {
+        for (User user : getUserList()) {
             if (user.getId().equals(id)){
                 if(user.getHash().equals(password)){
                     return true;
@@ -52,7 +59,7 @@ public class SessionService {
     }
 
     public boolean isEmployee(int id){
-        for (User user : getUserLijst()) {
+        for (User user : getUserList()) {
             if (user.getId().equals(id)){
                 if(user.isIsEmployee()){
                     return true;

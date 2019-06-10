@@ -8,6 +8,7 @@ package io.swagger.api;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +31,6 @@ public interface LoginApi {
             @ApiResponse(code = 400, message = "Abnormal input") })
     @RequestMapping(value = "/login", produces = { "application/json" }, consumes = {
             "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<InlineResponse2001> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body);
+    ResponseEntity<InlineResponse2001> loginPost(@ApiParam(value = "", required = true) @PathVariable("Email") String Email, @PathVariable("password") String Password); // @Valid @RequestBody Body body);
 
 }
