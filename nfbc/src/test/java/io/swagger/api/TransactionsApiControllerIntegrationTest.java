@@ -3,7 +3,6 @@ package io.swagger.api;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import io.swagger.model.Transaction;
 
@@ -32,8 +32,8 @@ public class TransactionsApiControllerIntegrationTest {
 
     @Test
     public void fetchTransactionTest() throws Exception {
-        OffsetDateTime datetimestart = OffsetDateTime.now();
-        OffsetDateTime datetimeend = OffsetDateTime.MAX;
+        String datetimestart = OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String datetimeend = OffsetDateTime.MAX.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Integer user = 56;
         String sender = "sender_example";
         String reciever = "reciever_example";

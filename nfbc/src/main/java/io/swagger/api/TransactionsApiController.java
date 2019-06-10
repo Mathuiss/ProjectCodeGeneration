@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Transaction;
@@ -55,8 +54,8 @@ public class TransactionsApiController implements TransactionsApi {
 
     // Get list of all transactions with GET and http params
     public ResponseEntity<Iterable<Transaction>> fetchTransaction(
-            @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
-            @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
+            @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) String datetimestart,
+            @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) String datetimeend,
             @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
             @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
             @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
@@ -65,8 +64,13 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
 
-        Iterable<Transaction> transactions = service.getTransactions();
-        return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+        try {
+            Iterable<Transaction> transactions = service.getTransactions();
+            return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Get certain transaction by id
