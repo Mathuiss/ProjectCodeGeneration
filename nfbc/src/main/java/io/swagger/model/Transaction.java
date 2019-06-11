@@ -3,6 +3,8 @@ package io.swagger.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -16,11 +18,13 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Transaction
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Transaction {
   @JsonProperty("TransactionId")
-  private Integer transactionId = null;
+  @Id
+  private long transactionId = 0;
 
   @JsonProperty("sender")
   private String sender = null;
@@ -35,7 +39,7 @@ public class Transaction {
   private BigDecimal amount = null;
 
   @JsonProperty("timestamp")
-  private OffsetDateTime timestamp = null;
+  private String timestamp = null;
 
   public Transaction transactionId(Integer transactionId) {
     this.transactionId = transactionId;
@@ -49,7 +53,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getTransactionId() {
+  public long getTransactionId() {
     return transactionId;
   }
 
@@ -140,7 +144,7 @@ public class Transaction {
     this.amount = amount;
   }
 
-  public Transaction timestamp(OffsetDateTime timestamp) {
+  public Transaction timestamp(String timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -153,11 +157,11 @@ public class Transaction {
   @ApiModelProperty(value = "")
 
   @Valid
-  public OffsetDateTime getTimestamp() {
+  public String getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(OffsetDateTime timestamp) {
+  public void setTimestamp(String timestamp) {
     this.timestamp = timestamp;
   }
 

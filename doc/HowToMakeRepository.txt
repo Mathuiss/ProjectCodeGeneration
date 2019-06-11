@@ -1,0 +1,33 @@
+Zorg dat je de volgende dependencies hebt:
+
+
+<dependency>
+	<groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<scope>runtime</scope>
+</dependency>
+
+
+<dependency>
+	<groupId>org.springframework.data</groupId>
+	<artifactId>spring-data-jpa</artifactId>
+	<version>2.1.8.RELEASE</version>
+</dependency>
+
+
+Stappen:
+- Maak een interface in de map repositories genaamd [Type]Repostitory.java
+- Zorg dat de interface CrudRepository<Type, TypeVanId> extend
+- Zet @Repository op de interface
+- Zorg dat de @Entity hebt moven het type. Zo weet h2 dat je dat type wil gebruiken als tabel
+- Maak een map met al je services.
+- Zorg dat al je services zijn geannoteerd met @service
+- importeer de repository op de volgende wijze:
+
+private SomethingRepository somethings;
+
+public YourService(SomethingsRepository somethings) {
+	this.somethings = somethings;
+}
+
+- Nu kan je de tabel gebruiken als somethings.eenActie();
