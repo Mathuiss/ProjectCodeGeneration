@@ -2,7 +2,7 @@ package io.swagger.services;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,101 +44,79 @@ public class TransactionService {
 
     public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Integer user, String sender,
             String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        ArrayList<Transaction> res = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        res.add(new Transaction(0, "sender", "reciever", 0, 24.60, LocalDate.now().format(formatter)));
-        return res;
+        // Setting null filters
+        if (datetimestart == null) {
+            datetimestart = LocalDateTime.parse("0001-01-01 00:00:00", formatter).format(formatter);
+        }
 
-        // // Setting null filters
-        // if (datetimestart == null) {
-        // datetimestart =
-        // LocalDate.MIN.format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        // }
+        if (datetimeend == null) {
+            datetimeend = LocalDateTime.parse("9999-12-31 23:59:59", formatter).format(formatter);
+        }
 
-        // if (datetimeend == null) {
-        // datetimeend =
-        // LocalDate.MAX.format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        // }
+        if (minValue == null) {
+            minValue = BigDecimal.valueOf(0);
+        }
 
-        // if (minValue == null) {
-        // minValue = BigDecimal.valueOf(0);
-        // }
+        if (maxValue == null) {
+            maxValue = BigDecimal.valueOf(Double.MAX_VALUE);
+        }
 
-        // if (maxValue == null) {
-        // maxValue = BigDecimal.valueOf(Double.MAX_VALUE);
-        // }
+        Iterable<Transaction> transactionList = transactions.findAll();
+        ArrayList<Transaction> resultList = new ArrayList<Transaction>();
 
-        // Iterable<Transaction> transactionList = transactions.findAll();
-        // ArrayList<Transaction> resultList = new ArrayList<Transaction>();
+        for (Transaction transaction : transactionList) {
+            // Check for datetime
+            if (LocalDateTime.parse(transaction.getTimestamp(), formatter)
+                    .isBefore(LocalDateTime.parse(datetimestart, formatter))
+                    || LocalDateTime.parse(transaction.getTimestamp(), formatter)
+                            .isAfter(LocalDateTime.parse(datetimeend, formatter))) {
+                continue;
+            }
 
-        // for (Transaction transaction : transactionList) {
-        // // Check for datetime
-        // // if
-        // (LocalDate.parse(DateTimeFormatter.ofPattern(transaction.getTimestamp()))
-        // // .isBefore(LocalDate.parse(datetimestart))
-        // // &&
-        // //
-        // LocalDate.parse(transaction.getTimestamp()).isAfter(LocalDate.parse(datetimeend)))
-        // // {
-        // // continue;
-        // // }
+            // Check for user
+            if (user != null) {
+                if (user != transaction.getUser()) {
+                    continue;
+                }
+            }
 
-        // if (LocalDate
-        // .parse(transaction.getTimestamp(),
-        // java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-        // .isBefore(LocalDate.parse(datetimestart,
-        // java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")))
-        // && LocalDate
-        // .parse(transaction.getTimestamp(),
-        // java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmssHHmmss"))
-        // .isAfter(LocalDate.parse(datetimeend,
-        // java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")))) {
+            // Check for sender
+            if (sender != null) {
+                if (sender != transaction.getSender()) {
+                    continue;
+                }
+            }
 
-        // }
+            // Check for reciever
+            if (reciever != null) {
+                if (reciever != transaction.getReciever()) {
+                    continue;
+                }
+            }
 
-        // // Check for user
-        // if (user != null) {
-        // if (user != transaction.getUser()) {
-        // continue;
-        // }
-        // }
+            // Check for accountType
+            if (accountType != null) {
+                // For now: Add account.
+                // TODO: When AccountRepository is available. Use that.
+            }
 
-        // // Check for sender
-        // if (sender != null) {
-        // if (sender != transaction.getSender()) {
-        // continue;
-        // }
-        // }
+            // Check for values
+            if (transaction.getAmount().doubleValue() < minValue.doubleValue()
+                    && transaction.getAmount().doubleValue() > maxValue.doubleValue()) {
+                continue;
+            }
 
-        // // Check for reciever
-        // if (reciever != null) {
-        // if (reciever != transaction.getReciever()) {
-        // continue;
-        // }
-        // }
+            if (transactiontype != null) {
+                // For now: Add account.
+                // TODO: When AccountRepository is available. Use that.
+            }
 
-        // // Check for accountType
-        // if (accountType != null) {
-        // // For now: Add account.
-        // // TODO: When AccountRepository is available. Use that.
-        // }
+            resultList.add(transaction);
+        }
 
-        // // Check for values
-        // if (transaction.getAmount().doubleValue() < minValue.doubleValue()
-        // && transaction.getAmount().doubleValue() > maxValue.doubleValue()) {
-        // continue;
-        // }
-
-        // if (transactiontype != null) {
-        // // For now: Add account.
-        // // TODO: When AccountRepository is available. Use that.
-        // }
-
-        // resultList.add(transaction);
-        // }
-
-        // return resultList;
+        return resultList;
     }
 
     public Transaction getTransaction(long id) throws Exception {
