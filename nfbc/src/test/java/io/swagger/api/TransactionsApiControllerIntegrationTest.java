@@ -26,32 +26,38 @@ public class TransactionsApiControllerIntegrationTest {
     @Test
     public void createTransactionTest() throws Exception {
         Transaction body = new Transaction();
+        body.setSender("NL00INHO0472397581");
+        body.setReciever("NL00INHO0627184637");
+        body.setAmount(new BigDecimal(0));
+        body.setTimestamp(OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        body.setUser(1);
+
         ResponseEntity<Transaction> responseEntity = api.createTransaction(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
 
     @Test
     public void fetchTransactionTest() throws Exception {
-        String datetimestart = OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String datetimestart = OffsetDateTime.MIN.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String datetimeend = OffsetDateTime.MAX.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        Integer user = 56;
-        String sender = "sender_example";
-        String reciever = "reciever_example";
-        String accounttype = "accounttype_example";
+        Integer user = 0;
+        String sender = "NL00INHO0000000002";
+        String reciever = "NL00INHO0000000001";
+        String accounttype = "";
         BigDecimal minvalue = new BigDecimal(0);
-        BigDecimal maxvalue = new BigDecimal(0);
-        String transactiontype = "transactiontype_example";
+        BigDecimal maxvalue = new BigDecimal(Double.MAX_VALUE);
+        String transactiontype = "";
 
         ResponseEntity<Iterable<Transaction>> responseEntity = api.fetchTransaction(datetimestart, datetimeend, user,
                 sender, reciever, accounttype, minvalue, maxvalue, transactiontype);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void getTransactionByIdTest() throws Exception {
-        Integer id = 56;
+        Integer id = 0;
         ResponseEntity<Transaction> responseEntity = api.getTransactionById(id);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
 }

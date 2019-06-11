@@ -1,12 +1,10 @@
 package io.swagger.api;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.services.TransactionService;
 import org.slf4j.Logger;
@@ -27,16 +25,12 @@ public class TransactionsApiController implements TransactionsApi {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionsApiController.class);
 
-    private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
 
     private TransactionService service;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request,
-            TransactionService service) {
-        this.objectMapper = objectMapper;
+    public TransactionsApiController(HttpServletRequest request, TransactionService service) {
         this.request = request;
         this.service = service;
     }
@@ -46,8 +40,10 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
         try {
             service.createTransaction(body);
+            log.info("Transaction created: " + body.getTransactionId());
             return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -65,10 +61,17 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
 
         try {
-            Iterable<Transaction> transactions = service.getTransactions();
+            Iterable<Transaction> transactions = service.getTransactions(datetimestart, datetimeend, user, sender,
+                    reciever, accounttype, minvalue, maxvalue, transactiontype);
+
+            Object[] params = { datetimestart, datetimeend, user, sender, reciever, accounttype, minvalue, maxvalue,
+                    transactiontype };
+            log.info(MessageFormat.format("Transactions fetched with args: {0} {1} {2} {3} {4} {5} {6} {7} {8}",
+                    params));
+
             return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -78,8 +81,10 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "Id of the transactions you want to get", required = true) @PathVariable("id") Integer id) {
         try {
             Transaction transaction = service.getTransaction(Integer.toUnsignedLong(id));
-            return new ResponseEntity<Transaction>(transaction, HttpStatus.valueOf(200));
+            log.info("Transaction fetched with id: " + transaction.getTransactionId());
+            return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
