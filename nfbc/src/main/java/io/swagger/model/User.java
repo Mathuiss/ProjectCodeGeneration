@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -18,44 +19,54 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
+@Entity
 public class User {
+
+  public User() {}
+  @Id
+  @SequenceGenerator(name="userId_seq")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
+
   @JsonProperty("id")
-  private Integer id = null;
+  private Integer id;
 
   @JsonProperty("name")
-  private String name = null;
+  private String name;
 
   @JsonProperty("email")
-  private String email = null;
+  private String email;
 
   @JsonProperty("hash")
-  private String hash = null;
+  private String hash;
 
   @JsonProperty("streetname")
-  private String streetname = null;
+  private String streetname;
 
   @JsonProperty("zipcode")
-  private String zipcode = null;
+  private String zipcode;
 
   @JsonProperty("addressnumber")
-  private Integer addressnumber = null;
+  private Integer addressnumber;
 
   @JsonProperty("appendix")
-  private String appendix = null;
+  private String appendix;
 
   @JsonProperty("PhoneNumber")
-  private String phoneNumber = null;
+  private String phoneNumber;
 
   @JsonProperty("CurrentAccounts")
   @Valid
-  private List<CurrentAccount> currentAccounts = null;
+  private List<CurrentAccount> currentAccounts;
 
   @JsonProperty("SavingsAccounts")
   @Valid
-  private List<SavingsAccount> savingsAccounts = null;
+  private List<SavingsAccount> savingsAccounts;
 
   @JsonProperty("IsEmployee")
-  private Boolean isEmployee = null;
+  private Boolean isEmployee;
+
+  @JsonProperty("IsActive")
+  private Boolean isActive;
 
   public User id(Integer id) {
     this.id = id;
@@ -73,9 +84,9 @@ public class User {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+  //public void setId(Integer id) {
+  //  this.id = id;
+  //}
 
   public User name(String name) {
     this.name = name;
@@ -294,14 +305,34 @@ public class User {
     this.savingsAccounts = savingsAccounts;
   }
 
-  public User isEmployee(Boolean isEmployee) {
-    this.isEmployee = isEmployee;
+  public User isActive(Boolean isActive) {
+    this.isActive = isActive;
     return this;
   }
 
   /**
    * Get isEmployee
    * 
+   * @return isEmployee
+   **/
+  @ApiModelProperty(value = "")
+
+  public Boolean isIsActive() {
+    return isEmployee;
+  }
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public User isEmployee(Boolean isActive) {
+    this.isActive = isActive;
+    return this;
+  }
+
+  /**
+   * Get isEmployee
+   *
    * @return isEmployee
    **/
   @ApiModelProperty(value = "")
@@ -330,13 +361,14 @@ public class User {
         && Objects.equals(this.phoneNumber, user.phoneNumber)
         && Objects.equals(this.currentAccounts, user.currentAccounts)
         && Objects.equals(this.savingsAccounts, user.savingsAccounts)
-        && Objects.equals(this.isEmployee, user.isEmployee);
+        && Objects.equals(this.isEmployee, user.isEmployee)
+        && Objects.equals(this.isActive, user.isActive);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
-        currentAccounts, savingsAccounts, isEmployee);
+        currentAccounts, savingsAccounts, isEmployee, isActive);
   }
 
   @Override
@@ -356,6 +388,7 @@ public class User {
     sb.append("    currentAccounts: ").append(toIndentedString(currentAccounts)).append("\n");
     sb.append("    savingsAccounts: ").append(toIndentedString(savingsAccounts)).append("\n");
     sb.append("    isEmployee: ").append(toIndentedString(isEmployee)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("}");
     return sb.toString();
   }

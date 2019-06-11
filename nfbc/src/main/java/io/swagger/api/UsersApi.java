@@ -66,7 +66,7 @@ public interface UsersApi {
             @ApiResponse(code = 400, message = "bad input parameter"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/users", produces = { "application/json" }, method = RequestMethod.GET)
-    ResponseEntity<List<User>> getUsers();
+    ResponseEntity<Iterable<User>> getUsers(); //iterable veranderd
 
     @ApiOperation(value = "", nickname = "usersPost", notes = "Create new user", response = User.class, responseContainer = "List", authorizations = {
             @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
@@ -76,7 +76,7 @@ public interface UsersApi {
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/users", produces = { "application/json" }, consumes = {
             "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<List<User>> usersPost(@ApiParam(value = "") @Valid @RequestBody User body);
+    ResponseEntity<User> usersPost(@ApiParam(value = "") @Valid @RequestBody User body);
 
     @ApiOperation(value = "", nickname = "usersPut", notes = "Updated user", response = User.class, authorizations = {
             @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
