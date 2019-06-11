@@ -38,28 +38,27 @@ public class LoginApiController implements LoginApi {
     }
 
     public ResponseEntity<InlineResponse2001> loginPost(
-            @ApiParam(value = "", required = true) @PathVariable("Email") String Email, @PathVariable("password") String password) { ////@Valid @RequestBody Body body)
+            @ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         String accept = request.getHeader("Accept");
 
         try{
-            if(sessionService.userExist(Email)){
-                int id = sessionService.getUserIdByEmail(Email);
-                if(sessionService.passwordCheck(id, password)){
+            if(sessionService.userExist(body.getUsername())){
+                int id = sessionService.getUserIdByEmail(body.getUsername());
+                if(sessionService.passwordCheck(id, body.getPassword())){
                     //toegang geven
-
+                    //sessiontoken maken
                     return new ResponseEntity<InlineResponse2001>(HttpStatus.ACCEPTED);
                 }
                 else{
-                    return new ResponseEntity<InlineResponse2001>(HttpStatus.FAILED_DEPENDENCY);
+                    return new ResponseEntity<InlineResponse2001>(HttpStatus.UNAUTHORIZED);
                 }
             }
             else{
-                return new ResponseEntity<InlineResponse2001>(HttpStatus.FAILED_DEPENDENCY);
+                return new ResponseEntity<InlineResponse2001>(HttpStatus.UNAUTHORIZED);
             }
-
         }
         catch (Exception ex){
-            return new ResponseEntity<InlineResponse2001>(HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<InlineResponse2001>(HttpStatus.BAD_REQUEST);
         }
     }
 }
