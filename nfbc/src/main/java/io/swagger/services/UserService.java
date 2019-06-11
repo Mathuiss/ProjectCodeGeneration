@@ -1,10 +1,10 @@
-package io.swagger.service;
+package io.swagger.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import io.swagger.model.User;
-import io.swagger.repository.UserRepository;
+import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;

@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.service.UserService;
+import io.swagger.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
