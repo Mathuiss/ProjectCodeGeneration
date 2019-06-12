@@ -61,7 +61,7 @@ public class AccountService {
         throw new Exception("No Account found");
     }
 
-    // Creates a new account
+    // Creates or updates an account
     public void saveAccount(Account account) {
         accounts.save(account);
     }
