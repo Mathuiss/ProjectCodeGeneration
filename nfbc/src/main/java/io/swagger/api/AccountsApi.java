@@ -5,10 +5,7 @@
  */
 package io.swagger.api;
 
-import java.util.List;
-
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +34,7 @@ public interface AccountsApi {
                         @ApiResponse(code = 400, message = "Id is not correctly formatted"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/accounts/{iban}", produces = { "application/json" }, method = RequestMethod.DELETE)
-        ResponseEntity<List<Account>> deleteAccountByIBAN(
+        ResponseEntity<Account> deleteAccountByIBAN(
                         @ApiParam(value = "id of the account you want to (soft)delete", required = true) @PathVariable("iban") String iban);
 
         @ApiOperation(value = "base for savingsaccount and currentAccounts", nickname = "fetchAccount", notes = "Calling this allows you to fetch the account data", response = Account.class, responseContainer = "List", authorizations = {

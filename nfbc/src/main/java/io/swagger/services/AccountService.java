@@ -62,13 +62,21 @@ public class AccountService {
     }
 
     // Creates a new account
-    public void createAccount(Account body) {
-        accounts.save(body);
+    public void saveAccount(Account account) {
+        accounts.save(account);
     }
 
-    // duplicate of createAccount, to make it more clear
-    // 'save' has a built-in update if an id is given
-    public void updateAccountByIban(Account body) {
-        accounts.save(body);
+    public void deleteAccountByIban(String iban) throws Exception {
+        Optional<Account> result = accounts.findById(iban);
+
+        // checks if result is not null to avoid NullPointerException
+        if (!result.isPresent()) {
+            throw new Exception("No account found for iban " + iban);
+        }
+
+        Account account = result.get();
+        account.setActive(false);
+
+        accounts.save(account);
     }
 }

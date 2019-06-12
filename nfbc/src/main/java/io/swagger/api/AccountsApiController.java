@@ -43,15 +43,19 @@ public class AccountsApiController implements AccountsApi {
         this.service = service;
     }
 
-    public ResponseEntity<List<Account>> deleteAccountByIBAN(
+    public ResponseEntity<Account> deleteAccountByIBAN(
             @ApiParam(value = "id of the account you want to (soft)delete", required = true) @PathVariable("iban") String iban) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            service.deleteAccountByIban(iban);
+            return new ResponseEntity<Account>(HttpStatus.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return new ResponseEntity<Account>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<Iterable<Account>> fetchAccount(
             @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String AccountType) {
-        String accept = request.getHeader("Accept");
         try {
             Iterable<Account> accounts = service.getAccounts();
             return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
@@ -63,41 +67,37 @@ public class AccountsApiController implements AccountsApi {
 
     public ResponseEntity<Account> getAccountByIban(
             @ApiParam(value = "IBAN of the account you want to get", required = true) @PathVariable("iban") String iban) {
-        String accept = request.getHeader("Accept");
-
         try {
             Account account = service.getAccount(iban);
             return new ResponseEntity<Account>(account, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
 
     }
 
+    // Gets account with filled in iban and lets hibernate replace entity with same
+    // iban
     public ResponseEntity<Account> updateAccountByIBAN(
-            @ApiParam(value = "", required = true) @Valid @RequestBody Account body)
-
-    // this is useless since crudrepository updates an existing entity if it
-    // contains an id
-    // @ApiParam(value = "", required = true) @PathVariable("iban") String iban)
-    {
-        String accept = request.getHeader("Accept");
+            @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
         try {
-            service.updateAccountByIban(body);
+            service.saveAccount(body);
             return new ResponseEntity<Account>(HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<Account>(HttpStatus.CONFLICT);
         }
     }
 
+    // Gets account without iban and lets hibernate create one as @Id
     public ResponseEntity<Account> createAccount(
             @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
-        String accept = request.getHeader("Accept");
-
         try {
-            service.createAccount(body);
+            service.saveAccount(body);
             return new ResponseEntity<Account>(HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<Account>(HttpStatus.CONFLICT);
         }
     }
