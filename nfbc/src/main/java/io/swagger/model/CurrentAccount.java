@@ -1,80 +1,51 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+
+import javax.persistence.Entity;
 
 /**
  * CurrentAccount
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class CurrentAccount   {
-  @JsonProperty("AbsoluteLimit")
-  private BigDecimal absoluteLimit = null;
+public class CurrentAccount extends Account {
 
-  public CurrentAccount absoluteLimit(BigDecimal absoluteLimit) {
-    this.absoluteLimit = absoluteLimit;
-    return this;
+  public CurrentAccount(BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit, Integer dailyLimit,
+      Boolean active, String accountType) {
+    super(balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
   }
 
-  /**
-   * Get absoluteLimit
-   * @return absoluteLimit
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-  public BigDecimal getAbsoluteLimit() {
-    return absoluteLimit;
-  }
-
+  @Override
   public void setAbsoluteLimit(BigDecimal absoluteLimit) {
     this.absoluteLimit = absoluteLimit;
   }
 
+  // @Override
+  // public boolean equals(java.lang.Object o) {
+  // if (this == o) {
+  // return true;
+  // }
+  // if (o == null || getClass() != o.getClass()) {
+  // return false;
+  // }
+  // CurrentAccount currentAccount = (CurrentAccount) o;
+  // return Objects.equals(this.absoluteLimit, currentAccount.absoluteLimit);
+  // }
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    CurrentAccount currentAccount = (CurrentAccount) o;
-    return Objects.equals(this.absoluteLimit, currentAccount.absoluteLimit);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(absoluteLimit);
-  }
+  // @Override
+  // public int hashCode() {
+  // return Objects.hash(absoluteLimit);
+  // }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CurrentAccount {\n");
-    
-    sb.append("    absoluteLimit: ").append(toIndentedString(absoluteLimit)).append("\n");
     sb.append("}");
     return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
   }
 }

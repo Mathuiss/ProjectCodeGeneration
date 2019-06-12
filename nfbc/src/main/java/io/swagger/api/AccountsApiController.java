@@ -1,12 +1,15 @@
 package io.swagger.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.util.concurrent.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Account;
-import io.swagger.model.Iban;
+import io.swagger.services.AccountService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Controller
@@ -31,10 +34,13 @@ public class AccountsApiController implements AccountsApi {
 
     private final HttpServletRequest request;
 
+    private AccountService service;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request, AccountService service) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.service = service;
     }
 
     public ResponseEntity<List<Account>> deleteAccountByIBAN(
@@ -43,24 +49,56 @@ public class AccountsApiController implements AccountsApi {
         return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Account>> fetchAccount(
-            @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "type", required = false) String type) {
+    public ResponseEntity<Iterable<Account>> fetchAccount(
+            @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String AccountType) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Iterable<Account> accounts = service.getAccounts();
+            return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     public ResponseEntity<Account> getAccountByIban(
             @ApiParam(value = "IBAN of the account you want to get", required = true) @PathVariable("iban") String iban) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
+
+        try {
+            Account account = service.getAccount(iban);
+            return new ResponseEntity<Account>(account, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     public ResponseEntity<Account> updateAccountByIBAN(
-            @ApiParam(value = "", required = true) @Valid @RequestBody Account body,
-            @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "iban", required = true) Iban iban2,
-            @ApiParam(value = "", required = true) @PathVariable("iban") String iban) {
+            @ApiParam(value = "", required = true) @Valid @RequestBody Account body)
+
+    // this is useless since crudrepository updates an existing entity if it
+    // contains an id
+    // @ApiParam(value = "", required = true) @PathVariable("iban") String iban)
+    {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            service.updateAccountByIban(body);
+            return new ResponseEntity<Account>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+        }
     }
 
+    public ResponseEntity<Account> createAccount(
+            @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
+        String accept = request.getHeader("Accept");
+
+        try {
+            service.createAccount(body);
+            return new ResponseEntity<Account>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+        }
+    }
 }

@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import io.swagger.model.Account;
-import io.swagger.model.Iban;
+// import io.swagger.model.Iban;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Api(value = "accounts", description = "the accounts API")
@@ -47,8 +47,8 @@ public interface AccountsApi {
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized operation") })
         @RequestMapping(value = "/accounts", produces = { "application/json" }, method = RequestMethod.GET)
-        ResponseEntity<List<Account>> fetchAccount(
-                        @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "type", required = false) String type);
+        ResponseEntity<Iterable<Account>> fetchAccount(
+                        @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accounttype);
 
         @ApiOperation(value = "Get the account related to given id", nickname = "getAccountByIban", notes = "Get the account related to given id", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
@@ -64,10 +64,16 @@ public interface AccountsApi {
         @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Account.class),
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/accounts/{iban}", produces = { "application/json" }, consumes = {
-                        "application/json" }, method = RequestMethod.PATCH)
+                        "application/json" }, method = RequestMethod.PUT)
         ResponseEntity<Account> updateAccountByIBAN(
-                        @ApiParam(value = "", required = true) @Valid @RequestBody Account body,
-                        @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "iban", required = true) Iban iban2,
-                        @ApiParam(value = "", required = true) @PathVariable("iban") String iban);
+                        @ApiParam(value = "", required = true) @Valid @RequestBody Account body);
+
+        @ApiOperation(value = "", nickname = "createAccount", notes = "create new account", response = Account.class, authorizations = {
+                        @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
+        @ApiResponses(value = { @ApiResponse(code = 201, message = "CREATED", response = Account.class),
+                        @ApiResponse(code = 401, message = "Unauthorized") })
+        @RequestMapping(value = "/accounts/", produces = { "application/json" }, consumes = {
+                        "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<Account> createAccount(@ApiParam(value = "", required = true) @Valid @RequestBody Account body);
 
 }

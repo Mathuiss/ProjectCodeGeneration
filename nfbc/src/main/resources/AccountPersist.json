@@ -1,0 +1,11 @@
+[
+    {
+        "IBAN": "NL00INHO0000000003",
+        "Balance": 1000,
+        "TransactionLimit": 250,
+        "AbsoluteLimit": -1000,
+        "DailyLimit": 4,
+        "Active": true,
+        "AccountType": "current"
+    }
+]
