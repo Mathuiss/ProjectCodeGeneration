@@ -42,6 +42,15 @@ public class TransactionService {
         }
     }
 
+    // SHIT THAT WERKS:
+    // datetimestart
+    // datetimeend
+    // user
+    // sender
+    // reciever
+    // minvalue
+    // maxvalue
+
     public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Integer user, String sender,
             String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -84,14 +93,16 @@ public class TransactionService {
 
             // Check for sender
             if (sender != null) {
-                if (sender != transaction.getSender()) {
+                System.out.println(sender);
+                System.out.println(transaction.getSender());
+                if (!sender.equals(transaction.getSender())) {
                     continue;
                 }
             }
 
             // Check for reciever
             if (reciever != null) {
-                if (reciever != transaction.getReciever()) {
+                if (!reciever.equals(transaction.getReciever())) {
                     continue;
                 }
             }
@@ -104,7 +115,7 @@ public class TransactionService {
 
             // Check for values
             if (transaction.getAmount().doubleValue() < minValue.doubleValue()
-                    && transaction.getAmount().doubleValue() > maxValue.doubleValue()) {
+                    || transaction.getAmount().doubleValue() > maxValue.doubleValue()) {
                 continue;
             }
 
