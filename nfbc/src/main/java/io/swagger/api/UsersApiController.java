@@ -52,17 +52,25 @@ public class UsersApiController implements UsersApi {
         }
     }
 
-    public ResponseEntity<List<Transaction>> getTransactionOfUser(
+    public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
+            @ApiParam(value = "", required = true) @PathVariable("id") Integer id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account) {
-            //Iterable<>
-            return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+            try
+            {
+                Iterable<Transaction> transactions = service.GetTransactionOfUser(id);
+                return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+            }
+            catch(Exception ex)
+            {
+                return new ResponseEntity<Iterable<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+            }
     }
 
     public ResponseEntity<User> getUserById(
             @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") Integer id) {
         try
         {
-            User user = service.GetUsersById(id);
+            User user = service.GetUserById(id);
             return new ResponseEntity<User>(user, HttpStatus.OK);
         }
         catch(Exception ex)
@@ -77,12 +85,18 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<User> usersPost(@ApiParam(value = "") @Valid @RequestBody User body) {
-
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        try
+        {
+            service.CreateUser(body);
+            return new ResponseEntity<User>(HttpStatus.CREATED);
+        }
+        catch(Exception ex)
+        {
+            return new ResponseEntity<User>(HttpStatus.CONFLICT);
+        }
     }
 
     public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body) {
-        String accept = request.getHeader("Accept");
         return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
     }
 

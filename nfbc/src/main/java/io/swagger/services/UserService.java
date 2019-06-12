@@ -3,6 +3,7 @@ package io.swagger.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import io.swagger.model.Transaction;
 import io.swagger.model.User;
 import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class UserService
         return userRepository.findAll();
     }
 
-    public User GetUsersById(Integer id) throws Exception
+    public User GetUserById(Integer id) throws Exception
     {
         Optional<User> result = userRepository.findById(id);
 
@@ -67,5 +68,24 @@ public class UserService
     public void CreateUser(User user)
     {
         userRepository.save(user);
+    }
+
+    public Iterable<Transaction> GetTransactionOfUser(Integer id) throws Exception
+    {
+        try
+        {
+            Iterable<Transaction> result = userRepository.getTransactionById(id);
+
+            return result;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("");
+        }
+    }
+
+    public void UpdateUser()
+    {
+
     }
 }

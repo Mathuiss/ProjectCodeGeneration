@@ -45,8 +45,9 @@ public interface UsersApi {
             @ApiResponse(code = 200, message = "List of all transactions for this user", response = Transaction.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "bad input parameter"),
             @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/users/transactions", produces = { "application/json" }, method = RequestMethod.GET)
-    ResponseEntity<List<Transaction>> getTransactionOfUser(
+    @RequestMapping(value = "/users/{id}/transactions", produces = { "application/json" }, method = RequestMethod.GET)
+    ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
+            @ApiParam(value = "", required = true) @PathVariable("id") Integer id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account);
 
     @ApiOperation(value = "Gets user corresponding with id", nickname = "getUserById", notes = "Get user corresponding with id", response = User.class, authorizations = {
