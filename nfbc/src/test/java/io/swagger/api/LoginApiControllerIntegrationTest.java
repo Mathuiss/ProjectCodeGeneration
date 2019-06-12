@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import static org.junit.Assert.assertEquals;
 
+import io.swagger.model.Body1;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class LoginApiControllerIntegrationTest {
     @Test
     public void loginPostTest() throws Exception {
         Body body = new Body();
-        ResponseEntity<InlineResponse2001> responseEntity = api.loginPost(body);
+        ResponseEntity<Body1> responseEntity = api.loginPost(body);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 

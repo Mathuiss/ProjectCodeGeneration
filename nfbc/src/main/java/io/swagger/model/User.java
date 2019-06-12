@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -24,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class User {
   @JsonProperty("id")
   @Id
-  private Integer id = null;
+  private Integer id;
 
   @JsonProperty("name")
   private String name = null;
@@ -52,11 +53,13 @@ public class User {
 
   @JsonProperty("CurrentAccounts")
   @Valid
-  private List<CurrentAccount> currentAccounts = null;
+  @OneToMany(mappedBy = "user")
+  private List<CurrentAccount> currentAccounts;
 
   @JsonProperty("SavingsAccounts")
   @Valid
-  private List<SavingsAccount> savingsAccounts = null;
+  @OneToMany(mappedBy = "user")
+  private List<SavingsAccount> savingsAccounts;
 
   @JsonProperty("IsEmployee")
   private Boolean isEmployee = null;

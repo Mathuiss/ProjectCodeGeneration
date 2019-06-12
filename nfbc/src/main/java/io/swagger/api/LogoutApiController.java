@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.services.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import io.swagger.model.Body1;
 public class LogoutApiController implements LogoutApi {
 
     private static final Logger log = LoggerFactory.getLogger(LogoutApiController.class);
+    private SessionService sessionService;
 
     private final ObjectMapper objectMapper;
 
@@ -31,9 +33,19 @@ public class LogoutApiController implements LogoutApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody Body1 body) {
+    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody Body1 sessionTokenModel) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        try{
+            if(sessionService.isSessionTokenEmpty(sessionTokenModel)){
+                return  new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+            }else{
+                return  new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+        catch (Exception ex){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

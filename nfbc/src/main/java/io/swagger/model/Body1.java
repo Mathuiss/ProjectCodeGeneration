@@ -8,13 +8,19 @@ import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.*;
+
 /**
  * Body1
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Body1 {
+  @Id
   @JsonProperty("sessionToken")
+  @SequenceGenerator(name = "SessionToken_Sequence", initialValue = 0)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SessionToken_Sequence")
   private String sessionToken = null;
 
   @JsonProperty("userRole")

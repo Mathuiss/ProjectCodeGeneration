@@ -5,6 +5,8 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.Swagger2SpringBoot;
+import io.swagger.model.Body1;
 import io.swagger.services.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,28 +39,39 @@ public class LoginApiController implements LoginApi {
         this.sessionService = sessionService;
     }
 
-    public ResponseEntity<InlineResponse2001> loginPost(
+    public ResponseEntity<Body1> loginPost(
             @ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         String accept = request.getHeader("Accept");
 
         try{
+            log.info("--trying--");
+
             if(sessionService.userExist(body.getUsername())){
+                log.info(("username found"));
                 int id = sessionService.getUserIdByEmail(body.getUsername());
                 if(sessionService.passwordCheck(id, body.getPassword())){
                     //toegang geven
                     //sessiontoken maken
-                    return new ResponseEntity<InlineResponse2001>(HttpStatus.ACCEPTED);
+                    Body1 sessionToken = sessionService.getSessionToken(body, id);
+
+
+                    return new ResponseEntity<Body1>(HttpStatus.ACCEPTED);
                 }
                 else{
-                    return new ResponseEntity<InlineResponse2001>(HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<Body1>(HttpStatus.UNAUTHORIZED);
                 }
             }
             else{
-                return new ResponseEntity<InlineResponse2001>(HttpStatus.UNAUTHORIZED);
+                log.info("user name not found " + body.getUsername());
+                return new ResponseEntity<Body1>(HttpStatus.UNAUTHORIZED);
             }
         }
         catch (Exception ex){
-            return new ResponseEntity<InlineResponse2001>(HttpStatus.BAD_REQUEST);
+            log.info("exceptiont");
+            return new ResponseEntity<Body1>(HttpStatus.BAD_REQUEST);
         }
+    }
+    public void SessiontokenMaken(){
+        //HttpServletRequest request request.authenticate()
     }
 }

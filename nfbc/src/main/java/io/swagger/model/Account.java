@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -16,9 +17,15 @@ import io.swagger.annotations.ApiModelProperty;
  * Account
  */
 @Validated
+@Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Account {
+  @ManyToOne
+  @JoinColumn(name = "id", nullable = false)
+  private User user;
+
   @JsonProperty("IBAN")
+  @Id
   private String IBAN = null;
 
   @JsonProperty("balance")
