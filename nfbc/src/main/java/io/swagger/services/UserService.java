@@ -9,16 +9,15 @@ import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService
-{
+public class UserService {
     private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository)
-    {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
 
         loadOnStartup();
@@ -38,54 +37,76 @@ public class UserService
         }
     }
 
-    public void DeleteUserById(Integer id)
-    {
+    public void DeleteUserById(Integer id) {
         Optional<User> result = userRepository.findById(id);
 
-        if(result.isPresent())
-        {
+        if (result.isPresent()) {
             result.get().setIsActive(false);
         }
     }
 
-    public Iterable<User> GetAllUsers()
-    {
-        return userRepository.findAll();
+    public Iterable<User> GetAllUsers(String query) throws Exception {
+        ArrayList<User> res = new ArrayList<>();
+
+        for (User user : userRepository.findAll()) {
+            if (query == null) {
+                if (user.isActive()) {
+                    res.add(user);
+                }
+            } else {
+                switch (query) {
+                case "all":
+                    res.add(user);
+                    break;
+                case "disabled":
+                    if (!user.isActive()) {
+                        res.add(user);
+                    }
+                    break;
+                case "employees":
+                    if (user.isEmployee()) {
+                        res.add(user);
+                    }
+                    break;
+                case "notemployees":
+                    if (!user.isEmployee()) {
+                        res.add(user);
+                    }
+                    break;
+                default:
+                    throw new Exception("Faulty query: " + query);
+                }
+            }
+        }
+
+        return res;
     }
 
-    public User GetUserById(Integer id) throws Exception
-    {
+    public User GetUserById(Integer id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
-        if(result.isPresent())
-        {
+        if (result.isPresent()) {
             return result.get();
         }
 
         throw new Exception("");
     }
 
-    public void CreateUser(User user)
-    {
+    public void CreateUser(User user) {
         userRepository.save(user);
     }
 
-    public Iterable<Transaction> GetTransactionOfUser(Integer id) throws Exception
-    {
-        try
-        {
+    public Iterable<Transaction> GetTransactionOfUser(Integer id) throws Exception {
+        try {
             Iterable<Transaction> result = userRepository.getTransactionById(id);
 
             return result;
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             throw new Exception("");
         }
     }
 
-    public void UpdateUser()
-    {
+    public void UpdateUser() {
 
     }
 }

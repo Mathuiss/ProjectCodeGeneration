@@ -22,11 +22,12 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 public class User {
 
-    public User() {}
+    public User() {
+    }
 
     @JsonProperty("id")
     @Id
-    @SequenceGenerator(name="userId_seq")
+    @SequenceGenerator(name = "userId_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
     private Integer id;
 
@@ -51,28 +52,28 @@ public class User {
     @JsonProperty("appendix")
     private String appendix;
 
-    @JsonProperty("PhoneNumber")
+    @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-    //@JsonProperty("CurrentAccounts")
-    //@Valid
-    //@OneToMany(mappedBy = "user")
-    //private List<CurrentAccount> currentAccounts;
+    // @JsonProperty("CurrentAccounts")
+    // @Valid
+    // @OneToMany(mappedBy = "user")
+    // private List<CurrentAccount> currentAccounts;
 
-    //@JsonProperty("SavingsAccounts")
-    //@Valid
-    //@OneToMany(mappedBy = "user")
-    //private List<SavingsAccount> savingsAccounts;
+    // @JsonProperty("SavingsAccounts")
+    // @Valid
+    // @OneToMany(mappedBy = "user")
+    // private List<SavingsAccount> savingsAccounts;
 
-    @JsonProperty("Accounts")
+    @JsonProperty("accounts")
     @Valid
-    @oneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Account> accounts;
 
-    @JsonProperty("IsEmployee")
+    @JsonProperty("isEmployee")
     private Boolean isEmployee;
 
-    @JsonProperty("IsActive")
+    @JsonProperty("isActive")
     private Boolean isActive;
 
     public User id(Integer id) {
@@ -91,9 +92,9 @@ public class User {
         return id;
     }
 
-    //public void setId(Integer id) {
-    //  this.id = id;
-    //}
+    // public void setId(Integer id) {
+    // this.id = id;
+    // }
 
     public User name(String name) {
         this.name = name;
@@ -271,17 +272,35 @@ public class User {
 
     @ApiModelProperty(value = "")
     @Valid
-    public List<Account> getAccounts(String query) {
-        if(query == null)
-        {
-            return accounts;
+    public List<Account> getAccounts(String query) throws Exception {
+        ArrayList<Account> res = new ArrayList<>();
+
+        for (Account acc : accounts) {
+            if (query == null) {
+                if (acc.isActive()) {
+                    res.add(acc);
+                }
+            } else {
+                switch (query) {
+                case "all":
+                    res.add(acc);
+                    break;
+                case "disabled":
+                    if (!acc.isActive()) {
+                        res.add(acc);
+                    }
+                    break;
+                default:
+                    throw new Exception("Faulty query: " + query);
+                }
+            }
         }
 
-
+        return res;
     }
 
     public void setAccounts(List<Account> accounts) {
-       this.accounts = accounts;
+        this.accounts = accounts;
     }
 
     /**
@@ -289,7 +308,6 @@ public class User {
      *
      * @return currentAccounts
      **/
-
 
     public User isActive(Boolean isActive) {
         this.isActive = isActive;
@@ -303,16 +321,16 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Boolean isIsActive() {
-        return isEmployee;
+    public Boolean isActive() {
+        return isActive;
     }
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
 
-    public User isEmployee(Boolean isActive) {
-        this.isActive = isActive;
+    public User isEmployee(Boolean isEmployee) {
+        this.isEmployee = isEmployee;
         return this;
     }
 
@@ -323,7 +341,7 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Boolean isIsEmployee() {
+    public Boolean isEmployee() {
         return isEmployee;
     }
 
@@ -343,19 +361,18 @@ public class User {
         return Objects.equals(this.id, user.id) && Objects.equals(this.name, user.name)
                 && Objects.equals(this.email, user.email) && Objects.equals(this.hash, user.hash)
                 && Objects.equals(this.streetname, user.streetname) && Objects.equals(this.zipcode, user.zipcode)
-                && Objects.equals(this.addressnumber, user.addressnumber) && Objects.equals(this.appendix, user.appendix)
-                && Objects.equals(this.phoneNumber, user.phoneNumber)
+                && Objects.equals(this.addressnumber, user.addressnumber)
+                && Objects.equals(this.appendix, user.appendix) && Objects.equals(this.phoneNumber, user.phoneNumber)
                 && Objects.equals(this.accounts, user.accounts)
-                //&& Objects.equals(this.currentAccounts, user.currentAccounts)
-                //&& Objects.equals(this.savingsAccounts, user.savingsAccounts)
-                && Objects.equals(this.isEmployee, user.isEmployee)
-                && Objects.equals(this.isActive, user.isActive);
+                // && Objects.equals(this.currentAccounts, user.currentAccounts)
+                // && Objects.equals(this.savingsAccounts, user.savingsAccounts)
+                && Objects.equals(this.isEmployee, user.isEmployee) && Objects.equals(this.isActive, user.isActive);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
-                /*currentAccounts, savingsAccounts,*/ isEmployee, isActive);
+                /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
     }
 
     @Override
@@ -373,8 +390,10 @@ public class User {
         sb.append("    appendix: ").append(toIndentedString(appendix)).append("\n");
         sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
         sb.append("    accounts: ").append(toIndentedString(accounts)).append("\n");
-        //sb.append("    currentAccounts: ").append(toIndentedString(currentAccounts)).append("\n");
-        //sb.append("    savingsAccounts: ").append(toIndentedString(savingsAccounts)).append("\n");
+        // sb.append(" currentAccounts:
+        // ").append(toIndentedString(currentAccounts)).append("\n");
+        // sb.append(" savingsAccounts:
+        // ").append(toIndentedString(savingsAccounts)).append("\n");
         sb.append("    isEmployee: ").append(toIndentedString(isEmployee)).append("\n");
         sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
         sb.append("}");
@@ -391,6 +410,5 @@ public class User {
         }
         return o.toString().replace("\n", "\n    ");
     }
-
 
 }

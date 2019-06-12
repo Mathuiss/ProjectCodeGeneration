@@ -8,10 +8,9 @@
     "zipcode": "1234AB",
     "addressnumber": "10",
     "appendix": "A",
-    "PhoneNumber": "0201233214",
-    "SavingsAccounts": [],
-    "CurrentAccounts": [],
-    "IsEmployee": false,
-    "IsActive": true
+    "phoneNumber": "0201233214",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
   }
 ]
