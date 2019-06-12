@@ -21,7 +21,6 @@ import io.swagger.model.User;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @RestController
-@RequestMapping("/users")
 public class UsersApiController implements UsersApi {
 
     private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
@@ -80,8 +79,16 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<User>> getUsers() {
+        try
+        {
         Iterable<User> users = service.GetAllUsers();
         return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {
+           log.error(ex.getMessage(), ex);
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     public ResponseEntity<User> usersPost(@ApiParam(value = "") @Valid @RequestBody User body) {

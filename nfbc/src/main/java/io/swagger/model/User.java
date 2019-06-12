@@ -54,15 +54,20 @@ public class User {
     @JsonProperty("PhoneNumber")
     private String phoneNumber;
 
-    @JsonProperty("CurrentAccounts")
-    @Valid
-    @OneToMany(mappedBy = "user")
-    private List<CurrentAccount> currentAccounts;
+    //@JsonProperty("CurrentAccounts")
+    //@Valid
+    //@OneToMany(mappedBy = "user")
+    //private List<CurrentAccount> currentAccounts;
 
-    @JsonProperty("SavingsAccounts")
+    //@JsonProperty("SavingsAccounts")
+    //@Valid
+    //@OneToMany(mappedBy = "user")
+    //private List<SavingsAccount> savingsAccounts;
+
+    @JsonProperty("Accounts")
     @Valid
-    @OneToMany(mappedBy = "user")
-    private List<SavingsAccount> savingsAccounts;
+    @oneToMany(mappedBy = "user")
+    private List<Account> accounts;
 
     @JsonProperty("IsEmployee")
     private Boolean isEmployee;
@@ -251,17 +256,32 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public User currentAccounts(List<CurrentAccount> currentAccounts) {
-        this.currentAccounts = currentAccounts;
+    public User Accounts(List<Account> accountList) {
+        this.accounts = accountList;
         return this;
     }
 
-    public User addCurrentAccountsItem(CurrentAccount currentAccountsItem) {
-        if (this.currentAccounts == null) {
-            this.currentAccounts = new ArrayList<CurrentAccount>();
+    public User addAccount(Account account) {
+        if (this.accounts == null) {
+            this.accounts = new ArrayList<Account>();
         }
-        this.currentAccounts.add(currentAccountsItem);
+        this.accounts.add(account);
         return this;
+    }
+
+    @ApiModelProperty(value = "")
+    @Valid
+    public List<Account> getAccounts(String query) {
+        if(query == null)
+        {
+            return accounts;
+        }
+
+
+    }
+
+    public void setAccounts(List<Account> accounts) {
+       this.accounts = accounts;
     }
 
     /**
@@ -269,43 +289,7 @@ public class User {
      *
      * @return currentAccounts
      **/
-    @ApiModelProperty(value = "")
-    @Valid
-    public List<CurrentAccount> getCurrentAccounts() {
-        return currentAccounts;
-    }
 
-    public void setCurrentAccounts(List<CurrentAccount> currentAccounts) {
-        this.currentAccounts = currentAccounts;
-    }
-
-    public User savingsAccounts(List<SavingsAccount> savingsAccounts) {
-        this.savingsAccounts = savingsAccounts;
-        return this;
-    }
-
-    public User addSavingsAccountsItem(SavingsAccount savingsAccountsItem) {
-        if (this.savingsAccounts == null) {
-            this.savingsAccounts = new ArrayList<SavingsAccount>();
-        }
-        this.savingsAccounts.add(savingsAccountsItem);
-        return this;
-    }
-
-    /**
-     * Get savingsAccounts
-     *
-     * @return savingsAccounts
-     **/
-    @ApiModelProperty(value = "")
-    @Valid
-    public List<SavingsAccount> getSavingsAccounts() {
-        return savingsAccounts;
-    }
-
-    public void setSavingsAccounts(List<SavingsAccount> savingsAccounts) {
-        this.savingsAccounts = savingsAccounts;
-    }
 
     public User isActive(Boolean isActive) {
         this.isActive = isActive;
@@ -361,16 +345,17 @@ public class User {
                 && Objects.equals(this.streetname, user.streetname) && Objects.equals(this.zipcode, user.zipcode)
                 && Objects.equals(this.addressnumber, user.addressnumber) && Objects.equals(this.appendix, user.appendix)
                 && Objects.equals(this.phoneNumber, user.phoneNumber)
-                && Objects.equals(this.currentAccounts, user.currentAccounts)
-                && Objects.equals(this.savingsAccounts, user.savingsAccounts)
+                && Objects.equals(this.accounts, user.accounts)
+                //&& Objects.equals(this.currentAccounts, user.currentAccounts)
+                //&& Objects.equals(this.savingsAccounts, user.savingsAccounts)
                 && Objects.equals(this.isEmployee, user.isEmployee)
                 && Objects.equals(this.isActive, user.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
-                currentAccounts, savingsAccounts, isEmployee, isActive);
+        return Objects.hash(id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
+                /*currentAccounts, savingsAccounts,*/ isEmployee, isActive);
     }
 
     @Override
@@ -387,8 +372,9 @@ public class User {
         sb.append("    addressnumber: ").append(toIndentedString(addressnumber)).append("\n");
         sb.append("    appendix: ").append(toIndentedString(appendix)).append("\n");
         sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
-        sb.append("    currentAccounts: ").append(toIndentedString(currentAccounts)).append("\n");
-        sb.append("    savingsAccounts: ").append(toIndentedString(savingsAccounts)).append("\n");
+        sb.append("    accounts: ").append(toIndentedString(accounts)).append("\n");
+        //sb.append("    currentAccounts: ").append(toIndentedString(currentAccounts)).append("\n");
+        //sb.append("    savingsAccounts: ").append(toIndentedString(savingsAccounts)).append("\n");
         sb.append("    isEmployee: ").append(toIndentedString(isEmployee)).append("\n");
         sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
         sb.append("}");
@@ -405,4 +391,6 @@ public class User {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+
 }

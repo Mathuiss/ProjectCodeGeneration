@@ -36,6 +36,7 @@ io\swagger\model\InlineResponse2001.class
 io\swagger\configuration\CustomInstantDeserializer$8.class
 io\swagger\api\LogoutApiController.class
 io\swagger\configuration\CustomInstantDeserializer$4.class
+io\swagger\services\UserService.class
 io\swagger\configuration\CustomInstantDeserializer.class
 io\swagger\services\TransactionService$1.class
 io\swagger\configuration\CustomInstantDeserializer$7.class
@@ -44,7 +45,9 @@ io\swagger\api\ApiOriginFilter.class
 io\swagger\api\UsersApi.class
 io\swagger\api\LogoutApi.class
 io\swagger\api\AccountsApiController.class
+io\swagger\services\UserService$1.class
 io\swagger\api\AccountsApi.class
+io\swagger\repositories\UserRepository.class
 io\swagger\repositories\TransactionRepository.class
 io\swagger\model\Account.class
 io\swagger\RFC3339DateFormat.class

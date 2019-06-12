@@ -47,7 +47,7 @@ public class UsersApiControllerIntegrationTest {
     @Test
     public void getUsersTest() throws Exception {
         ResponseEntity<Iterable<User>> responseEntity = api.getUsers();
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
