@@ -70,7 +70,7 @@ public class AccountsApiControllerIntegrationTest {
     @Test
     public void deleteAccountByIBANTest() throws Exception {
         String iban = "NL00INHO0000000003";
-        ResponseEntity<List<Account>> responseEntity = api.deleteAccountByIBAN(iban);
+        ResponseEntity<Account> responseEntity = api.deleteAccountByIBAN(iban);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 }

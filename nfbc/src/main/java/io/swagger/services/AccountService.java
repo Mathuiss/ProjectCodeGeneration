@@ -25,15 +25,6 @@ public class AccountService {
     // load in all accounts from json on startup
     public void loadOnStartup() {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enableDefaultTyping();
-        // mapper.enableDefaultTyping(ObjectMapper.DefaultTyping applicability,
-        // JsonTypeInfo.As includeAs);
-
-        // TK
-        // might be necessary to prevent JSON 0.001 to parse as Double instead of
-        // BigDecimal
-        // mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
-
         TypeReference<List<Account>> typeReference = new TypeReference<List<Account>>() {
         };
         InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
