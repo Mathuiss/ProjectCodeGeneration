@@ -17,25 +17,58 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Body1
+ * SessionToken
  */
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class Body1 {
+public class SessionToken {
   @Id
   @JsonProperty("sessionToken")
-  @SequenceGenerator(name = "SessionToken_Sequence", initialValue = 0)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SessionToken_Sequence")
   private String sessionToken = null;
+
+  @JsonProperty("user")
+  private long userId;
 
   @JsonProperty("userRole")
   private String userRole = null;
 
-  public Body1 sessionToken(String sessionToken) {
+  @JsonProperty("timestamp")
+  private  String timestamp;
+
+  @JsonProperty("isActive")
+  private  boolean isActive;
+
+  public long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(long userId) {
+    userId = userId;
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public void setActive(boolean active) {
+    isActive = active;
+  }
+
+  public SessionToken sessionToken(String sessionToken) {
     this.sessionToken = sessionToken;
     return this;
   }
+
+  public  SessionToken() {}
 
   /**
    * Get sessionToken
@@ -65,7 +98,7 @@ public class Body1 {
     this.sessionToken = sb.toString();
   }
 
-  public Body1 userRole(String userRole) {
+  public SessionToken userRole(String userRole) {
     this.userRole = userRole;
     return this;
   }
@@ -93,8 +126,8 @@ public class Body1 {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body1 body1 = (Body1) o;
-    return Objects.equals(this.sessionToken, body1.sessionToken) && Objects.equals(this.userRole, body1.userRole);
+    SessionToken sessionToken = (SessionToken) o;
+    return Objects.equals(this.sessionToken, sessionToken.sessionToken) && Objects.equals(this.userRole, sessionToken.userRole);
   }
 
   @Override
@@ -105,7 +138,7 @@ public class Body1 {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body1 {\n");
+    sb.append("class SessionToken {\n");
 
     sb.append("    sessionToken: ").append(toIndentedString(sessionToken)).append("\n");
     sb.append("    userRole: ").append(toIndentedString(userRole)).append("\n");

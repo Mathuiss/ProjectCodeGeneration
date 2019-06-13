@@ -2,45 +2,29 @@ package io.swagger.services;
 
 import io.swagger.Swagger2SpringBoot;
 import io.swagger.model.Body;
-import io.swagger.model.Body1;
+import io.swagger.model.SessionToken;
 import io.swagger.model.User;
 import io.swagger.repositories.SessionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
 public class SessionService {
     private SessionRepository sessionRepository;
+    private UserRepository userRepository;
     private static final Logger logger = Logger.getLogger(Swagger2SpringBoot.class.getName());
 
-    public SessionService(SessionRepository sessionRepos) {
+    public SessionService(SessionRepository sessionRepos, UserRepository userRepository) {
         this.sessionRepository = sessionRepos;
+        this.userRepository = userRepository;
     }
 
-    public Collection<User> getAllUsers() {
-
-        // return sessionRepository.getAllUsers();
-        return null;
-    }
-
-    private List<User> getUserList() {
-        // List<User> userList = null;
-        // this.userList = new ArrayList<>(getAllUsers());
-        logger.info("list maken");
-
-        this.userList.add(new User(26, "naam", "test@gmail.com", "wachtwoord", "straatnaam", "1060PC", 33, " ",
-                "0600000000", null, null, true));
-        // return new ArrayList<>(getAllUsers());
-
-        return this.userList;
+    private Iterable<User> getUserList() {
+        return userRepository.findAll();
     }
 
     public boolean userExist(String email) {
@@ -58,8 +42,7 @@ public class SessionService {
     }
 
     public int getUserIdByEmail(String email) {
-        // for (User user : getUserList()) {
-        for (User user : this.userList) {
+        for (User user : userRepository.findAll()) {
             if (user.getEmail().equals(email)) {
                 logger.info("found user id " + user.getId());
                 return user.getId();
@@ -70,7 +53,7 @@ public class SessionService {
 
     public boolean passwordCheck(int id, String password) {
         // for (User user : getUserList()) {
-        for (User user : this.userList) {
+        for (User user : userRepository.findAll()) {
             if (user.getId().equals(id)) {
                 if (user.getHash().equals(password)) {
                     logger.info("found user password" + user.getHash());
@@ -81,11 +64,10 @@ public class SessionService {
         return false;
     }
 
-    public boolean isEmployee(int id) {
-        // for (User user : getUserList()) {
-        for (User user : this.userList) {
+    public boolean isEmployee(long id) {
+        for (User user : userRepository.findAll()) {
             if (user.getId().equals(id)) {
-                if (user.isIsEmployee()) {
+                if (user.isEmployee()) {
                     logger.info("user is eployee");
                     return true;
                 }
@@ -95,23 +77,32 @@ public class SessionService {
         return false;
     }
 
-    public Body1 getSessionToken(Body body, int userId) throws NoSuchAlgorithmException {
-        Body1 sessionToken = new Body1();
+    public SessionToken getSessionToken(Body body, long userId) throws Exception {
+        SessionToken sessionToken = new SessionToken();
         sessionToken.setSessionToken(System.currentTimeMillis());
+        sessionToken.setActive(true);
+        sessionToken.setUserId(userId);
 
         logger.info("--- getSessionToken tot zover ---");
 
-        if (isEmployee(userId)) {
+        Optional<User> result = userRepository.findById(userId);
+        if (!result.isPresent()) {
+            throw new Exception("User not found for id: " + userId);
+        }
+
+
+        if (result.get().isEmployee()) {
             sessionToken.setUserRole("Employee");
         } else {
             sessionToken.setUserRole("User");
             logger.info("user role is: " + sessionToken.getUserRole());
         }
 
+        sessionRepository.save(sessionToken);
         return sessionToken;
     }
 
-    public boolean isSessionTokenEmpty(Body1 sessionTokenModel) {
+    public boolean isSessionTokenEmpty(SessionToken sessionTokenModel) {
         if (!sessionTokenModel.getSessionToken().isEmpty()) {
             return true;
         }

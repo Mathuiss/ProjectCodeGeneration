@@ -1,9 +1,7 @@
 package io.swagger.repositories;
 
-import io.swagger.model.Body1;
+import io.swagger.model.SessionToken;
 import org.springframework.data.repository.CrudRepository;
 
-import java.security.PublicKey;
-
-public interface SessionTokenRepository extends CrudRepository<Body1, String> {
+public interface SessionTokenRepository extends CrudRepository<SessionToken, String> {
 }

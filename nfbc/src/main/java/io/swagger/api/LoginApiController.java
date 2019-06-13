@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import javax.validation.Valid;
 
+import io.swagger.model.SessionToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Body;
-import io.swagger.model.Body1;
 import io.swagger.services.SessionService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
@@ -26,7 +26,7 @@ public class LoginApiController implements LoginApi {
         this.sessionService = sessionService;
     }
 
-    public ResponseEntity<Body1> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
+    public ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         try {
             log.info("--trying--");
 
@@ -37,22 +37,22 @@ public class LoginApiController implements LoginApi {
                     // toegang geven
                     // sessiontoken maken
                     try {
-                        Body1 sessionToken = sessionService.getSessionToken(body, id);
-                        return new ResponseEntity<Body1>(sessionToken, HttpStatus.OK);
+                        SessionToken sessionToken = sessionService.getSessionToken(body, id);
+                        return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
                     } catch (Exception ex) {
                         log.error(ex.getMessage(), ex);
                         return new ResponseEntity<>(HttpStatus.resolve(500));
                     }
                 } else {
-                    return new ResponseEntity<Body1>(HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
                 }
             } else {
                 log.info("user name not found: " + body.getUsername());
-                return new ResponseEntity<Body1>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             log.info("exceptiont");
-            return new ResponseEntity<Body1>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<SessionToken>(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.model.SessionToken;
 import io.swagger.services.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.Body1;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Controller
@@ -33,7 +33,7 @@ public class LogoutApiController implements LogoutApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody Body1 sessionTokenModel) {
+    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionTokenModel) {
         String accept = request.getHeader("Accept");
 
         try{
