@@ -1,0 +1,10 @@
+try {
+	if (security.isAllowed(request.getHeader("session"), "customer")) {
+		// Logic die je wilde uitvoeren
+	} else {
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+} catch (Exception ex) {
+	log.warn(ex.getMessage());
+	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+}

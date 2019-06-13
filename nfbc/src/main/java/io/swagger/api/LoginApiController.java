@@ -28,7 +28,7 @@ public class LoginApiController implements LoginApi {
 
     public ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         try {
-            log.info("--trying--");
+            log.info("--trying--" + body.getUsername());
 
             if (sessionService.userExist(body.getUsername())) {
                 log.info(("username found"));
@@ -38,7 +38,7 @@ public class LoginApiController implements LoginApi {
                         // toegang geven
                         // sessiontoken maken
                         try {
-                            SessionToken sessionToken = sessionService.getSessionToken(body, id);
+                            SessionToken sessionToken = sessionService.getSessionToken(id);
                             return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
                         } catch (Exception ex) {
                             log.error(ex.getMessage(), ex);

@@ -6,7 +6,6 @@
 package io.swagger.api;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,9 +44,9 @@ public interface TransactionsApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/transactions", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Transaction>> fetchTransaction(
-                        @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) String datetimestart,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) String datetimeend,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Long userId,
                         @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
                         @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
                         @ApiParam(value = "") @Valid @RequestParam(value = "accounttype", required = false) String accounttype,
