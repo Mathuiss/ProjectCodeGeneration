@@ -1,16 +1,16 @@
 package io.swagger.services;
 
+import java.util.Optional;
+import java.util.logging.Logger;
+
+import org.springframework.stereotype.Service;
+
 import io.swagger.Swagger2SpringBoot;
 import io.swagger.model.Body;
 import io.swagger.model.SessionToken;
 import io.swagger.model.User;
 import io.swagger.repositories.SessionRepository;
 import io.swagger.repositories.UserRepository;
-import org.springframework.stereotype.Service;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class SessionService {
@@ -40,8 +40,8 @@ public class SessionService {
     public long getUserIdByEmail(String email) {
         for (User user : userRepository.findAll()) {
             if (user.getEmail().equals(email)) {
-                logger.info("found user id " + user.getId());
-                return user.getId();
+                logger.info("found user id " + user.getuserId());
+                return user.getuserId();
             }
         }
         return 0;
@@ -50,7 +50,7 @@ public class SessionService {
     public boolean passwordCheck(long id, String password) {
         // for (User user : getUserList()) {
         for (User user : userRepository.findAll()) {
-            if (user.getId() == id) {
+            if (user.getuserId() == id) {
                 if (user.getHash().equals(password)) {
                     logger.info("found user password" + user.getHash());
                     return true;
@@ -59,23 +59,23 @@ public class SessionService {
         }
         return false;
     }
+
     public boolean isUserActive(long id) {
-        for(User user : userRepository.findAll()){
-            if(user.getId() == id){
-                if(user.isActive()){
-                    return  true;
-                }
-                else {
+        for (User user : userRepository.findAll()) {
+            if (user.getuserId() == id) {
+                if (user.isActive()) {
+                    return true;
+                } else {
                     logger.info("user is deactivated");
                 }
             }
         }
-        return  false;
+        return false;
     }
 
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
-            if (user.getId() == id) {
+            if (user.getuserId() == id) {
                 if (user.isEmployee()) {
                     logger.info("user is eployee");
                     return true;

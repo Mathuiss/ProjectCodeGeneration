@@ -101,7 +101,7 @@ public class UserService {
 
     public Iterable<Transaction> GetTransactionOfUser(long id) throws Exception {
         try {
-            Iterable<Transaction> result = userRepository.getTransactionById(id);
+            Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
 
             return result;
         } catch (Exception ex) {

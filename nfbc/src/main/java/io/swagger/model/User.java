@@ -1,5 +1,7 @@
 package io.swagger.model;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +31,7 @@ public class User {
     @Id
     @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private long id;
+    private long userId;
 
     @JsonProperty("name")
     private String name;
@@ -76,8 +78,8 @@ public class User {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    public User id(long id) {
-        this.id = id;
+    public User userId(long userId) {
+        this.userId = userId;
         return this;
     }
 
@@ -88,11 +90,9 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public long getId() {
-        return id;
+    public long getuserId() {
+        return userId;
     }
-
-
 
     public User name(String name) {
         this.name = name;
@@ -152,6 +152,19 @@ public class User {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public void generateHash(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    digest.update(password.getBytes());
+    byte[] bytes = digest.digest();
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < bytes.length; i++) {
+      sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+    }
+    // Get complete hashed password in hex format
+    hash = sb.toString();
     }
 
     public User streetname(String streetname) {
@@ -356,7 +369,7 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(this.id, user.id) && Objects.equals(this.name, user.name)
+        return Objects.equals(this.userId, user.userId) && Objects.equals(this.name, user.name)
                 && Objects.equals(this.email, user.email) && Objects.equals(this.hash, user.hash)
                 && Objects.equals(this.streetname, user.streetname) && Objects.equals(this.zipcode, user.zipcode)
                 && Objects.equals(this.addressnumber, user.addressnumber)
@@ -369,7 +382,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
+        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
                 /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
     }
 
@@ -378,7 +391,7 @@ public class User {
         StringBuilder sb = new StringBuilder();
         sb.append("class User {\n");
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    id: ").append(toIndentedString(userId)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");
         sb.append("    hash: ").append(toIndentedString(hash)).append("\n");
