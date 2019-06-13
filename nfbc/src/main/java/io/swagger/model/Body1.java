@@ -1,14 +1,20 @@
 package io.swagger.model;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.*;
 
 /**
  * Body1
@@ -44,6 +50,19 @@ public class Body1 {
 
   public void setSessionToken(String sessionToken) {
     this.sessionToken = sessionToken;
+  }
+
+  public void setSessionToken(long unique) throws NoSuchAlgorithmException {
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    digest.update(Long.toString(unique).getBytes());
+    byte[] bytes = digest.digest();
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < bytes.length; i++) {
+      sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+    }
+    // Get complete hashed password in hex format
+    this.sessionToken = sb.toString();
   }
 
   public Body1 userRole(String userRole) {

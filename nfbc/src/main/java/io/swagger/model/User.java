@@ -7,6 +7,8 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -22,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }) })
 public class User {
   @JsonProperty("id")
   @Id
@@ -378,7 +381,9 @@ public class User {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public User(Integer id, String name, String email, String hash, String streetname, String zipcode, Integer addressnumber, String appendix, String phoneNumber, @Valid List<CurrentAccount> currentAccounts, @Valid List<SavingsAccount> savingsAccounts, Boolean isEmployee) {
+  public User(Integer id, String name, String email, String hash, String streetname, String zipcode,
+      Integer addressnumber, String appendix, String phoneNumber, @Valid List<CurrentAccount> currentAccounts,
+      @Valid List<SavingsAccount> savingsAccounts, Boolean isEmployee) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -392,5 +397,7 @@ public class User {
     this.savingsAccounts = savingsAccounts;
     this.isEmployee = isEmployee;
   }
-  public User(){}
+
+  public User() {
+  }
 }
