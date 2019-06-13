@@ -38,7 +38,7 @@ public class TransactionsApiControllerIntegrationTest {
 
     @Test
     public void fetchTransactionTest() throws Exception {
-        Integer user = 0;
+        long user = 0;
         String sender = "NL00INHO0000000002";
         String reciever = "NL00INHO0000000001";
         String accounttype = "";
