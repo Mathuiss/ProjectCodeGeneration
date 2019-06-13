@@ -28,17 +28,20 @@ public class LogoutApiController implements LogoutApi {
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public LogoutApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public LogoutApiController(ObjectMapper objectMapper, HttpServletRequest request, SessionService sessionService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.sessionService = sessionService;
     }
 
     public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionToken) {
         String accept = request.getHeader("Accept");
-        log.info("logoutPost" + sessionToken.getTimestamp() + " ses token " + sessionToken.getSessionToken());
+
         try{
-            if(sessionService.isSessionTokenNotEmpty(sessionToken)){
-                log.info("is niet leeg SessionToken");
+            log.info("Try --- methode van logoutpost");
+            sessionService.doesSessionTokenExist(sessionToken.getSessionToken());
+
+            if(sessionToken.isActive() == true){
 
                 sessionService.deActivateSessionToken(sessionToken);
 
@@ -51,5 +54,4 @@ public class LogoutApiController implements LogoutApi {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
     }
-
 }

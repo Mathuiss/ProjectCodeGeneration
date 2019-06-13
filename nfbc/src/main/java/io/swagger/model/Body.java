@@ -101,4 +101,9 @@ public class Body   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public Body(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 }
