@@ -88,7 +88,7 @@ public interface UsersApi {
         @ApiResponses(value = { @ApiResponse(code = 200, message = "Post succesfull", response = User.class),
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/users/{id}", produces = { "application/json" }, consumes = {
+        @RequestMapping(value = "/users", produces = { "application/json" }, consumes = {
                         "application/json" }, method = RequestMethod.PUT)
         ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body);
 

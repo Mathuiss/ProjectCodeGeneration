@@ -19,7 +19,7 @@ public class LoginTest {
 
     @Test
     public void IsEmployeeEmployee(){
-        assertEquals(false, user.isEmployee());
+        assertEquals(false, user.getIsEmployee());
     }
 
     @Test

@@ -1,6 +1,6 @@
 [
   {
-    "id": 2,
+    "id": 1,
     "name": "Jelle Spreij",
     "email": "jelle.jelle@jelle.jelle",
     "hash": "abcde",
@@ -14,7 +14,7 @@
     "isActive": true
   },
   {
-    "id": 3,
+    "id": 2,
     "name": "Patatjes",
     "email": "patat@gmail.com",
     "hash": "patatjes123",
@@ -25,15 +25,15 @@
     "phoneNumber": "0612345678",
     "accounts": [],
     "isEmployee": true,
-    "isActive": true
+    "isActive": false
   },
   {
-    "id": 4,
+    "id": 3,
     "name": "test",
     "email": "test@gmail.com",
     "hash": "W@chtwoord1",
     "streetname": "Amsterdam",
-    "zipcode": "1060 AA",
+    "zipcode": "1060AA",
     "addressnumber": "10",
     "appendix": "",
     "phoneNumber": "0611111111",
@@ -42,7 +42,7 @@
     "isActive": true
   },
   {
-    "id": 5,
+    "id": 4,
     "name": "actief",
     "email": "actief@gmail.com",
     "hash": "actiefikben",
@@ -53,6 +53,6 @@
     "phoneNumber": "0612345678",
     "accounts": [],
     "isEmployee": false,
-    "isActive": false
+    "isActive": true
   }
 ]

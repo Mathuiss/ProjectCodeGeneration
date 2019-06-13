@@ -10,6 +10,8 @@ import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +25,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
 
-        //loadOnStartup();
+        loadOnStartup();
     }
 
     public void loadOnStartup() {
@@ -40,12 +42,17 @@ public class UserService {
         }
     }
 
-    public void DeleteUserById(long id) {
+    public void DeleteUserById(long id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
-        if (result.isPresent()) {
-            result.get().setIsActive(false);
+        if (!result.isPresent()) {
+            throw new Exception("User not found for id: " + id);
         }
+
+        User user = result.get();
+        user.setIsActive(false);
+        userRepository.save(user);
+
     }
 
     public Iterable<User> GetAllUsers(String query) throws Exception {
@@ -53,7 +60,7 @@ public class UserService {
 
         for (User user : userRepository.findAll()) {
             if (query == null) {
-                if (user.isActive()) {
+                if (user.getIsActive()) {
                     res.add(user);
                 }
             } else {
@@ -62,17 +69,17 @@ public class UserService {
                     res.add(user);
                     break;
                 case "disabled":
-                    if (!user.isActive()) {
+                    if (!user.getIsActive()) {
                         res.add(user);
                     }
                     break;
                 case "employees":
-                    if (user.isEmployee()) {
+                    if (user.getIsEmployee()) {
                         res.add(user);
                     }
                     break;
                 case "notemployees":
-                    if (!user.isEmployee()) {
+                    if (!user.getIsEmployee()) {
                         res.add(user);
                     }
                     break;
@@ -95,7 +102,8 @@ public class UserService {
         throw new Exception("");
     }
 
-    public void CreateUser(User user) {
+    public void CreateUser(User user) throws NoSuchAlgorithmException {
+        user.generateHash(user.getHash());
         userRepository.save(user);
     }
 
@@ -109,7 +117,13 @@ public class UserService {
         }
     }
 
-    public void UpdateUser(User changedUser) {
+    public void UpdateUser(User changedUser) throws Exception {
+        Long longValue = changedUser.getuserId();
+        
+        if (longValue == null) {
+            throw new Exception("Changed user has no ID. Cannot update.");
+        }
+
         userRepository.save(changedUser);
     }
 }
