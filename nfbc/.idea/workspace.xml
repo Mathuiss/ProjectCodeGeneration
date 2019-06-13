@@ -17,7 +17,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/swagger/services/SessionService.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/swagger/services/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="479">
               <caret line="129" column="71" selection-start-line="129" selection-start-column="71" selection-end-line="129" selection-end-column="71" />
@@ -98,8 +98,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -167,10 +165,33 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="nfbc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nfbc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nfbc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nfbc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nfbc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nfbc" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -188,7 +209,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Swagger2SpringBoot">
+  <component name="RunManager" selected="JUnit.UsersApiControllerIntegrationTest.usersPutTest">
     <configuration name="Swagger2SpringBoot" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.swagger.Swagger2SpringBoot" />
       <module name="nfbc" />
@@ -202,17 +223,64 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginTest.doesUserExist" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UsersApiControllerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="nfbc" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ServiceTest.*" />
+          <option name="PATTERN" value="io.swagger.api.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ServiceTest" />
-      <option name="MAIN_CLASS_NAME" value="ServiceTest.LoginTest" />
-      <option name="METHOD_NAME" value="doesUserExist" />
+      <option name="PACKAGE_NAME" value="io.swagger.api" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsersApiControllerIntegrationTest.getTransactionOfUserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nfbc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.swagger.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.swagger.api" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="getTransactionOfUserTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsersApiControllerIntegrationTest.getUsersTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nfbc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.swagger.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.swagger.api" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="getUsersTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsersApiControllerIntegrationTest.usersPutTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nfbc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.swagger.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.swagger.api" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="usersPutTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -220,8 +288,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.usersPutTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.getTransactionOfUserTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.getUsersTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest" />
         <item itemvalue="Application.Swagger2SpringBoot" />
-        <item itemvalue="JUnit.LoginTest.doesUserExist" />
       </list>
     </recent_temporary>
   </component>
@@ -239,9 +310,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LoginTest_doesUserExist - 2019.06.13 at 12h 08m 12s.xml">
-      <configuration name="LoginTest.doesUserExist" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="LoginTest_doesUserExist - 2019.06.13 at 12h 08m 38s.xml">
       <configuration name="LoginTest.doesUserExist" configurationId="JUnit" />
     </history-entry>
@@ -253,6 +321,24 @@
     </history-entry>
     <history-entry file="LoginTest_doesUserExist - 2019.06.13 at 12h 09m 49s.xml">
       <configuration name="LoginTest.doesUserExist" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest - 2019.06.13 at 21h 21m 35s.xml">
+      <configuration name="UsersApiControllerIntegrationTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest_getUsersTest - 2019.06.13 at 21h 22m 49s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.getUsersTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 23m 05s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest_getTransactionOfUserTest - 2019.06.13 at 21h 38m 36s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.getTransactionOfUserTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 44m 42s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 46m 05s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -266,6 +352,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8755304" visible="true" weight="0.2546917" />
       <window_info id="Structure" order="1" sideWeight="0.12446959" side_tool="true" visible="true" weight="0.2546917" />
@@ -471,6 +558,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="33" column="22" lean-forward="true" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/io/swagger/api/UsersApiControllerIntegrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="36" column="3" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
         </state>
       </provider>
     </entry>
