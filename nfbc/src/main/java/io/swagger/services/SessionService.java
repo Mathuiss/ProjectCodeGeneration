@@ -92,7 +92,7 @@ public class SessionService {
         return false;
     }
 
-    public SessionToken getSessionToken(Body body, long userId) throws Exception {
+    public SessionToken getSessionToken(long userId) throws Exception {
         SessionToken sessionToken = new SessionToken();
 
         sessionToken.generateSessionToken(System.currentTimeMillis());

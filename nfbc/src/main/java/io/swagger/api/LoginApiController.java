@@ -38,7 +38,7 @@ public class LoginApiController implements LoginApi {
                         // toegang geven
                         // sessiontoken maken
                         try {
-                            SessionToken sessionToken = sessionService.getSessionToken(body, id);
+                            SessionToken sessionToken = sessionService.getSessionToken(id);
                             return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
                         } catch (Exception ex) {
                             log.error(ex.getMessage(), ex);

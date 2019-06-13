@@ -156,4 +156,12 @@ public class SessionToken {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public SessionToken(String sessionToken, long userId, String userRole, String timestamp, boolean isActive) {
+    this.sessionToken = sessionToken;
+    this.userId = userId;
+    this.userRole = userRole;
+    this.timestamp = timestamp;
+    this.isActive = isActive;
+  }
 }

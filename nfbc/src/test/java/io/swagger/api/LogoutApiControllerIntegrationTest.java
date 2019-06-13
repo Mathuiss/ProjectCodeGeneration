@@ -20,9 +20,10 @@ public class LogoutApiControllerIntegrationTest {
 
     @Test
     public void logoutPostTest() throws Exception {
-        SessionToken body = new SessionToken();
-        ResponseEntity<Void> responseEntity = api.logoutPost(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        SessionToken sessionToken = new SessionToken("c45240d270604010ed1cf5e49a4423f7df74f96d356d051960c0bdf9b84700b1", 3, "User",  "2019-06-13T21:17:07.852", true );
+        ResponseEntity<Void> responseEntity = api.logoutPost(sessionToken);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
+
 
 }
