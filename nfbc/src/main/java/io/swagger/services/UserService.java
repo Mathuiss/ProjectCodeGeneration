@@ -37,7 +37,7 @@ public class UserService {
         }
     }
 
-    public void DeleteUserById(Integer id) {
+    public void DeleteUserById(Long id) {
         Optional<User> result = userRepository.findById(id);
 
         if (result.isPresent()) {
@@ -82,7 +82,7 @@ public class UserService {
         return res;
     }
 
-    public User GetUserById(Integer id) throws Exception {
+    public User GetUserById(Long id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
         if (result.isPresent()) {

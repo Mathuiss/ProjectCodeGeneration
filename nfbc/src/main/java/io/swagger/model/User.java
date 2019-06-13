@@ -67,7 +67,7 @@ public class User {
 
     @JsonProperty("accounts")
     @Valid
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "userId")
     private List<Account> accounts;
 
     @JsonProperty("isEmployee")

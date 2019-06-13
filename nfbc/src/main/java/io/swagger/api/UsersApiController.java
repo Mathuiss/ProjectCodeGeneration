@@ -34,7 +34,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<InlineResponse200> deleteUserById(
-            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") Integer id) {
+            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") Long id) {
         try {
             service.DeleteUserById(id);
             return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
@@ -44,7 +44,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-            @ApiParam(value = "", required = true) @PathVariable("id") Integer id,
+            @ApiParam(value = "", required = true) @PathVariable("id") Long id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account) {
         try {
             Iterable<Transaction> transactions = service.GetTransactionOfUser(id);
@@ -55,7 +55,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<User> getUserById(
-            @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") Integer id) {
+            @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") Long id) {
         try {
             User user = service.GetUserById(id);
             return new ResponseEntity<User>(user, HttpStatus.OK);

@@ -19,14 +19,17 @@ import io.swagger.model.CurrentAccount;
 import io.swagger.model.SavingsAccount;
 import io.swagger.model.User;
 import io.swagger.repositories.AccountRepository;
+import io.swagger.repositories.UserRepository;
 import javassist.expr.Instanceof;
 
 @Service
 public class AccountService {
     private AccountRepository accounts;
+    private UserRepository users;
 
-    public AccountService(AccountRepository accounts) {
+    public AccountService(AccountRepository accounts, UserRepository users) {
         this.accounts = accounts;
+        this.users = users;
 
         // ObjectMapper mapper = new ObjectMapper();
         // mapper.enableDefaultTyping();
@@ -72,6 +75,8 @@ public class AccountService {
             List<Account> accountJsonList = mapper.readValue(inputStream, typeReference);
             // We're using the currentAccountList because
             for (Account acc : accountJsonList) {
+
+                // User user = acc.user();
                 switch (acc.accountType()) {
                 case "current":
                     accountList.add(

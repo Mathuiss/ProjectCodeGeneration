@@ -30,10 +30,13 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
+  // @JsonProperty("userId")
+  // @ManyToOne
+  // @JoinColumn(name = "userId", nullable = false)
+  // private User user = null;
+
   @JsonProperty("userId")
-  @ManyToOne
-  @JoinColumn(name = "id", nullable = false)
-  private Long userId = null;
+  private Long userId;
 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
@@ -93,7 +96,7 @@ public abstract class Account {
     return userId;
   }
 
-  public void setUserId(Long userId) {
+  public void setuserId(Long userId) {
     this.userId = userId;
   }
 
