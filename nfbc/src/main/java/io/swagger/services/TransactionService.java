@@ -19,9 +19,11 @@ import io.swagger.repositories.TransactionRepository;
 @Service
 public class TransactionService {
     private TransactionRepository transactions;
+    private SecurityService security;
 
-    public TransactionService(TransactionRepository transactions) {
+    public TransactionService(TransactionRepository transactions, SecurityService security) {
         this.transactions = transactions;
+        this.security = security;
 
         loadOnStartup();
     }
