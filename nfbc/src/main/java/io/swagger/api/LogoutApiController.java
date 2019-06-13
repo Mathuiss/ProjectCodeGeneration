@@ -33,11 +33,14 @@ public class LogoutApiController implements LogoutApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionTokenModel) {
+    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionToken) {
         String accept = request.getHeader("Accept");
 
         try{
-            if(sessionService.isSessionTokenEmpty(sessionTokenModel)){
+            if(sessionService.isSessionTokenNotEmpty(sessionToken)){
+
+                sessionService.deActivateSessionToken(sessionToken);
+
                 return  new ResponseEntity<Void>(HttpStatus.ACCEPTED);
             }else{
                 return  new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);

@@ -9,6 +9,7 @@ import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -111,7 +112,7 @@ public class SessionService {
         return sessionToken;
     }
 
-    public boolean isSessionTokenEmpty(SessionToken sessionTokenModel) {
+    public boolean isSessionTokenNotEmpty(SessionToken sessionTokenModel) {
         if (!sessionTokenModel.getSessionToken().isEmpty()) {
             return true;
         }
@@ -119,4 +120,10 @@ public class SessionService {
     }
 
 
+    public void deActivateSessionToken(SessionToken sessionToken) {
+        if(sessionToken.isActive()){
+            sessionToken.setActive(false);
+            sessionRepository.save(sessionToken);
+        }
+    }
 }
