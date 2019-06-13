@@ -1,10 +1,8 @@
 package io.swagger.api;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import io.swagger.model.SessionToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,28 +12,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Body;
-import io.swagger.model.InlineResponse2001;
+import io.swagger.services.SessionService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
+// @Controller
 @Controller
 public class LoginApiController implements LoginApi {
-
-    private static final Logger log = LoggerFactory.getLogger(LoginApiController.class);
-
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
+    private static final Logger log = LoggerFactory.getLogger(LoginApiController.class);;
+    private SessionService sessionService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public LoginApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    public LoginApiController(SessionService sessionService) {
+        this.sessionService = sessionService;
     }
 
-    public ResponseEntity<InlineResponse2001> loginPost(
-            @ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<InlineResponse2001>(HttpStatus.NOT_IMPLEMENTED);
-    }
+    public ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
+        try {
+            log.info("--trying--");
 
+            if (sessionService.userExist(body.getUsername())) {
+                log.info(("username found"));
+                long id = sessionService.getUserIdByEmail(body.getUsername());
+                if (sessionService.passwordCheck(id, body.getPassword())) {
+                    if(sessionService.isUserActive(id)){
+                        // toegang geven
+                        // sessiontoken maken
+                        try {
+                            SessionToken sessionToken = sessionService.getSessionToken(body, id);
+                            return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
+                        } catch (Exception ex) {
+                            log.error(ex.getMessage(), ex);
+                            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                        }
+                    }
+                    else {
+                        return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+                    }
+
+                } else {
+                    return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                log.info("user name not found: " + body.getUsername());
+                return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            log.info("exceptiont");
+            return new ResponseEntity<SessionToken>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
