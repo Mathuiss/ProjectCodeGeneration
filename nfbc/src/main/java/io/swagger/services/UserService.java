@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
+import io.swagger.repositories.TransactionRepository;
 import io.swagger.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.Optional;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private TransactionRepository transactionRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
 
-        loadOnStartup();
+        //loadOnStartup();
     }
 
     public void loadOnStartup() {
@@ -37,7 +40,7 @@ public class UserService {
         }
     }
 
-    public void DeleteUserById(Long id) {
+    public void DeleteUserById(long id) {
         Optional<User> result = userRepository.findById(id);
 
         if (result.isPresent()) {
@@ -82,7 +85,7 @@ public class UserService {
         return res;
     }
 
-    public User GetUserById(Long id) throws Exception {
+    public User GetUserById(long id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
         if (result.isPresent()) {
@@ -96,9 +99,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Iterable<Transaction> GetTransactionOfUser(Integer id) throws Exception {
+    public Iterable<Transaction> GetTransactionOfUser(long id) throws Exception {
         try {
-            Iterable<Transaction> result = userRepository.getTransactionById(id);
+            Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
 
             return result;
         } catch (Exception ex) {
@@ -106,7 +109,7 @@ public class UserService {
         }
     }
 
-    public void UpdateUser() {
-
+    public void UpdateUser(User changedUser) {
+        userRepository.save(changedUser);
     }
 }

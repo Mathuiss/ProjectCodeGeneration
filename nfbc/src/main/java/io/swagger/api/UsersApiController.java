@@ -34,7 +34,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<InlineResponse200> deleteUserById(
-            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") Long id) {
+            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id) {
         try {
             service.DeleteUserById(id);
             return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
@@ -44,7 +44,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-            @ApiParam(value = "", required = true) @PathVariable("id") Long id,
+            @ApiParam(value = "", required = true) @PathVariable("id") long id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account) {
         try {
             Iterable<Transaction> transactions = service.GetTransactionOfUser(id);
@@ -55,7 +55,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<User> getUserById(
-            @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") Long id) {
+            @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") long id) {
         try {
             User user = service.GetUserById(id);
             return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -70,7 +70,6 @@ public class UsersApiController implements UsersApi {
             Iterable<User> users = service.GetAllUsers(query);
             return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -85,7 +84,15 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body) {
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        try
+        {
+            service.UpdateUser(body);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

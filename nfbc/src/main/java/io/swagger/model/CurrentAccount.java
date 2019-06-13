@@ -16,9 +16,9 @@ import javax.persistence.Entity;
  * CurrentAccount
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Entity
-public class CurrentAccount extends Account {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
+public class CurrentAccount extends Account  {
 
   public CurrentAccount(Long userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {

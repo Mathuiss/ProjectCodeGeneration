@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-import io.swagger.model.Body1;
+import io.swagger.model.SessionToken;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Api(value = "logout", description = "the logout API")
@@ -30,6 +30,6 @@ public interface LogoutApi {
             @ApiResponse(code = 400, message = "bad input parameter"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody Body1 body);
+    ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken body);
 
 }

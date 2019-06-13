@@ -5,6 +5,7 @@ io\swagger\configuration\JacksonConfiguration.class
 io\swagger\api\TransactionsApi.class
 io\swagger\api\ApiResponseMessage.class
 io\swagger\model\InlineResponse200.class
+io\swagger\repositories\SessionRepository.class
 io\swagger\model\SavingsAccount.class
 io\swagger\api\LoginApiController.class
 io\swagger\model\Transaction.class
@@ -14,6 +15,7 @@ io\swagger\configuration\CustomInstantDeserializer$6.class
 io\swagger\api\DepositApiController.class
 io\swagger\Swagger2SpringBoot$ExitException.class
 io\swagger\model\Iban.class
+io\swagger\services\SessionService.class
 io\swagger\api\TransactionsApiController.class
 io\swagger\api\UsersApiController.class
 io\swagger\configuration\CustomInstantDeserializer$9.class
@@ -36,18 +38,16 @@ io\swagger\model\InlineResponse2001.class
 io\swagger\configuration\CustomInstantDeserializer$8.class
 io\swagger\api\LogoutApiController.class
 io\swagger\configuration\CustomInstantDeserializer$4.class
-io\swagger\services\UserService.class
 io\swagger\configuration\CustomInstantDeserializer.class
 io\swagger\services\TransactionService$1.class
 io\swagger\configuration\CustomInstantDeserializer$7.class
 io\swagger\Swagger2SpringBoot.class
 io\swagger\api\ApiOriginFilter.class
 io\swagger\api\UsersApi.class
+io\swagger\repositories\SessionTokenRepository.class
 io\swagger\api\LogoutApi.class
 io\swagger\api\AccountsApiController.class
-io\swagger\services\UserService$1.class
 io\swagger\api\AccountsApi.class
-io\swagger\repositories\UserRepository.class
 io\swagger\repositories\TransactionRepository.class
 io\swagger\model\Account.class
 io\swagger\RFC3339DateFormat.class
