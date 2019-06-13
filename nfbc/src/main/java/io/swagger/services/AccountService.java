@@ -61,7 +61,7 @@ public class AccountService {
     public void loadOnStartup() {
         // determine accountType when reading value
 
-        TypeReference<List<CurrentAccount>> typeReferenceCur = new TypeReference<List<CurrentAccount>>() {
+        TypeReference<List<Account>> typeReference = new TypeReference<List<Account>>() {
         };
 
         InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
@@ -69,20 +69,22 @@ public class AccountService {
 
         ArrayList<Account> accountList = new ArrayList<>();
         try {
-            List<CurrentAccount> currentAccountList = mapper.readValue(inputStream, typeReferenceCur);
-            for (CurrentAccount currAcc : currentAccountList) {
-                switch (currAcc.accountType()) {
+            List<Account> accountJsonList = mapper.readValue(inputStream, typeReference);
+            // We're using the currentAccountList because
+            for (Account acc : accountJsonList) {
+                switch (acc.accountType()) {
                 case "current":
-                    // do nothing
+                    accountList.add(
+                            new CurrentAccount(acc.userId(), acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
+                                    acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
                     break;
                 case "savings":
-                    accountList.add(new SavingsAccount(currAcc.userId(), currAcc.getIban(), currAcc.getBalance(),
-                            currAcc.getTransactionLimit(), currAcc.getAbsoluteLimit(), currAcc.getDailyLimit(),
-                            currAcc.getIsActive(), currAcc.accountType()));
-
+                    accountList.add(
+                            new SavingsAccount(acc.userId(), acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
+                                    acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
                     break;
                 default:
-                    break;
+                    throw new Exception("Unknown accountType");
                 }
             }
         } catch (Exception ex) {
