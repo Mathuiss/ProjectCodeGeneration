@@ -12,9 +12,9 @@
         "IBAN": "NL00INHO0000000004",
         "Balance": 1000,
         "TransactionLimit": 250,
-        "AbsoluteLimit": -1000,
+        "AbsoluteLimit": 0,
         "DailyLimit": 4,
         "Active": true,
-        "AccountType": "current"
+        "AccountType": "savings"
     }
 ]

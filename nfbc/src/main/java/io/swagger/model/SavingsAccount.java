@@ -14,9 +14,9 @@ import javax.persistence.Entity;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class SavingsAccount extends Account {
 
-  public SavingsAccount(BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit, Integer dailyLimit,
-      Boolean active, String accountType) {
-    super(balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+  public SavingsAccount(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
+      Integer dailyLimit, Boolean active, String accountType) {
+    super(iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
   }
 
   // absolute limit must be at least 0 for a Savings Account;
