@@ -53,11 +53,11 @@ public class Transaction {
   public Transaction() {
   }
 
-  public Transaction(long id, String sender, String reciever, Integer user, double amount, String timestamp) {
+  public Transaction(long id, String sender, String reciever, long userId, double amount, String timestamp) {
     this.transactionId = id;
     this.sender = sender;
     this.reciever = reciever;
-    this.user = user;
+    this.userId = userId;
     this.amount = BigDecimal.valueOf(amount);
     this.timestamp = timestamp;
   }

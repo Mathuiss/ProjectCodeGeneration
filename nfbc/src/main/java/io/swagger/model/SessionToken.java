@@ -5,10 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,10 +31,10 @@ public class SessionToken {
   private String userRole = null;
 
   @JsonProperty("timestamp")
-  private  String timestamp = null;
+  private String timestamp = null;
 
   @JsonProperty("isActive")
-  private  boolean isActive = false;
+  private boolean isActive = false;
 
   public long getUserId() {
     return userId;
@@ -68,7 +65,8 @@ public class SessionToken {
     return this;
   }
 
-  public  SessionToken() {}
+  public SessionToken() {
+  }
 
   /**
    * Get sessionToken
@@ -127,7 +125,8 @@ public class SessionToken {
       return false;
     }
     SessionToken sessionToken = (SessionToken) o;
-    return Objects.equals(this.sessionToken, sessionToken.sessionToken) && Objects.equals(this.userRole, sessionToken.userRole);
+    return Objects.equals(this.sessionToken, sessionToken.sessionToken)
+        && Objects.equals(this.userRole, sessionToken.userRole);
   }
 
   @Override

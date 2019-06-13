@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import io.swagger.services.SecurityService;
 import io.swagger.services.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,22 +30,35 @@ public class TransactionsApiController implements TransactionsApi {
 
     private TransactionService service;
 
+    private SecurityService security;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public TransactionsApiController(HttpServletRequest request, TransactionService service) {
+    public TransactionsApiController(HttpServletRequest request, TransactionService service, SecurityService security) {
         this.request = request;
         this.service = service;
+        this.security = security;
     }
 
     // Create a new transaction with POST
     public ResponseEntity<Transaction> createTransaction(
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
+
         try {
-            service.createTransaction(body);
-            log.info("Transaction created: " + body.getTransactionId());
-            return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    service.createTransaction(body);
+                    log.info("Transaction created: " + body.getTransactionId());
+                    return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.warn(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -52,27 +66,35 @@ public class TransactionsApiController implements TransactionsApi {
     public ResponseEntity<Iterable<Transaction>> fetchTransaction(
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) String datetimestart,
             @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) String datetimeend,
-            @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
+            @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Long userId,
             @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
             @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
             @ApiParam(value = "") @Valid @RequestParam(value = "accounttype", required = false) String accounttype,
             @ApiParam(value = "") @Valid @RequestParam(value = "minvalue", required = false) BigDecimal minvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
-
         try {
-            Iterable<Transaction> transactions = service.getTransactions(datetimestart, datetimeend, user, sender,
-                    reciever, accounttype, minvalue, maxvalue, transactiontype);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    Iterable<Transaction> transactions = service.getTransactions(datetimestart, datetimeend, userId,
+                            sender, reciever, accounttype, minvalue, maxvalue, transactiontype);
 
-            Object[] params = { datetimestart, datetimeend, user, sender, reciever, accounttype, minvalue, maxvalue,
-                    transactiontype };
-            log.info(MessageFormat.format("Transactions fetched with args: {0} {1} {2} {3} {4} {5} {6} {7} {8}",
-                    params));
+                    Object[] params = { datetimestart, datetimeend, userId, sender, reciever, accounttype, minvalue,
+                            maxvalue, transactiontype };
+                    log.info(MessageFormat.format("Transactions fetched with args: {0} {1} {2} {3} {4} {5} {6} {7} {8}",
+                            params));
 
-            return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+                    return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.warn(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -80,12 +102,21 @@ public class TransactionsApiController implements TransactionsApi {
     public ResponseEntity<Transaction> getTransactionById(
             @ApiParam(value = "Id of the transactions you want to get", required = true) @PathVariable("id") Integer id) {
         try {
-            Transaction transaction = service.getTransaction(Integer.toUnsignedLong(id));
-            log.info("Transaction fetched with id: " + transaction.getTransactionId());
-            return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    Transaction transaction = service.getTransaction(Integer.toUnsignedLong(id));
+                    log.info("Transaction fetched with id: " + transaction.getTransactionId());
+                    return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            log.warn(ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
