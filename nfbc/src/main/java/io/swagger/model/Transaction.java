@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.validation.annotation.Validated;
-import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,6 +26,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class Transaction {
   @JsonProperty("TransactionId")
   @Id
+  @SequenceGenerator(name = "transaction_sequence", initialValue = 0)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_sequence")
   private long transactionId = 0;
 
   @JsonProperty("sender")
@@ -44,6 +48,18 @@ public class Transaction {
   public Transaction transactionId(Integer transactionId) {
     this.transactionId = transactionId;
     return this;
+  }
+
+  public Transaction() {
+  }
+
+  public Transaction(long id, String sender, String reciever, Integer user, double amount, String timestamp) {
+    this.transactionId = id;
+    this.sender = sender;
+    this.reciever = reciever;
+    this.user = user;
+    this.amount = BigDecimal.valueOf(amount);
+    this.timestamp = timestamp;
   }
 
   /**

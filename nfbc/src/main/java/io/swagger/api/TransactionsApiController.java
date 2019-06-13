@@ -1,12 +1,10 @@
 package io.swagger.api;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.services.TransactionService;
 import org.slf4j.Logger;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Transaction;
@@ -28,16 +25,12 @@ public class TransactionsApiController implements TransactionsApi {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionsApiController.class);
 
-    private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
 
     private TransactionService service;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request,
-            TransactionService service) {
-        this.objectMapper = objectMapper;
+    public TransactionsApiController(HttpServletRequest request, TransactionService service) {
         this.request = request;
         this.service = service;
     }
@@ -47,16 +40,18 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
         try {
             service.createTransaction(body);
+            log.info("Transaction created: " + body.getTransactionId());
             return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     // Get list of all transactions with GET and http params
     public ResponseEntity<Iterable<Transaction>> fetchTransaction(
-            @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) OffsetDateTime datetimestart,
-            @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) OffsetDateTime datetimeend,
+            @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) String datetimestart,
+            @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) String datetimeend,
             @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
             @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
             @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
@@ -65,8 +60,20 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
 
-        Iterable<Transaction> transactions = service.getTransactions();
-        return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+        try {
+            Iterable<Transaction> transactions = service.getTransactions(datetimestart, datetimeend, user, sender,
+                    reciever, accounttype, minvalue, maxvalue, transactiontype);
+
+            Object[] params = { datetimestart, datetimeend, user, sender, reciever, accounttype, minvalue, maxvalue,
+                    transactiontype };
+            log.info(MessageFormat.format("Transactions fetched with args: {0} {1} {2} {3} {4} {5} {6} {7} {8}",
+                    params));
+
+            return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Get certain transaction by id
@@ -74,8 +81,10 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "Id of the transactions you want to get", required = true) @PathVariable("id") Integer id) {
         try {
             Transaction transaction = service.getTransaction(Integer.toUnsignedLong(id));
-            return new ResponseEntity<Transaction>(transaction, HttpStatus.valueOf(200));
+            log.info("Transaction fetched with id: " + transaction.getTransactionId());
+            return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
