@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: io.swagger.api.UsersApiControllerIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.027 s <<< FAILURE! - in io.swagger.api.UsersApiControllerIntegrationTest
+usersPostTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<201 CREATED>
+	at io.swagger.api.UsersApiControllerIntegrationTest.usersPostTest(UsersApiControllerIntegrationTest.java:57)
+
+deleteUserByIdTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<200 OK>
+	at io.swagger.api.UsersApiControllerIntegrationTest.deleteUserByIdTest(UsersApiControllerIntegrationTest.java:30)
+
+getUserByIdTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0.007 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<404 NOT_FOUND>
+	at io.swagger.api.UsersApiControllerIntegrationTest.getUserByIdTest(UsersApiControllerIntegrationTest.java:44)
+

@@ -3,10 +3,7 @@ package io.swagger.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +27,7 @@ import io.swagger.annotations.ApiModelProperty;
     @Type(value = CurrentAccount.class, name = "current") })
 @Entity
 @Validated
+@Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
@@ -38,7 +36,11 @@ public abstract class Account {
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
       @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
       @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0") })
+  @ManyToOne
+  @JoinColumn(name="id", nullable = false)
+  private User user;
   @JsonProperty("IBAN")
+  @Id
   private String IBAN = null;
 
   @JsonProperty("Balance")

@@ -1,7 +1,14 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import java.math.BigDecimal;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
@@ -12,7 +19,11 @@ import javax.persistence.Entity;
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class SavingsAccount extends Account {
+public class SavingsAccount extends Account{
+
+  @JsonProperty("AbsoluteLimit")
+  private BigDecimal absoluteLimit = null;
+@Entity
 
   public SavingsAccount(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
       Integer dailyLimit, Boolean active, String accountType) {

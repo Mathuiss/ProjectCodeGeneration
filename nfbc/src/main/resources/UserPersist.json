@@ -1,0 +1,16 @@
+[
+  {
+    "id": 2,
+    "name": "Jelle Spreij",
+    "email": "jelle.jelle@jelle.jelle",
+    "hash": "abcde",
+    "streetname": "Oostwest",
+    "zipcode": "1234AB",
+    "addressnumber": "10",
+    "appendix": "A",
+    "phoneNumber": "0201233214",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
+  }
+]

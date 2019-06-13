@@ -1,0 +1,7 @@
+io\swagger\api\AccountsApiControllerIntegrationTest.class
+io\swagger\api\TransactionsApiControllerIntegrationTest.class
+io\swagger\api\UsersApiControllerIntegrationTest.class
+io\swagger\api\WithdrawApiControllerIntegrationTest.class
+io\swagger\api\DepositApiControllerIntegrationTest.class
+io\swagger\api\LogoutApiControllerIntegrationTest.class
+io\swagger\api\LoginApiControllerIntegrationTest.class

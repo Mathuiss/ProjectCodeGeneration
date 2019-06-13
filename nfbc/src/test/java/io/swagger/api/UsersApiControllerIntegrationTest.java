@@ -30,12 +30,13 @@ public class UsersApiControllerIntegrationTest {
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void getTransactionOfUserTest() throws Exception {
-        String account = "account_example";
-        ResponseEntity<List<Transaction>> responseEntity = api.getTransactionOfUser(account);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
-    }
+    // @Test
+    // public void getTransactionOfUserTest() throws Exception {
+    // String account = "account_example";
+    // ResponseEntity<Iterable<Transaction>> responseEntity =
+    // api.getTransactionOfUser(account);
+    // assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+    // }
 
     @Test
     public void getUserByIdTest() throws Exception {
@@ -46,14 +47,14 @@ public class UsersApiControllerIntegrationTest {
 
     @Test
     public void getUsersTest() throws Exception {
-        ResponseEntity<List<User>> responseEntity = api.getUsers();
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        ResponseEntity<Iterable<User>> responseEntity = api.getUsers("disabled");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void usersPostTest() throws Exception {
         User body = new User();
-        ResponseEntity<List<User>> responseEntity = api.usersPost(body);
+        ResponseEntity<User> responseEntity = api.usersPost(body);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 

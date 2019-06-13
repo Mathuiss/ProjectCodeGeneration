@@ -5,6 +5,12 @@ import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+import javax.persistence.Entity;
 
 /**
  * CurrentAccount
@@ -12,7 +18,11 @@ import javax.persistence.Entity;
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class CurrentAccount extends Account {
+@Entity
+public class CurrentAccount extends Account  {
+
+  @JsonProperty("AbsoluteLimit")
+  private BigDecimal absoluteLimit = null;
 
   public CurrentAccount(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
       Integer dailyLimit, Boolean active, String accountType) {
