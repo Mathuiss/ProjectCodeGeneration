@@ -30,7 +30,6 @@ public class SessionService {
     }
 
     public boolean userExist(String email) {
-        logger.info("in boolean method userExis " + email);
 
         for (User user : userRepository.findAll()) {
 
@@ -54,8 +53,6 @@ public class SessionService {
     }
 
     public boolean passwordCheck(long id, String password) throws NoSuchAlgorithmException {
-        logger.info("before password check");
-
 
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
@@ -83,7 +80,7 @@ public class SessionService {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
                 if (user.isEmployee()) {
-                    logger.info("user is eployee");
+                    logger.info("user is employee");
                     return true;
                 }
             }
