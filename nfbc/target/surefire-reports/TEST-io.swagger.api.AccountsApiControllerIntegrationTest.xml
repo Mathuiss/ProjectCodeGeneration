@@ -62,7 +62,7 @@
     <property name="java.class.version" value="52.0"/>
   </properties>
   <testcase name="fetchAccountTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.098"/>
-  <testcase name="updateAccountByIBANTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.001"/>
+  <testcase name="updateAccountByIbanTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.001"/>
   <testcase name="getAccountByIbanTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.003"/>
-  <testcase name="deleteAccountByIBANTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.004"/>
+  <testcase name="deleteAccountByIbanTest" classname="io.swagger.api.AccountsApiControllerIntegrationTest" time="0.004"/>
 </testsuite>

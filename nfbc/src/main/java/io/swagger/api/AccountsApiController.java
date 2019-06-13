@@ -31,7 +31,7 @@ public class AccountsApiController implements AccountsApi {
         this.service = service;
     }
 
-    public ResponseEntity<Account> deleteAccountByIBAN(
+    public ResponseEntity<Account> deleteAccountByIban(
             @ApiParam(value = "id of the account you want to (soft)delete", required = true) @PathVariable("iban") String iban) {
         try {
             service.deleteAccountByIban(iban);
@@ -54,7 +54,7 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<Account> getAccountByIban(
-            @ApiParam(value = "IBAN of the account you want to get", required = true) @PathVariable("iban") String iban) {
+            @ApiParam(value = "Iban of the account you want to get", required = true) @PathVariable("iban") String iban) {
         try {
             Account account = service.getAccount(iban);
             return new ResponseEntity<Account>(account, HttpStatus.OK);
@@ -67,7 +67,7 @@ public class AccountsApiController implements AccountsApi {
 
     // Gets account with filled in iban and lets hibernate replace entity with same
     // iban
-    public ResponseEntity<Account> updateAccountByIBAN(
+    public ResponseEntity<Account> updateAccountByIban(
             @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
         try {
             service.saveAccount(body);

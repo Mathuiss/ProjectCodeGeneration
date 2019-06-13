@@ -1,20 +1,22 @@
 [
     {
-        "IBAN": "NL00INHO0000000003",
-        "Balance": 1000,
-        "TransactionLimit": 250,
-        "AbsoluteLimit": -1000,
-        "DailyLimit": 4,
-        "Active": true,
-        "AccountType": "current"
+        "userId": 2,
+        "Iban": "NL00INHO0000000003",
+        "balance": 1000,
+        "transactionLimit": 250,
+        "absoluteLimit": -1000,
+        "dailyLimit": 4,
+        "active": true,
+        "accountType": "current"
     },
     {
-        "IBAN": "NL00INHO0000000004",
-        "Balance": 1000,
-        "TransactionLimit": 250,
-        "AbsoluteLimit": 0,
-        "DailyLimit": 4,
-        "Active": true,
-        "AccountType": "savings"
+        "userId": 2,
+        "Iban": "NL00INHO0000000004",
+        "balance": 1000,
+        "transactionLimit": 250,
+        "absoluteLimit": 0,
+        "dailyLimit": 4,
+        "active": true,
+        "accountType": "savings"
     }
 ]

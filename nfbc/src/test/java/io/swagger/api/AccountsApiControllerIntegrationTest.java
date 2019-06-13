@@ -44,6 +44,7 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void createAccount() throws Exception {
+        int userId = 2;
         String iban = "NL99INHO0123456789";
         BigDecimal balance = BigDecimal.valueOf(100.00);
         BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
@@ -52,14 +53,15 @@ public class AccountsApiControllerIntegrationTest {
         Boolean active = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
                 accountType);
         ResponseEntity<Account> responseEntity = api.createAccount(body);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
 
     @Test
-    public void updateAccountByIBANTest() throws Exception {
+    public void updateAccountByIbanTest() throws Exception {
+        int userId = 2;
         String iban = "NL00INHO0000000003";
         BigDecimal balance = BigDecimal.valueOf(100.00);
         BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
@@ -68,16 +70,16 @@ public class AccountsApiControllerIntegrationTest {
         Boolean active = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
                 accountType);
-        ResponseEntity<Account> responseEntity = api.updateAccountByIBAN(body);
+        ResponseEntity<Account> responseEntity = api.updateAccountByIban(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
-    public void deleteAccountByIBANTest() throws Exception {
+    public void deleteAccountByIbanTest() throws Exception {
         String iban = "NL00INHO0000000003";
-        ResponseEntity<Account> responseEntity = api.deleteAccountByIBAN(iban);
+        ResponseEntity<Account> responseEntity = api.deleteAccountByIban(iban);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }

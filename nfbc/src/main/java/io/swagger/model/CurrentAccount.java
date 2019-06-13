@@ -15,18 +15,14 @@ import javax.persistence.Entity;
 /**
  * CurrentAccount
  */
-@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Entity
-public class CurrentAccount extends Account  {
+public class CurrentAccount extends Account {
 
-  @JsonProperty("AbsoluteLimit")
-  private BigDecimal absoluteLimit = null;
-
-  public CurrentAccount(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
-      Integer dailyLimit, Boolean active, String accountType) {
-    super(iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+  public CurrentAccount(int userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
+      BigDecimal absoluteLimit, Integer dailyLimit, Boolean active, String accountType) {
+    super(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
   }
 
   @Override

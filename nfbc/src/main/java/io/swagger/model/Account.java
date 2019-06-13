@@ -25,57 +25,47 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({ @Type(value = SavingsAccount.class, name = "savings"),
     @Type(value = CurrentAccount.class, name = "current") })
-@Entity
 @Validated
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
   @Id
+  @ManyToOne
+  @JoinColumn(name = "userId", nullable = false)
+  private int userId;
+
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
       @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
       @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0") })
-  @ManyToOne
-  @JoinColumn(name="id", nullable = false)
-  private User user;
-  @JsonProperty("IBAN")
+  @JsonProperty("iban")
   @Id
-  private String IBAN = null;
+  private String iban = null;
 
-  @JsonProperty("Balance")
+  @JsonProperty("balance")
   private BigDecimal balance = null;
 
-  @JsonProperty("TransactionLimit")
+  @JsonProperty("transactionLimit")
   private BigDecimal transactionLimit = null;
 
-  @JsonProperty("AbsoluteLimit")
+  @JsonProperty("absoluteLimit")
   protected BigDecimal absoluteLimit = null;
 
-  @JsonProperty("DailyLimit")
+  @JsonProperty("dailyLimit")
   private Integer dailyLimit = null;
 
-  @JsonProperty("Active")
+  @JsonProperty("active")
   private Boolean active = null;
 
-  @JsonProperty("AccountType")
+  @JsonProperty("accountType")
   private String accountType = null;
 
   // Without iban, for new accounts
-  protected Account(BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit, Integer dailyLimit,
-      Boolean active, String accountType) {
-    this.balance = balance;
-    this.transactionLimit = transactionLimit;
-    this.absoluteLimit = absoluteLimit;
-    this.dailyLimit = dailyLimit;
-    this.active = active;
-    this.accountType = accountType;
-  }
-
-  // With iban, for existing accounts
-  protected Account(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
+  protected Account(int userId, String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
       Integer dailyLimit, Boolean active, String accountType) {
-    this.IBAN = iban;
+    this.userId = userId;
+    this.iban = iban;
     this.balance = balance;
     this.transactionLimit = transactionLimit;
     this.absoluteLimit = absoluteLimit;
@@ -87,21 +77,42 @@ public abstract class Account {
   protected Account() {
   }
 
-  public Account IBAN(String IBAN) {
-    this.IBAN = IBAN;
+  public Account userId(int userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get IBAN
+   * Get userId
    * 
-   * @return IBAN
+   * @return userId
+   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public int userId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
+  }
+
+  public Account iban(String iban) {
+    this.iban = iban;
+    return this;
+  }
+
+  /**
+   * Get iban
+   * 
+   * @return iban
    **/
   @ApiModelProperty(value = "")
 
   @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
-  public String getIBAN() {
-    return IBAN;
+  public String getIban() {
+    return iban;
   }
 
   public Account balance(BigDecimal balance) {
@@ -230,7 +241,8 @@ public abstract class Account {
       return false;
     }
     Account account = (Account) o;
-    return Objects.equals(this.IBAN, account.IBAN) && Objects.equals(this.balance, account.balance)
+    return Objects.equals(this.userId, account.userId) && Objects.equals(this.iban, account.iban)
+        && Objects.equals(this.balance, account.balance)
         && Objects.equals(this.transactionLimit, account.transactionLimit)
         && Objects.equals(this.absoluteLimit, account.absoluteLimit)
         && Objects.equals(this.dailyLimit, account.dailyLimit) && Objects.equals(this.active, account.active)
@@ -239,7 +251,7 @@ public abstract class Account {
 
   @Override
   public int hashCode() {
-    return Objects.hash(IBAN, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+    return Objects.hash(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
   }
 
   @Override
@@ -247,7 +259,8 @@ public abstract class Account {
     StringBuilder sb = new StringBuilder();
     sb.append("class Account {\n");
 
-    sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    iban: ").append(toIndentedString(iban)).append("\n");
     sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    transactionLimit: ").append(toIndentedString(transactionLimit)).append("\n");
     sb.append("    absoluteLimit: ").append(toIndentedString(absoluteLimit)).append("\n");

@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -19,15 +20,14 @@ import javax.persistence.Entity;
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class SavingsAccount extends Account{
+public class SavingsAccount extends Account {
 
   @JsonProperty("AbsoluteLimit")
   private BigDecimal absoluteLimit = null;
-@Entity
 
-  public SavingsAccount(String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
-      Integer dailyLimit, Boolean active, String accountType) {
-    super(iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+  public SavingsAccount(int userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
+      BigDecimal absoluteLimit, Integer dailyLimit, Boolean active, String accountType) {
+    super(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
   }
 
   // absolute limit must be at least 0 for a Savings Account;

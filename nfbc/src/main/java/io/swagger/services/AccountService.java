@@ -36,9 +36,9 @@ public class AccountService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enableDefaultTyping();
 
-        CurrentAccount currAcc = new CurrentAccount("NL00INHO0000000003", BigDecimal.valueOf(1000),
+        CurrentAccount currAcc = new CurrentAccount(2, "NL00INHO0000000003", BigDecimal.valueOf(1000),
                 BigDecimal.valueOf(250), BigDecimal.valueOf(-1000), 4, true, "current");
-        SavingsAccount savAcc = new SavingsAccount("NL00INHO0000000004", BigDecimal.valueOf(1000),
+        SavingsAccount savAcc = new SavingsAccount(2, "NL00INHO0000000004", BigDecimal.valueOf(1000),
                 BigDecimal.valueOf(250), BigDecimal.valueOf(0), 0, true, "savings");
         List<Account> accounts = new ArrayList<>();
         accounts.add(currAcc);
