@@ -28,6 +28,8 @@ public class SessionService {
         logger.info("in boolean method userExis " + email);
 
         for (User user : userRepository.findAll()) {
+            //user.generateHash();
+            System.out.println(user.getHash());
             logger.info("looking in list");
             if (user.getEmail().equals(email)) {
                 logger.info("--- Userexist ---");
@@ -124,6 +126,8 @@ public class SessionService {
         if(sessionToken.isActive()){
             sessionToken.setActive(false);
             sessionRepository.save(sessionToken);
+
+            logger.info("sessiontoken active" + sessionToken.isActive());
         }
     }
 }
