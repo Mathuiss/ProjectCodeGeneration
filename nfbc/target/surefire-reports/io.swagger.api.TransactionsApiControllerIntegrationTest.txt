@@ -1,6 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: io.swagger.api.TransactionsApiControllerIntegrationTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 3.313 s <<< FAILURE! - in io.swagger.api.TransactionsApiControllerIntegrationTest
 getTransactionByIdTest(io.swagger.api.TransactionsApiControllerIntegrationTest)  Time elapsed: 0 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
@@ -34,4 +35,18 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.format.support.FormattingConversionService]: Factory method 'mvcConversionService' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionTokenRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionTokenRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 Caused by: java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
+=======
+Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.226 s <<< FAILURE! - in io.swagger.api.TransactionsApiControllerIntegrationTest
+getTransactionByIdTest(io.swagger.api.TransactionsApiControllerIntegrationTest)  Time elapsed: 0.003 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<404 NOT_FOUND>
+	at io.swagger.api.TransactionsApiControllerIntegrationTest.getTransactionByIdTest(TransactionsApiControllerIntegrationTest.java:54)
+
+createTransactionTest(io.swagger.api.TransactionsApiControllerIntegrationTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<400 BAD_REQUEST>
+	at io.swagger.api.TransactionsApiControllerIntegrationTest.createTransactionTest(TransactionsApiControllerIntegrationTest.java:30)
+
+fetchTransactionTest(io.swagger.api.TransactionsApiControllerIntegrationTest)  Time elapsed: 0.223 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<200 OK>
+	at io.swagger.api.TransactionsApiControllerIntegrationTest.fetchTransactionTest(TransactionsApiControllerIntegrationTest.java:47)
+>>>>>>> Users
 

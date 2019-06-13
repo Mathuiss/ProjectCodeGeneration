@@ -1,6 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: io.swagger.api.UsersApiControllerIntegrationTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 6.223 s <<< FAILURE! - in io.swagger.api.UsersApiControllerIntegrationTest
 getTransactionOfUserTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
@@ -67,4 +68,18 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.format.support.FormattingConversionService]: Factory method 'mvcConversionService' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionTokenRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionTokenRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 Caused by: java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
+=======
+Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.027 s <<< FAILURE! - in io.swagger.api.UsersApiControllerIntegrationTest
+usersPostTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<201 CREATED>
+	at io.swagger.api.UsersApiControllerIntegrationTest.usersPostTest(UsersApiControllerIntegrationTest.java:57)
+
+deleteUserByIdTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<200 OK>
+	at io.swagger.api.UsersApiControllerIntegrationTest.deleteUserByIdTest(UsersApiControllerIntegrationTest.java:30)
+
+getUserByIdTest(io.swagger.api.UsersApiControllerIntegrationTest)  Time elapsed: 0.007 s  <<< FAILURE!
+java.lang.AssertionError: expected:<501 NOT_IMPLEMENTED> but was:<404 NOT_FOUND>
+	at io.swagger.api.UsersApiControllerIntegrationTest.getUserByIdTest(UsersApiControllerIntegrationTest.java:44)
+>>>>>>> Users
 

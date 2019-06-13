@@ -1,6 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: io.swagger.api.WithdrawApiControllerIntegrationTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.944 s <<< FAILURE! - in io.swagger.api.WithdrawApiControllerIntegrationTest
 withdrawPostTest(io.swagger.api.WithdrawApiControllerIntegrationTest)  Time elapsed: 0 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
@@ -13,3 +14,6 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionTokenRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 Caused by: java.lang.IllegalArgumentException: Not a managed type: class io.swagger.model.Body1
 
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in io.swagger.api.WithdrawApiControllerIntegrationTest
+>>>>>>> Users
