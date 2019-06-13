@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 public class SessionService {
     private SessionRepository sessionRepository;
     private static final Logger logger = Logger.getLogger(Swagger2SpringBoot.class.getName());
-    private List<User> userList = new ArrayList<>();
 
     public SessionService(SessionRepository sessionRepos) {
         this.sessionRepository = sessionRepos;
@@ -38,7 +37,7 @@ public class SessionService {
         logger.info("list maken");
 
         this.userList.add(new User(26, "naam", "test@gmail.com", "wachtwoord", "straatnaam", "1060PC", 33, " ",
-                "0600000000", null, null, false));
+                "0600000000", null, null, true));
         // return new ArrayList<>(getAllUsers());
 
         return this.userList;
