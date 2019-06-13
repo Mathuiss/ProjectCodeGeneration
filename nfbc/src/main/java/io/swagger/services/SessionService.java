@@ -79,7 +79,7 @@ public class SessionService {
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.isEmployee()) {
+                if (user.getIsEmployee()) {
                     logger.info("user is employee");
                     return true;
                 }
@@ -116,7 +116,6 @@ public class SessionService {
         return sessionToken;
     }
 
-
     public void doesSessionTokenExist(String sessionToken) throws Exception {
         Optional<SessionToken> sessionRes = sessionRepository.findById(sessionToken);
 
@@ -127,11 +126,10 @@ public class SessionService {
 
     public void deActivateSessionToken(SessionToken sessionToken) {
 
-        if(sessionToken.isActive()){
+        if (sessionToken.isActive()) {
             sessionToken.setActive(false);
 
             sessionRepository.save(sessionToken);
-
 
             logger.info("sessionToken state " + sessionToken.isActive());
         }
