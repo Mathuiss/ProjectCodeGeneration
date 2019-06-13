@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Account;
 import io.swagger.services.AccountService;
+import io.swagger.services.SecurityService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Controller
@@ -24,45 +25,77 @@ public class AccountsApiController implements AccountsApi {
 
     private static final Logger log = LoggerFactory.getLogger(AccountsApiController.class);
 
+    private final HttpServletRequest request;
+
     private AccountService service;
 
+    private SecurityService security;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public AccountsApiController(AccountService service) {
+    public AccountsApiController(HttpServletRequest request, AccountService service, SecurityService security) {
+        this.request = request;
         this.service = service;
+        this.security = security;
     }
 
     public ResponseEntity<Account> deleteAccountByIban(
             @ApiParam(value = "id of the account you want to (soft)delete", required = true) @PathVariable("iban") String iban) {
         try {
-            service.deleteAccountByIban(iban);
-            return new ResponseEntity<Account>(HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<Account>(HttpStatus.BAD_REQUEST);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    service.deleteAccountByIban(iban);
+                    return new ResponseEntity<Account>(HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<Account>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     public ResponseEntity<Iterable<Account>> fetchAccount(
             @ApiParam(value = "Enter the type of account eg. savings") @Valid @PathVariable(value = "accounttype", required = false) String AccountType) {
         try {
-            Iterable<Account> accounts = service.getAccounts();
-            return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    Iterable<Account> accounts = service.getAccounts();
+                    return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     public ResponseEntity<Account> getAccountByIban(
             @ApiParam(value = "Iban of the account you want to get", required = true) @PathVariable("iban") String iban) {
         try {
-            Account account = service.getAccount(iban);
-            return new ResponseEntity<Account>(account, HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
-        }
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    Account account = service.getAccount(iban);
+                    return new ResponseEntity<Account>(account, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     // Gets account with filled in iban and lets hibernate replace entity with same
@@ -70,11 +103,20 @@ public class AccountsApiController implements AccountsApi {
     public ResponseEntity<Account> updateAccountByIban(
             @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
         try {
-            service.saveAccount(body);
-            return new ResponseEntity<Account>(HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    service.saveAccount(body);
+                    return new ResponseEntity<Account>(HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -82,11 +124,20 @@ public class AccountsApiController implements AccountsApi {
     public ResponseEntity<Account> createAccount(
             @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
         try {
-            service.createAccount(body);
-            return new ResponseEntity<Account>(HttpStatus.CREATED);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    service.createAccount(body);
+                    return new ResponseEntity<Account>(HttpStatus.CREATED);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 }
