@@ -1,5 +1,6 @@
 package io.swagger.services;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -32,9 +33,7 @@ public class SessionService {
         logger.info("in boolean method userExis " + email);
 
         for (User user : userRepository.findAll()) {
-            //user.generateHash();
-            System.out.println(user.getHash());
-            logger.info("looking in list");
+
             if (user.getEmail().equals(email)) {
                 logger.info("--- Userexist ---");
                 return true;
@@ -54,14 +53,14 @@ public class SessionService {
         return 0;
     }
 
-    public boolean passwordCheck(long id, String password) {
-        // for (User user : getUserList()) {
+    public boolean passwordCheck(long id, String password) throws NoSuchAlgorithmException {
+        logger.info("before password check");
+
+
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.getHash().equals(password)) {
-                    logger.info("found user password" + user.getHash());
-                    return true;
-                }
+                logger.info("password is " + user.compareHash(password));
+                return user.compareHash(password);
             }
         }
         return false;
@@ -73,7 +72,7 @@ public class SessionService {
                 if (user.isActive()) {
                     return true;
                 } else {
-                    logger.info("user is deactivated");
+                    logger.info("user is not active");
                 }
             }
         }
@@ -95,7 +94,9 @@ public class SessionService {
 
     public SessionToken getSessionToken(Body body, long userId) throws Exception {
         SessionToken sessionToken = new SessionToken();
-        sessionToken.setSessionToken(System.currentTimeMillis());
+
+        sessionToken.generateSessionToken(System.currentTimeMillis());
+        sessionToken.setTimestamp(LocalDateTime.now().toString());
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 
@@ -119,6 +120,7 @@ public class SessionService {
     }
 
     public boolean isSessionTokenNotEmpty(SessionToken sessionTokenModel) {
+        logger.info("sessiontoken empty???");
         if (!sessionTokenModel.getSessionToken().isEmpty()) {
             return true;
         }
@@ -130,6 +132,7 @@ public class SessionService {
         if(sessionToken.isActive()){
             sessionToken.setActive(false);
             sessionRepository.save(sessionToken);
+            //of .saveall
 
             logger.info("sessiontoken active" + sessionToken.isActive());
         }

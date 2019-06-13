@@ -34,17 +34,17 @@ public class SessionToken {
   private String userRole = null;
 
   @JsonProperty("timestamp")
-  private  String timestamp;
+  private  String timestamp = null;
 
   @JsonProperty("isActive")
-  private  boolean isActive;
+  private  boolean isActive = false;
 
   public long getUserId() {
     return userId;
   }
 
   public void setUserId(long userId) {
-    userId = userId;
+    this.userId = userId;
   }
 
   public String getTimestamp() {
@@ -85,7 +85,7 @@ public class SessionToken {
     this.sessionToken = sessionToken;
   }
 
-  public void setSessionToken(long unique) throws NoSuchAlgorithmException {
+  public void generateSessionToken(long unique) throws NoSuchAlgorithmException {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
     digest.update(Long.toString(unique).getBytes());
     byte[] bytes = digest.digest();
