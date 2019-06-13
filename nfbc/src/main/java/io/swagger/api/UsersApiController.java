@@ -37,7 +37,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<InlineResponse200> deleteUserById(
             @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id) {
         try {
-            service.DeleteUserById(id);
+            service.deleteUserById(id);
             return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -49,7 +49,7 @@ public class UsersApiController implements UsersApi {
             @ApiParam(value = "", required = true) @PathVariable("id") long id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account) {
         try {
-            Iterable<Transaction> transactions = service.GetTransactionOfUser(id);
+            Iterable<Transaction> transactions = service.getTransactionOfUser(id);
             return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -60,7 +60,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<User> getUserById(
             @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") long id) {
         try {
-            User user = service.GetUserById(id);
+            User user = service.getUserById(id);
             return new ResponseEntity<User>(user, HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -71,7 +71,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<Iterable<User>> getUsers(
             @ApiParam(value = "which users you want to get", required = false) @PathParam("state") String query) {
         try {
-            Iterable<User> users = service.GetAllUsers(query);
+            Iterable<User> users = service.getAllUsers(query);
             return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -81,7 +81,7 @@ public class UsersApiController implements UsersApi {
 
     public ResponseEntity<User> usersPost(@ApiParam(value = "") @Valid @RequestBody User body) {
         try {
-            service.CreateUser(body);
+            service.createUser(body);
             return new ResponseEntity<User>(HttpStatus.CREATED);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -92,7 +92,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body) {
         try
         {
-            service.UpdateUser(body);
+            service.updateUser(body);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(Exception ex)

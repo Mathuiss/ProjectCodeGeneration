@@ -42,7 +42,7 @@ public class UserService {
         }
     }
 
-    public void DeleteUserById(long id) throws Exception {
+    public void deleteUserById(long id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
         if (!result.isPresent()) {
@@ -55,7 +55,7 @@ public class UserService {
 
     }
 
-    public Iterable<User> GetAllUsers(String query) throws Exception {
+    public Iterable<User> getAllUsers(String query) throws Exception {
         ArrayList<User> res = new ArrayList<>();
 
         for (User user : userRepository.findAll()) {
@@ -92,31 +92,27 @@ public class UserService {
         return res;
     }
 
-    public User GetUserById(long id) throws Exception {
+    public User getUserById(long id) throws Exception {
         Optional<User> result = userRepository.findById(id);
 
-        if (result.isPresent()) {
-            return result.get();
+        if (!result.isPresent()) {
+            throw new Exception("User not found for id: " + id);
         }
 
-        throw new Exception("");
+        return result.get();
     }
 
-    public void CreateUser(User user) throws NoSuchAlgorithmException {
+    public void createUser(User user) throws NoSuchAlgorithmException {
         user.generateHash(user.getHash());
         userRepository.save(user);
     }
 
-    public Iterable<Transaction> GetTransactionOfUser(long id) throws Exception {
-        try {
+    public Iterable<Transaction> getTransactionOfUser(long id) {
             Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
-            return result;
-        } catch (Exception ex) {
-            throw new Exception("");
-        }
+            return result;       
     }
 
-    public void UpdateUser(User changedUser) throws Exception {
+    public void updateUser(User changedUser) throws Exception {
         Long longValue = changedUser.getuserId();
         
         if (longValue == null) {
