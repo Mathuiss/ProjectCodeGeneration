@@ -109,14 +109,7 @@ public class UserService {
         }
     }
 
-    public void UpdateUser(Integer id, User newUser) {
-        try
-        {
-
-        }
-        catch(Exception ex)
-        {
-
-        }
+    public void UpdateUser(User changedUser) {
+        userRepository.save(changedUser);
     }
 }

@@ -27,7 +27,7 @@ public class User {
 
     @JsonProperty("id")
     @Id
-    @SequenceGenerator(name = "userId_seq")
+    @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
     private long id;
 
@@ -92,9 +92,7 @@ public class User {
         return id;
     }
 
-    // public void setId(Integer id) {
-    // this.id = id;
-    // }
+
 
     public User name(String name) {
         this.name = name;
