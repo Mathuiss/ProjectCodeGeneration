@@ -22,11 +22,11 @@ import io.swagger.repositories.UserRepository;
 @DependsOn("loadAccounts")
 public class UserService {
     private UserRepository userRepository;
-    //private TransactionRepository transactionRepository;
+    // private TransactionRepository transactionRepository;
 
     public UserService(UserRepository userRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
-        //this.transactionRepository = transactionRepository;
+        // this.transactionRepository = transactionRepository;
 
         loadOnStartup();
     }

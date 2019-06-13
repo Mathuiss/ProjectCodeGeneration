@@ -105,12 +105,13 @@ public class AccountService {
 
     public void createAccount(Account body) throws Exception {
         body.setIban();
-        Optional<User> userResult = users.findById(body.getUserId());
-        if (!userResult.isPresent()) {
-            throw new Exception("User not found for id: " + body.getUserId());
-        }
-        User user = userResult.get().addAccount(body);
-        users.save(user);
+        // Optional<User> userResult = users.findById(body.getUserId());
+        // if (!userResult.isPresent()) {
+        // throw new Exception("User not found for id: " + body.getUserId());
+        // }
+        // User user = userResult.get().addAccount(body);
+        accounts.save(body);
+        // users.save(user);
     }
 
     public void deleteAccountByIban(String iban) throws Exception {
