@@ -79,6 +79,7 @@ public class UsersApiController implements UsersApi {
             service.CreateUser(body);
             return new ResponseEntity<User>(HttpStatus.CREATED);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<User>(HttpStatus.CONFLICT);
         }
     }
@@ -91,6 +92,7 @@ public class UsersApiController implements UsersApi {
         }
         catch(Exception ex)
         {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

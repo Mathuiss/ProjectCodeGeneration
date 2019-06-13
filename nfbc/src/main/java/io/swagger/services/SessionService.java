@@ -63,7 +63,7 @@ public class SessionService {
     public boolean isUserActive(long id) {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.isActive()) {
+                if (user.getIsActive()) {
                     return true;
                 } else {
                     logger.info("user is deactivated");
@@ -76,7 +76,7 @@ public class SessionService {
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.isEmployee()) {
+                if (user.getIsEmployee()) {
                     logger.info("user is eployee");
                     return true;
                 }
@@ -100,7 +100,7 @@ public class SessionService {
             throw new Exception("User not found for id: " + userId);
         }
 
-        if (result.get().isEmployee()) {
+        if (result.get().getIsEmployee()) {
             sessionToken.setUserRole("Employee");
         } else {
             sessionToken.setUserRole("User");

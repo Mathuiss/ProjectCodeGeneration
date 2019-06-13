@@ -156,15 +156,15 @@ public class User {
 
     public void generateHash(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    digest.update(password.getBytes());
-    byte[] bytes = digest.digest();
+        digest.update(password.getBytes());
+        byte[] bytes = digest.digest();
 
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < bytes.length; i++) {
-      sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-    }
-    // Get complete hashed password in hex format
-    hash = sb.toString();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+        sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        // Get complete hashed password in hex format
+        hash = sb.toString();
     }
 
     public User streetname(String streetname) {
@@ -332,7 +332,7 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Boolean isActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
@@ -352,7 +352,7 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Boolean isEmployee() {
+    public Boolean getIsEmployee() {
         return isEmployee;
     }
 
