@@ -100,7 +100,7 @@ public class SessionService {
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 
-        logger.info("--- getSessionToken tot zover ---");
+        logger.info("--- getSessionToken ---");
 
         // Get user from id and check existence
         Optional<User> result = userRepository.findById(userId);
@@ -119,22 +119,24 @@ public class SessionService {
         return sessionToken;
     }
 
-    public boolean isSessionTokenNotEmpty(SessionToken sessionTokenModel) {
-        logger.info("sessiontoken empty???");
-        if (!sessionTokenModel.getSessionToken().isEmpty()) {
-            return true;
+
+    public void doesSessionTokenExist(String sessionToken) throws Exception {
+        Optional<SessionToken> sessionRes = sessionRepository.findById(sessionToken);
+
+        if (!sessionRes.isPresent()) {
+            throw new Exception("No session token found for: " + sessionToken);
         }
-        return false;
     }
 
-
     public void deActivateSessionToken(SessionToken sessionToken) {
+
         if(sessionToken.isActive()){
             sessionToken.setActive(false);
-            sessionRepository.save(sessionToken);
-            //of .saveall
 
-            logger.info("sessiontoken active" + sessionToken.isActive());
+            sessionRepository.save(sessionToken);
+
+
+            logger.info("sessionToken state " + sessionToken.isActive());
         }
     }
 }
