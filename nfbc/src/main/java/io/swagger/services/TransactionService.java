@@ -42,15 +42,6 @@ public class TransactionService {
         }
     }
 
-    // SHIT THAT WERKS:
-    // datetimestart
-    // datetimeend
-    // user
-    // sender
-    // reciever
-    // minvalue
-    // maxvalue
-
     public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Integer user, String sender,
             String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
