@@ -38,8 +38,6 @@ public class TransactionsApiControllerIntegrationTest {
 
     @Test
     public void fetchTransactionTest() throws Exception {
-        String datetimestart = OffsetDateTime.MIN.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String datetimeend = OffsetDateTime.MAX.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Integer user = 0;
         String sender = "NL00INHO0000000002";
         String reciever = "NL00INHO0000000001";
@@ -48,8 +46,8 @@ public class TransactionsApiControllerIntegrationTest {
         BigDecimal maxvalue = new BigDecimal(Double.MAX_VALUE);
         String transactiontype = "";
 
-        ResponseEntity<Iterable<Transaction>> responseEntity = api.fetchTransaction(datetimestart, datetimeend, user,
-                sender, reciever, accounttype, minvalue, maxvalue, transactiontype);
+        ResponseEntity<Iterable<Transaction>> responseEntity = api.fetchTransaction(null, null, user, sender, reciever,
+                accounttype, minvalue, maxvalue, transactiontype);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
