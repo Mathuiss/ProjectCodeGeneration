@@ -22,11 +22,11 @@ import io.swagger.repositories.UserRepository;
 @DependsOn("loadAccounts")
 public class UserService {
     private UserRepository userRepository;
-    private TransactionRepository transactionRepository;
+    //private TransactionRepository transactionRepository;
 
     public UserService(UserRepository userRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
-        this.transactionRepository = transactionRepository;
+        //this.transactionRepository = transactionRepository;
 
         loadOnStartup();
     }
@@ -116,7 +116,6 @@ public class UserService {
     public Iterable<Transaction> GetTransactionOfUser(long id) throws Exception {
         try {
             Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
-
             return result;
         } catch (Exception ex) {
             throw new Exception("");

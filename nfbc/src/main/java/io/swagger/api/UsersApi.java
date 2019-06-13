@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
+import io.swagger.model.Account;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
@@ -50,7 +51,7 @@ public interface UsersApi {
                         "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
                         @ApiParam(value = "", required = true) @PathVariable("id") long id,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account);
+                        @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account);
 
         @ApiOperation(value = "Gets user corresponding with id", nickname = "getUserById", notes = "Get user corresponding with id", response = User.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })

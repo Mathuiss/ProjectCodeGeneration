@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
+import io.swagger.model.Account;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
@@ -39,18 +40,20 @@ public class UsersApiController implements UsersApi {
             service.DeleteUserById(id);
             return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<InlineResponse200>(HttpStatus.BAD_REQUEST);
         }
     }
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
             @ApiParam(value = "", required = true) @PathVariable("id") long id,
-            @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account) {
+            @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account) {
         try {
             Iterable<Transaction> transactions = service.GetTransactionOfUser(id);
             return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<Iterable<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+            log.error(ex.getMessage(), ex);
+            return new ResponseEntity<Iterable<Transaction>>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,6 +63,7 @@ public class UsersApiController implements UsersApi {
             User user = service.GetUserById(id);
             return new ResponseEntity<User>(user, HttpStatus.OK);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
     }
@@ -70,6 +74,7 @@ public class UsersApiController implements UsersApi {
             Iterable<User> users = service.GetAllUsers(query);
             return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
         } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

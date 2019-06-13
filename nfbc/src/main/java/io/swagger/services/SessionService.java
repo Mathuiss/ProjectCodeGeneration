@@ -1,6 +1,7 @@
 package io.swagger.services;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -91,9 +92,9 @@ public class SessionService {
 
     public SessionToken getSessionToken(long userId) throws Exception {
         SessionToken sessionToken = new SessionToken();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         sessionToken.generateSessionToken(System.currentTimeMillis());
-        sessionToken.setTimestamp(LocalDateTime.now().toString());
+        sessionToken.setTimestamp(LocalDateTime.now().format(formatter));
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 

@@ -139,4 +139,14 @@ public class TransactionService {
     public void createTransaction(Transaction transaction) {
         transactions.save(transaction);
     }
+
+    public void withdraw(Transaction transaction) {
+        transaction.setSender("NL00INHO0000000000");
+        transactions.save(transaction);
+    }
+
+    public void deposit(Transaction transaction) {
+        transaction.setReciever("NL00INHO0000000000");
+        transactions.save(transaction);
+    }
 }
