@@ -42,41 +42,39 @@ public class AccountsApiControllerIntegrationTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    // @Test
-    // public void createAccount() throws Exception {
-    // Long userId = Long.valueOf(2);
-    // String iban = "NL99INHO0123456789";
-    // BigDecimal balance = BigDecimal.valueOf(100.00);
-    // BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
-    // BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
-    // Integer dailyLimit = 1;
-    // Boolean isActive = true;
-    // String accountType = "current";
+    @Test
+    public void createAccount() throws Exception {
+        Long userId = Long.valueOf(2);
+        String iban = "";
+        BigDecimal balance = BigDecimal.valueOf(100.00);
+        BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
+        BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
+        Integer dailyLimit = 1;
+        Boolean isActive = true;
+        String accountType = "current";
 
-    // Account body = new CurrentAccount(userId, iban, balance, transactionLimit,
-    // absoluteLimit, dailyLimit, isActive,
-    // accountType);
-    // ResponseEntity<Account> responseEntity = api.createAccount(body);
-    // assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-    // }
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
+                accountType);
+        ResponseEntity<Account> responseEntity = api.createAccount(body);
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+    }
 
-    // @Test
-    // public void updateAccountByIbanTest() throws Exception {
-    // Long userId = Long.valueOf(2);
-    // String iban = "NL00INHO0000000003";
-    // BigDecimal balance = BigDecimal.valueOf(100.00);
-    // BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
-    // BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
-    // Integer dailyLimit = 1;
-    // Boolean isActive = true;
-    // String accountType = "current";
+    @Test
+    public void updateAccountByIbanTest() throws Exception {
+        Long userId = Long.valueOf(2);
+        String iban = "NL00INHO0000000003";
+        BigDecimal balance = BigDecimal.valueOf(100.00);
+        BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
+        BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
+        Integer dailyLimit = 1;
+        Boolean isActive = true;
+        String accountType = "current";
 
-    // Account body = new CurrentAccount(userId, iban, balance, transactionLimit,
-    // absoluteLimit, dailyLimit, isActive,
-    // accountType);
-    // ResponseEntity<Account> responseEntity = api.updateAccountByIban(body);
-    // assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    // }
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
+                accountType);
+        ResponseEntity<Account> responseEntity = api.updateAccountByIban(body);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
 
     @Test
     public void deleteAccountByIbanTest() throws Exception {

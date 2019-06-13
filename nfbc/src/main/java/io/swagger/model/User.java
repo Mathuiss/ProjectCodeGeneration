@@ -69,7 +69,7 @@ public class User {
 
     @JsonProperty("accounts")
     @Valid
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     @JsonProperty("isEmployee")

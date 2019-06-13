@@ -1,7 +1,10 @@
 package io.swagger.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -27,19 +30,16 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
+  Random random = new Random();
 
   @JsonProperty("userId")
-  private Long userId;
+  private Long userId = null;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user")
-  @JsonProperty("user")
-  private User user = null;
+  // @ManyToOne()
+  // @JoinColumn(name = "user")
+  // @JsonProperty("user")
+  // private User user = null;
 
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
-  @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
-      @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
-      @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0") })
   @JsonProperty("iban")
   @Id
   private String iban = null;
@@ -62,10 +62,10 @@ public abstract class Account {
   @JsonProperty("accountType")
   private String accountType = null;
 
-  protected Account(Long userId, User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
+  protected Account(Long userId/* , User user */, String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
     this.userId = userId;
-    this.user = user;
+    // this.user = user;
     this.iban = iban;
     this.balance = balance;
     this.transactionLimit = transactionLimit;
@@ -91,7 +91,7 @@ public abstract class Account {
   @ApiModelProperty(value = "")
 
   @Valid
-  public Long userId() {
+  public Long getUserId() {
     return userId;
   }
 
@@ -99,13 +99,13 @@ public abstract class Account {
     this.userId = userId;
   }
 
-  public User getUser() {
-    return user;
-  }
+  // public User getUser() {
+  // return user;
+  // }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
+  // public void setUser(User user) {
+  // this.user = user;
+  // }
 
   public Account iban(String iban) {
     this.iban = iban;
@@ -122,6 +122,23 @@ public abstract class Account {
   @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
   public String getIban() {
     return iban;
+  }
+
+  // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
+  // @GenericGenerator(name = "iban_seq", strategy =
+  // "io.swagger.CustomIbanGenerator", parameters = {
+  // @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
+  // @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0")
+  // })
+  public void setIban() {
+    final String COUNTRY_CODE = "NL";
+    NumberFormat controlFormatter = new DecimalFormat("00");
+    String controlCode = controlFormatter.format(random.nextInt(99));
+    final String BANK_CODE = "INHO0";
+    NumberFormat accountFormatter = new DecimalFormat("00");
+    String accountCode = accountFormatter.format(random.nextInt(999999999));
+
+    this.iban = COUNTRY_CODE + controlCode + BANK_CODE + accountCode;
   }
 
   public Account balance(BigDecimal balance) {

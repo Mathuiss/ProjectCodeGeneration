@@ -82,7 +82,7 @@ public class AccountsApiController implements AccountsApi {
     public ResponseEntity<Account> createAccount(
             @ApiParam(value = "", required = true) @Valid @RequestBody Account body) {
         try {
-            service.saveAccount(body);
+            service.createAccount(body);
             return new ResponseEntity<Account>(HttpStatus.CREATED);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

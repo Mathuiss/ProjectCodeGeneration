@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Transaction;
@@ -18,6 +19,7 @@ import io.swagger.repositories.TransactionRepository;
 import io.swagger.repositories.UserRepository;
 
 @Service
+@DependsOn("loadAccounts")
 public class UserService {
     private UserRepository userRepository;
     private TransactionRepository transactionRepository;
@@ -25,10 +27,13 @@ public class UserService {
     public UserService(UserRepository userRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
+
+        loadOnStartup();
     }
 
-    @Bean("loadUsers")
+    // @Bean("loadUsers")
     public void loadOnStartup() {
+        System.out.println("\n\n\n\n\n\n USERS loading \n\n\n\n\n");
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<List<User>> typeReference = new TypeReference<List<User>>() {
         };
@@ -36,7 +41,7 @@ public class UserService {
 
         try {
             List<User> userList = mapper.readValue(inputStream, typeReference);
-            System.out.println("\n\n\n\n\n USER LOADED \n\n\n\n\n");
+
             userRepository.saveAll(userList);
         } catch (Exception ex) {
             ex.printStackTrace();

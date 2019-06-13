@@ -1,13 +1,16 @@
 package io.swagger.services;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,7 @@ import io.swagger.repositories.AccountRepository;
 import io.swagger.repositories.UserRepository;
 
 @Service
-@DependsOn("loadUsers")
+// @DependsOn("loadUsers")
 public class AccountService {
     private AccountRepository accounts;
     private UserRepository users;
@@ -28,18 +31,17 @@ public class AccountService {
         this.accounts = accounts;
         this.users = users;
 
-        loadOnStartup();
+        // loadOnStartup();
     }
 
     // load in all accounts from json on startup
+    @Bean("loadAccounts")
     public void loadOnStartup() {
-        // determine accountType when reading value
-
         TypeReference<List<CurrentAccount>> typeReference = new TypeReference<List<CurrentAccount>>() {
         };
-
         InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
         ArrayList<Account> accountList = new ArrayList<>();
         try {
@@ -48,24 +50,24 @@ public class AccountService {
             // and Account is abstract
             for (CurrentAccount acc : accountJsonList) {
 
-                Optional<User> userRes = users.findById(acc.userId());
+                // Optional<User> userRes = users.findById(acc.userId());
 
-                if (!userRes.isPresent()) {
-                    throw new Exception("User not found for id: " + acc.userId());
-                }
+                // if (!userRes.isPresent()) {
+                // throw new Exception("User not found for id: " + acc.userId());
+                // }
 
-                User user = userRes.get();
+                // User user = userRes.get();
 
                 switch (acc.accountType()) {
                 case "current":
-                    CurrentAccount currentAccount = new CurrentAccount(acc.userId(), user, acc.getIban(),
+                    CurrentAccount currentAccount = new CurrentAccount(acc.getUserId(), /* user, */ acc.getIban(),
                             acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
                             acc.getIsActive(), acc.accountType());
 
                     accountList.add(currentAccount);
                     break;
                 case "savings":
-                    SavingsAccount savingsAccount = new SavingsAccount(acc.userId(), user, acc.getIban(),
+                    SavingsAccount savingsAccount = new SavingsAccount(acc.getUserId(), /* user, */ acc.getIban(),
                             acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
                             acc.getIsActive(), acc.accountType());
 
@@ -99,6 +101,16 @@ public class AccountService {
     // Creates or updates an account
     public void saveAccount(Account account) {
         accounts.save(account);
+    }
+
+    public void createAccount(Account body) throws Exception {
+        body.setIban();
+        Optional<User> userResult = users.findById(body.getUserId());
+        if (!userResult.isPresent()) {
+            throw new Exception("User not found for id: " + body.getUserId());
+        }
+        User user = userResult.get().addAccount(body);
+        users.save(user);
     }
 
     public void deleteAccountByIban(String iban) throws Exception {

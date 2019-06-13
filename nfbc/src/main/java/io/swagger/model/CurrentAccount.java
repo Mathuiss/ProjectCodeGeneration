@@ -22,9 +22,9 @@ import javax.persistence.Entity;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class CurrentAccount extends Account {
 
-  public CurrentAccount(Long userId, User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
+  public CurrentAccount(Long userId, /* User user, */ String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
-    super(userId, user, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
+    super(userId, /* user, */ iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
   }
 
   public CurrentAccount() {
