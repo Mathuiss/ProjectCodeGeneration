@@ -58,11 +58,11 @@ public class UsersApiControllerIntegrationTest {
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void usersPutTest() throws Exception {
-        User body = new User();
-        ResponseEntity<User> responseEntity = api.usersPut(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
-    }
+    //@Test
+    //public void usersPutTest() throws Exception {
+    //    User body = new User();
+    //    ResponseEntity<User> responseEntity = api.usersPut(body);
+    //    assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+    //}
 
 }

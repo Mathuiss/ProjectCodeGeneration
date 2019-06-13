@@ -38,7 +38,7 @@ public interface UsersApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/users/{id}", produces = { "application/json" }, method = RequestMethod.DELETE)
         ResponseEntity<InlineResponse200> deleteUserById(
-                        @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") Integer id);
+                        @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id);
 
         @ApiOperation(value = "", nickname = "getTransactionOfUser", notes = "All transactions of this user", response = Transaction.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
@@ -46,10 +46,10 @@ public interface UsersApi {
                         @ApiResponse(code = 200, message = "List of all transactions for this user", response = Transaction.class, responseContainer = "List"),
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/users/{id}/transactions", produces = {
+        @RequestMapping(value = "/users/transactions", produces = {
                         "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-                        @ApiParam(value = "", required = true) @PathVariable("id") Integer id,
+                        @ApiParam(value = "", required = true) @PathVariable("id") long id,
                         @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) String account);
 
         @ApiOperation(value = "Gets user corresponding with id", nickname = "getUserById", notes = "Get user corresponding with id", response = User.class, authorizations = {
@@ -60,7 +60,7 @@ public interface UsersApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/users/{id}", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<User> getUserById(
-                        @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") Integer id);
+                        @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") long id);
 
         @ApiOperation(value = "User", nickname = "getUsers", notes = "Get all users", response = User.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
@@ -88,8 +88,8 @@ public interface UsersApi {
         @ApiResponses(value = { @ApiResponse(code = 200, message = "Post succesfull", response = User.class),
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/users", produces = { "application/json" }, consumes = {
+        @RequestMapping(value = "/users/{id}", produces = { "application/json" }, consumes = {
                         "application/json" }, method = RequestMethod.PUT)
-        ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body);
+        ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body, @PathVariable("id") long id);
 
 }
