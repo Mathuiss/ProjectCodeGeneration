@@ -7,6 +7,8 @@ import io.swagger.model.Transaction;
 import io.swagger.model.User;
 import io.swagger.repositories.TransactionRepository;
 import io.swagger.repositories.UserRepository;
+
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Order(1)
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -119,7 +122,7 @@ public class UserService {
 
     public void UpdateUser(User changedUser) throws Exception {
         Long longValue = changedUser.getuserId();
-        
+
         if (longValue == null) {
             throw new Exception("Changed user has no ID. Cannot update.");
         }

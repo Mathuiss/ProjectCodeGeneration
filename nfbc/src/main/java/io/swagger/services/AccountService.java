@@ -1,17 +1,13 @@
 package io.swagger.services;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.apache.el.lang.ELArithmetic.BigDecimalDelegate;
-import org.omg.CORBA.Current;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Account;
@@ -20,8 +16,8 @@ import io.swagger.model.SavingsAccount;
 import io.swagger.model.User;
 import io.swagger.repositories.AccountRepository;
 import io.swagger.repositories.UserRepository;
-import javassist.expr.Instanceof;
 
+@Order(2)
 @Service
 public class AccountService {
     private AccountRepository accounts;
@@ -64,7 +60,7 @@ public class AccountService {
     public void loadOnStartup() {
         // determine accountType when reading value
 
-        TypeReference<List<Account>> typeReference = new TypeReference<List<Account>>() {
+        TypeReference<List<CurrentAccount>> typeReference = new TypeReference<List<CurrentAccount>>() {
         };
 
         InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
@@ -72,26 +68,26 @@ public class AccountService {
 
         ArrayList<Account> accountList = new ArrayList<>();
         try {
-            List<Account> accountJsonList = mapper.readValue(inputStream, typeReference);
-            // We're using the currentAccountList because
-            for (Account acc : accountJsonList) {
+            List<CurrentAccount> accountJsonList = mapper.readValue(inputStream, typeReference);
+            // We're using the currentAccountList because it's less restricted
+            // and Account is abstract
+            for (CurrentAccount acc : accountJsonList) {
 
-                // User user = acc.user();
+                User user = users.findById(acc.userId());
                 switch (acc.accountType()) {
                 case "current":
-                    accountList.add(
-                            new CurrentAccount(acc.userId(), acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
-                                    acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
+                    accountList.add(new CurrentAccount(user, acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
+                            acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
                     break;
                 case "savings":
-                    accountList.add(
-                            new SavingsAccount(acc.userId(), acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
-                                    acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
+                    accountList.add(new SavingsAccount(user, acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
+                            acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
                     break;
                 default:
                     throw new Exception("Unknown accountType");
                 }
             }
+            accounts.saveAll(accountList);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

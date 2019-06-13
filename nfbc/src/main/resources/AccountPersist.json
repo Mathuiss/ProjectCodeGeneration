@@ -1,7 +1,7 @@
 [
     {
         "userId": 2,
-        "Iban": "NL00INHO0000000003",
+        "iban": "NL00INHO0000000003",
         "balance": 1000,
         "transactionLimit": 250,
         "absoluteLimit": -1000,
@@ -11,7 +11,7 @@
     },
     {
         "userId": 2,
-        "Iban": "NL00INHO0000000004",
+        "iban": "NL00INHO0000000004",
         "balance": 1000,
         "transactionLimit": 250,
         "absoluteLimit": 0,

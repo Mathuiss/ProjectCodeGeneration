@@ -43,7 +43,7 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<Iterable<Account>> fetchAccount(
-            @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String AccountType) {
+            @ApiParam(value = "Enter the type of account eg. savings") @Valid @PathVariable(value = "accounttype", required = false) String AccountType) {
         try {
             Iterable<Account> accounts = service.getAccounts();
             return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);

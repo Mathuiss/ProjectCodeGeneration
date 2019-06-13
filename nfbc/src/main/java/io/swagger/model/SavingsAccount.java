@@ -22,12 +22,15 @@ import javax.persistence.Entity;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class SavingsAccount extends Account {
 
-    @JsonProperty("AbsoluteLimit")
-    private BigDecimal absoluteLimit = null;
+  @JsonProperty("AbsoluteLimit")
+  private BigDecimal absoluteLimit = null;
 
   public SavingsAccount(User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
     super(user, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
+  }
+
+  public SavingsAccount() {
   }
 
   // absolute limit must be at least 0 for a Savings Account;
@@ -39,11 +42,6 @@ public class SavingsAccount extends Account {
       throw new Exception(
           "The given limit: " + absoluteLimit + "is too low. The absolute limit of savings accounts is 0.");
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    SavingsAccount savingsAccount = (SavingsAccount) o;
-    return Objects.equals(this.absoluteLimit, savingsAccount.absoluteLimit);
   }
 
   // @Override

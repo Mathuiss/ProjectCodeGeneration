@@ -27,11 +27,11 @@ public class User {
     public User() {
     }
 
-    @JsonProperty("id")
+    @JsonProperty("userId")
     @Id
     @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private long userId;
+    private Long userId;
 
     @JsonProperty("name")
     private String name;
@@ -69,7 +69,7 @@ public class User {
 
     @JsonProperty("accounts")
     @Valid
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Account> accounts;
 
     @JsonProperty("isEmployee")
@@ -161,7 +161,7 @@ public class User {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-        sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         // Get complete hashed password in hex format
         hash = sb.toString();
@@ -382,8 +382,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
-                /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
+        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
+                accounts, /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
     }
 
     @Override

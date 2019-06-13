@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import java.math.BigDecimal;
+
+import org.omg.CORBA.Current;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
@@ -18,11 +20,14 @@ import javax.persistence.Entity;
 @Validated
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class CurrentAccount extends Account  {
+public class CurrentAccount extends Account {
 
-  public CurrentAccount(Long userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
+  public CurrentAccount(User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
-    super(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
+    super(user, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
+  }
+
+  public CurrentAccount() {
   }
 
   @Override

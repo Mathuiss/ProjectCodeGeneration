@@ -7,9 +7,6 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -22,21 +19,21 @@ import io.swagger.annotations.ApiModelProperty;
  * Account
  */
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(value = SavingsAccount.class, name = "savings"),
-    @Type(value = CurrentAccount.class, name = "current") })
+// @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
+// property = "type")
+// @JsonSubTypes({ @Type(value = SavingsAccount.class, name = "savings"),
+// @Type(value = CurrentAccount.class, name = "current") })
 @Validated
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
-  // @JsonProperty("userId")
-  // @ManyToOne
-  // @JoinColumn(name = "userId", nullable = false)
-  // private User user = null;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user")
+  private User user = null;
 
   @JsonProperty("userId")
-  private Long userId;
+  private Long userId;|
 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
