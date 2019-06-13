@@ -44,16 +44,16 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void createAccount() throws Exception {
-        int userId = 2;
+        Long userId = Long.valueOf(2);
         String iban = "NL99INHO0123456789";
         BigDecimal balance = BigDecimal.valueOf(100.00);
         BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
         BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
         Integer dailyLimit = 1;
-        Boolean active = true;
+        Boolean isActive = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
                 accountType);
         ResponseEntity<Account> responseEntity = api.createAccount(body);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -61,16 +61,16 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void updateAccountByIbanTest() throws Exception {
-        int userId = 2;
+        Long userId = Long.valueOf(2);
         String iban = "NL00INHO0000000003";
         BigDecimal balance = BigDecimal.valueOf(100.00);
         BigDecimal transactionLimit = BigDecimal.valueOf(100.00);
         BigDecimal absoluteLimit = BigDecimal.valueOf(100.00);
         Integer dailyLimit = 1;
-        Boolean active = true;
+        Boolean isActive = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active,
+        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
                 accountType);
         ResponseEntity<Account> responseEntity = api.updateAccountByIban(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

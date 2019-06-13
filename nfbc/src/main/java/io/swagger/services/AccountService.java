@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,6 +19,7 @@ import io.swagger.model.CurrentAccount;
 import io.swagger.model.SavingsAccount;
 import io.swagger.model.User;
 import io.swagger.repositories.AccountRepository;
+import javassist.expr.Instanceof;
 
 @Service
 public class AccountService {
@@ -26,6 +28,32 @@ public class AccountService {
     public AccountService(AccountRepository accounts) {
         this.accounts = accounts;
 
+        // ObjectMapper mapper = new ObjectMapper();
+        // mapper.enableDefaultTyping();
+
+        // CurrentAccount currAcc = new CurrentAccount(Long.valueOf(2),
+        // "NL00INHO0000000003", BigDecimal.valueOf(1000),
+        // BigDecimal.valueOf(250), BigDecimal.valueOf(-1000), 4, true, "current");
+        // SavingsAccount savAcc = new SavingsAccount(Long.valueOf(2),
+        // "NL00INHO0000000004", BigDecimal.valueOf(1000),
+        // BigDecimal.valueOf(250), BigDecimal.valueOf(0), 0, true, "savings");
+
+        // List<Account> accountList = new ArrayList<>();
+        // accountList.add(currAcc);
+        // accountList.add(savAcc);
+
+        // User serializedUser = new User();
+        // serializedUser.setAccounts(accountList);
+
+        // String jsonDataString = mapper.writeValueAsString(serializedUser);
+
+        // User deserializedUser = mapper.readValue(jsonDataString, User.class);
+
+        // assertThat(deserializedUser.getAccounts("").get(0),
+        // instanceOf(CurrentAccount.class));
+        // assertThat(deserializedUser.getAccounts("").get(1),
+        // instanceOf(SavingsAccount.class));
+
         loadOnStartup();
     }
 
@@ -33,37 +61,30 @@ public class AccountService {
     public void loadOnStartup() {
         // determine accountType when reading value
 
+        TypeReference<List<CurrentAccount>> typeReferenceCur = new TypeReference<List<CurrentAccount>>() {
+        };
+
+        InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
         ObjectMapper mapper = new ObjectMapper();
-        mapper.enableDefaultTyping();
 
-        CurrentAccount currAcc = new CurrentAccount(2, "NL00INHO0000000003", BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(250), BigDecimal.valueOf(-1000), 4, true, "current");
-        SavingsAccount savAcc = new SavingsAccount(2, "NL00INHO0000000004", BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(250), BigDecimal.valueOf(0), 0, true, "savings");
-        List<Account> accounts = new ArrayList<>();
-        accounts.add(currAcc);
-        accounts.add(savAcc);
-        User serializedUser = new User();
-        serializedUser.setAccounts(accounts);
-        // TypeReference<List<Account>> typeReference = new
-        // TypeReference<List<Account>>() {
-        // };
-        // TypeReference<List<CurrentAccount>> typeReferenceCur = new
-        // TypeReference<List<CurrentAccount>>() {
-        // };
-        // TypeReference<List<SavingsAccount>> typeReferenceSav = new
-        // TypeReference<List<SavingsAccount>>() {
-        // };
-        // InputStream inputStream =
-        // TypeReference.class.getResourceAsStream("/AccountPersist.json");
-
+        ArrayList<Account> accountList = new ArrayList<>();
         try {
-            // List<Account> accountList = mapper.readValue(inputStream, typeReference);
-            // List<CurrentAccount> currentAccountList = mapper.readValue(inputStream,
-            // typeReferenceCur);
-            // List<SavingsAccount> savingsAccountsList = mapper.readValue(inputStream,
-            // typeReferenceSav);
+            List<CurrentAccount> currentAccountList = mapper.readValue(inputStream, typeReferenceCur);
+            for (CurrentAccount currAcc : currentAccountList) {
+                switch (currAcc.accountType()) {
+                case "current":
+                    // do nothing
+                    break;
+                case "savings":
+                    accountList.add(new SavingsAccount(currAcc.userId(), currAcc.getIban(), currAcc.getBalance(),
+                            currAcc.getTransactionLimit(), currAcc.getAbsoluteLimit(), currAcc.getDailyLimit(),
+                            currAcc.getIsActive(), currAcc.accountType()));
 
+                    break;
+                default:
+                    break;
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -98,7 +119,7 @@ public class AccountService {
         }
 
         Account account = result.get();
-        account.setActive(false);
+        account.setIsActive(false);
 
         accounts.save(account);
     }

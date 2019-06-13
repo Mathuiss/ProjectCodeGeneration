@@ -29,7 +29,7 @@ public class User {
     @Id
     @SequenceGenerator(name = "userId_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private Integer id;
+    private Long id;
 
     @JsonProperty("name")
     private String name;
@@ -67,7 +67,7 @@ public class User {
 
     @JsonProperty("accounts")
     @Valid
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "id")
     private List<Account> accounts;
 
     @JsonProperty("isEmployee")
@@ -76,7 +76,7 @@ public class User {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    public User id(Integer id) {
+    public User id(Long id) {
         this.id = id;
         return this;
     }
@@ -88,7 +88,7 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -277,7 +277,7 @@ public class User {
 
         for (Account acc : accounts) {
             if (query == null) {
-                if (acc.isActive()) {
+                if (acc.getIsActive()) {
                     res.add(acc);
                 }
             } else {
@@ -286,7 +286,7 @@ public class User {
                     res.add(acc);
                     break;
                 case "disabled":
-                    if (!acc.isActive()) {
+                    if (!acc.getIsActive()) {
                         res.add(acc);
                     }
                     break;

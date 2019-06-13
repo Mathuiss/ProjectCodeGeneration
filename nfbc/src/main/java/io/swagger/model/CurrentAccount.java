@@ -20,9 +20,9 @@ import javax.persistence.Entity;
 @Entity
 public class CurrentAccount extends Account {
 
-  public CurrentAccount(int userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
-      BigDecimal absoluteLimit, Integer dailyLimit, Boolean active, String accountType) {
-    super(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+  public CurrentAccount(Long userId, String iban, BigDecimal balance, BigDecimal transactionLimit,
+      BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
+    super(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
   }
 
   @Override

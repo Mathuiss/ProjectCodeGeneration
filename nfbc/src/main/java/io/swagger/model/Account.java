@@ -30,10 +30,10 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
-  @Id
+  @JsonProperty("userId")
   @ManyToOne
-  @JoinColumn(name = "userId", nullable = false)
-  private int userId;
+  @JoinColumn(name = "id", nullable = false)
+  private Long userId = null;
 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
@@ -55,29 +55,28 @@ public abstract class Account {
   @JsonProperty("dailyLimit")
   private Integer dailyLimit = null;
 
-  @JsonProperty("active")
-  private Boolean active = null;
+  @JsonProperty("isActive")
+  private Boolean isActive = null;
 
   @JsonProperty("accountType")
   private String accountType = null;
 
-  // Without iban, for new accounts
-  protected Account(int userId, String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
-      Integer dailyLimit, Boolean active, String accountType) {
+  protected Account(Long userId, String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
+      Integer dailyLimit, Boolean isActive, String accountType) {
     this.userId = userId;
     this.iban = iban;
     this.balance = balance;
     this.transactionLimit = transactionLimit;
     this.absoluteLimit = absoluteLimit;
     this.dailyLimit = dailyLimit;
-    this.active = active;
+    this.isActive = isActive;
     this.accountType = accountType;
   }
 
   protected Account() {
   }
 
-  public Account userId(int userId) {
+  public Account userId(Long userId) {
     this.userId = userId;
     return this;
   }
@@ -90,11 +89,11 @@ public abstract class Account {
   @ApiModelProperty(value = "")
 
   @Valid
-  public int userId() {
+  public Long userId() {
     return userId;
   }
 
-  public void setUserId(int userId) {
+  public void setUserId(Long userId) {
     this.userId = userId;
   }
 
@@ -196,24 +195,24 @@ public abstract class Account {
     this.dailyLimit = dailyLimit;
   }
 
-  public Account active(Boolean active) {
-    this.active = active;
+  public Account isActive(Boolean isActive) {
+    this.isActive = isActive;
     return this;
   }
 
   /**
-   * Get active
+   * Get isActive
    * 
-   * @return active
+   * @return isActive
    **/
   @ApiModelProperty(value = "")
 
-  public Boolean isActive() {
-    return active;
+  public Boolean getIsActive() {
+    return isActive;
   }
 
-  public void setActive(Boolean active) {
-    this.active = active;
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
   }
 
   public Account accountType(String accountType) {
@@ -245,13 +244,13 @@ public abstract class Account {
         && Objects.equals(this.balance, account.balance)
         && Objects.equals(this.transactionLimit, account.transactionLimit)
         && Objects.equals(this.absoluteLimit, account.absoluteLimit)
-        && Objects.equals(this.dailyLimit, account.dailyLimit) && Objects.equals(this.active, account.active)
+        && Objects.equals(this.dailyLimit, account.dailyLimit) && Objects.equals(this.isActive, account.isActive)
         && Objects.equals(this.accountType, account.accountType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, active, accountType);
+    return Objects.hash(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
   }
 
   @Override
@@ -265,7 +264,7 @@ public abstract class Account {
     sb.append("    transactionLimit: ").append(toIndentedString(transactionLimit)).append("\n");
     sb.append("    absoluteLimit: ").append(toIndentedString(absoluteLimit)).append("\n");
     sb.append("    dailyLimit: ").append(toIndentedString(dailyLimit)).append("\n");
-    sb.append("    active: ").append(toIndentedString(active)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("    accountType: ").append(toIndentedString(accountType)).append("\n");
     sb.append("}");
     return sb.toString();
