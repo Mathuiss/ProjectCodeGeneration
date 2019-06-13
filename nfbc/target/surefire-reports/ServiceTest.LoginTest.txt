@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: ServiceTest.LoginTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in ServiceTest.LoginTest
+doesUserExist(ServiceTest.LoginTest)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at ServiceTest.LoginTest.doesUserExist(LoginTest.java:28)
+
+doesCollectionServiceWork(ServiceTest.LoginTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at ServiceTest.LoginTest.doesCollectionServiceWork(LoginTest.java:37)
+
+doesEmailFindId(ServiceTest.LoginTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at ServiceTest.LoginTest.doesEmailFindId(LoginTest.java:33)
+
