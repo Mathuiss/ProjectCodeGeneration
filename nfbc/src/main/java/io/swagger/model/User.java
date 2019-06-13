@@ -27,11 +27,11 @@ public class User {
     public User() {
     }
 
-    @JsonProperty("id")
+    @JsonProperty("userId")
     @Id
     @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private long userId;
+    private Long userId;
 
     @JsonProperty("name")
     private String name;
@@ -69,7 +69,7 @@ public class User {
 
     @JsonProperty("accounts")
     @Valid
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     @JsonProperty("isEmployee")
@@ -304,7 +304,7 @@ public class User {
 
         for (Account acc : accounts) {
             if (query == null) {
-                if (acc.isActive()) {
+                if (acc.getIsActive()) {
                     res.add(acc);
                 }
             } else {
@@ -313,7 +313,7 @@ public class User {
                     res.add(acc);
                     break;
                 case "disabled":
-                    if (!acc.isActive()) {
+                    if (!acc.getIsActive()) {
                         res.add(acc);
                     }
                     break;
@@ -398,8 +398,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
-                /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
+        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
+                accounts, /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
     }
 
     @Override
