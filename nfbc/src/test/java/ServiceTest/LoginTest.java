@@ -14,26 +14,22 @@ public class LoginTest {
     private SessionService sessionService;
     @Before
     public void setup(){
-        user = new User(1, "naam", "test@gmail.com", "wachtwoord", "straatnaam", "1060PC", 33, " ", "0600000000", null, null, false);
+        user = new User();
     }
 
     @Test
     public void IsEmployeeEmployee(){
-        assertEquals(false, user.isIsEmployee());
+        assertEquals(false, user.isEmployee());
     }
 
     @Test
     public void doesUserExist(){
         //assertEquals("test@gmail.com", user.getEmail());
-        assertFalse(sessionService.userExist("test@gmail.com"));
+        assertFalse(sessionService.userExist("patat@gmail.com"));
     }
 
     @Test
     public void doesEmailFindId(){
-        sessionService.getUserIdByEmail("test@gmail.com");
-    }
-    @Test
-    public void doesCollectionServiceWork(){
-        sessionService.getAllUsers();
+        sessionService.getUserIdByEmail("patat@gmail.com");
     }
 }

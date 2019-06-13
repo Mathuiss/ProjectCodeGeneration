@@ -23,14 +23,10 @@ public class SessionService {
         this.userRepository = userRepository;
     }
 
-    private Iterable<User> getUserList() {
-        return userRepository.findAll();
-    }
-
     public boolean userExist(String email) {
         logger.info("in boolean method userExis " + email);
 
-        for (User user : getUserList()) {
+        for (User user : userRepository.findAll()) {
             logger.info("looking in list");
             if (user.getEmail().equals(email)) {
                 logger.info("--- Userexist ---");
@@ -41,7 +37,7 @@ public class SessionService {
         return false;
     }
 
-    public int getUserIdByEmail(String email) {
+    public long getUserIdByEmail(String email) {
         for (User user : userRepository.findAll()) {
             if (user.getEmail().equals(email)) {
                 logger.info("found user id " + user.getId());
@@ -51,10 +47,10 @@ public class SessionService {
         return 0;
     }
 
-    public boolean passwordCheck(int id, String password) {
+    public boolean passwordCheck(long id, String password) {
         // for (User user : getUserList()) {
         for (User user : userRepository.findAll()) {
-            if (user.getId().equals(id)) {
+            if (user.getId() == id) {
                 if (user.getHash().equals(password)) {
                     logger.info("found user password" + user.getHash());
                     return true;
@@ -66,7 +62,7 @@ public class SessionService {
 
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
-            if (user.getId().equals(id)) {
+            if (user.getId() == id) {
                 if (user.isEmployee()) {
                     logger.info("user is eployee");
                     return true;
@@ -85,11 +81,11 @@ public class SessionService {
 
         logger.info("--- getSessionToken tot zover ---");
 
+        // Get user from id and check existence
         Optional<User> result = userRepository.findById(userId);
         if (!result.isPresent()) {
             throw new Exception("User not found for id: " + userId);
         }
-
 
         if (result.get().isEmployee()) {
             sessionToken.setUserRole("Employee");

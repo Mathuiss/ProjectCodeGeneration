@@ -12,5 +12,19 @@
     "accounts": [],
     "isEmployee": false,
     "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Patatjes",
+    "email": "patat@gmail.com",
+    "hash": "patatjes123",
+    "streetname": "WestOost",
+    "zipcode": "1234BA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0612345678",
+    "accounts": [],
+    "isEmployee": true,
+    "isActive": true
   }
 ]

@@ -32,7 +32,7 @@ public class LoginApiController implements LoginApi {
 
             if (sessionService.userExist(body.getUsername())) {
                 log.info(("username found"));
-                int id = sessionService.getUserIdByEmail(body.getUsername());
+                long id = sessionService.getUserIdByEmail(body.getUsername());
                 if (sessionService.passwordCheck(id, body.getPassword())) {
                     // toegang geven
                     // sessiontoken maken
@@ -41,7 +41,7 @@ public class LoginApiController implements LoginApi {
                         return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
                     } catch (Exception ex) {
                         log.error(ex.getMessage(), ex);
-                        return new ResponseEntity<>(HttpStatus.resolve(500));
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
                 } else {
                     return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
