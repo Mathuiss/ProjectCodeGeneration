@@ -59,6 +59,19 @@ public class SessionService {
         }
         return false;
     }
+    public boolean isUserActive(long id) {
+        for(User user : userRepository.findAll()){
+            if(user.getId() == id){
+                if(user.isActive()){
+                    return  true;
+                }
+                else {
+                    logger.info("user is deactivated");
+                }
+            }
+        }
+        return  false;
+    }
 
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
@@ -104,4 +117,6 @@ public class SessionService {
         }
         return false;
     }
+
+
 }

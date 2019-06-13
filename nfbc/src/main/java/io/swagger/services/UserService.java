@@ -23,7 +23,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
 
-        loadOnStartup();
+        //loadOnStartup();
     }
 
     public void loadOnStartup() {

@@ -34,15 +34,21 @@ public class LoginApiController implements LoginApi {
                 log.info(("username found"));
                 long id = sessionService.getUserIdByEmail(body.getUsername());
                 if (sessionService.passwordCheck(id, body.getPassword())) {
-                    // toegang geven
-                    // sessiontoken maken
-                    try {
-                        SessionToken sessionToken = sessionService.getSessionToken(body, id);
-                        return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
-                    } catch (Exception ex) {
-                        log.error(ex.getMessage(), ex);
-                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    if(sessionService.isUserActive(id)){
+                        // toegang geven
+                        // sessiontoken maken
+                        try {
+                            SessionToken sessionToken = sessionService.getSessionToken(body, id);
+                            return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
+                        } catch (Exception ex) {
+                            log.error(ex.getMessage(), ex);
+                            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                        }
                     }
+                    else {
+                        return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+                    }
+
                 } else {
                     return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
                 }
