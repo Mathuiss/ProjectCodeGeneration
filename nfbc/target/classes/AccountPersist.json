@@ -1,6 +1,7 @@
 [
     {
         "userId": 2,
+        "user": {},
         "iban": "NL00INHO0000000003",
         "balance": 1000,
         "transactionLimit": 250,
@@ -11,6 +12,7 @@
     },
     {
         "userId": 2,
+        "user": {},
         "iban": "NL00INHO0000000004",
         "balance": 1000,
         "transactionLimit": 250,

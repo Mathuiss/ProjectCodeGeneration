@@ -1,24 +1,22 @@
 package io.swagger.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
 import io.swagger.repositories.TransactionRepository;
 import io.swagger.repositories.UserRepository;
 
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.PKIXRevocationChecker.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-@Order(1)
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -27,10 +25,9 @@ public class UserService {
     public UserService(UserRepository userRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
-
-        loadOnStartup();
     }
 
+    @Bean("loadUsers")
     public void loadOnStartup() {
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<List<User>> typeReference = new TypeReference<List<User>>() {
@@ -39,6 +36,7 @@ public class UserService {
 
         try {
             List<User> userList = mapper.readValue(inputStream, typeReference);
+            System.out.println("\n\n\n\n\n USER LOADED \n\n\n\n\n");
             userRepository.saveAll(userList);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -7,7 +7,8 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.annotation.Order;
+
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Account;
@@ -17,8 +18,8 @@ import io.swagger.model.User;
 import io.swagger.repositories.AccountRepository;
 import io.swagger.repositories.UserRepository;
 
-@Order(2)
 @Service
+@DependsOn("loadUsers")
 public class AccountService {
     private AccountRepository accounts;
     private UserRepository users;
@@ -26,32 +27,6 @@ public class AccountService {
     public AccountService(AccountRepository accounts, UserRepository users) {
         this.accounts = accounts;
         this.users = users;
-
-        // ObjectMapper mapper = new ObjectMapper();
-        // mapper.enableDefaultTyping();
-
-        // CurrentAccount currAcc = new CurrentAccount(Long.valueOf(2),
-        // "NL00INHO0000000003", BigDecimal.valueOf(1000),
-        // BigDecimal.valueOf(250), BigDecimal.valueOf(-1000), 4, true, "current");
-        // SavingsAccount savAcc = new SavingsAccount(Long.valueOf(2),
-        // "NL00INHO0000000004", BigDecimal.valueOf(1000),
-        // BigDecimal.valueOf(250), BigDecimal.valueOf(0), 0, true, "savings");
-
-        // List<Account> accountList = new ArrayList<>();
-        // accountList.add(currAcc);
-        // accountList.add(savAcc);
-
-        // User serializedUser = new User();
-        // serializedUser.setAccounts(accountList);
-
-        // String jsonDataString = mapper.writeValueAsString(serializedUser);
-
-        // User deserializedUser = mapper.readValue(jsonDataString, User.class);
-
-        // assertThat(deserializedUser.getAccounts("").get(0),
-        // instanceOf(CurrentAccount.class));
-        // assertThat(deserializedUser.getAccounts("").get(1),
-        // instanceOf(SavingsAccount.class));
 
         loadOnStartup();
     }
@@ -73,15 +48,28 @@ public class AccountService {
             // and Account is abstract
             for (CurrentAccount acc : accountJsonList) {
 
-                User user = users.findById(acc.userId());
+                Optional<User> userRes = users.findById(acc.userId());
+
+                if (!userRes.isPresent()) {
+                    throw new Exception("User not found for id: " + acc.userId());
+                }
+
+                User user = userRes.get();
+
                 switch (acc.accountType()) {
                 case "current":
-                    accountList.add(new CurrentAccount(user, acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
-                            acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
+                    CurrentAccount currentAccount = new CurrentAccount(acc.userId(), user, acc.getIban(),
+                            acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
+                            acc.getIsActive(), acc.accountType());
+
+                    accountList.add(currentAccount);
                     break;
                 case "savings":
-                    accountList.add(new SavingsAccount(user, acc.getIban(), acc.getBalance(), acc.getTransactionLimit(),
-                            acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(), acc.accountType()));
+                    SavingsAccount savingsAccount = new SavingsAccount(acc.userId(), user, acc.getIban(),
+                            acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
+                            acc.getIsActive(), acc.accountType());
+
+                    accountList.add(savingsAccount);
                     break;
                 default:
                     throw new Exception("Unknown accountType");

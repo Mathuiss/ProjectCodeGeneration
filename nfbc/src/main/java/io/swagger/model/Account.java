@@ -28,12 +28,13 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public abstract class Account {
 
+  @JsonProperty("userId")
+  private Long userId;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user")
+  @JsonProperty("user")
   private User user = null;
-
-  @JsonProperty("userId")
-  private Long userId;|
 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
   @GenericGenerator(name = "iban_seq", strategy = "io.swagger.CustomIbanGenerator", parameters = {
@@ -61,9 +62,10 @@ public abstract class Account {
   @JsonProperty("accountType")
   private String accountType = null;
 
-  protected Account(Long userId, String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
-      Integer dailyLimit, Boolean isActive, String accountType) {
+  protected Account(Long userId, User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
+      BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
     this.userId = userId;
+    this.user = user;
     this.iban = iban;
     this.balance = balance;
     this.transactionLimit = transactionLimit;
@@ -95,6 +97,14 @@ public abstract class Account {
 
   public void setuserId(Long userId) {
     this.userId = userId;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public Account iban(String iban) {

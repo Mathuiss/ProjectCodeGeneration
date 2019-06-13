@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "userId": 1,
     "name": "Jelle Spreij",
     "email": "jelle.jelle@jelle.jelle",
     "hash": "abcde",
@@ -14,7 +14,7 @@
     "isActive": true
   },
   {
-    "id": 2,
+    "userId": 2,
     "name": "Patatjes",
     "email": "patat@gmail.com",
     "hash": "patatjes123",
@@ -28,7 +28,7 @@
     "isActive": false
   },
   {
-    "id": 3,
+    "userId": 3,
     "name": "test",
     "email": "test@gmail.com",
     "hash": "W@chtwoord1",
@@ -42,7 +42,7 @@
     "isActive": true
   },
   {
-    "id": 4,
+    "userId": 4,
     "name": "actief",
     "email": "actief@gmail.com",
     "hash": "actiefikben",

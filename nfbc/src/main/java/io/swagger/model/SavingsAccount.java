@@ -25,9 +25,9 @@ public class SavingsAccount extends Account {
   @JsonProperty("AbsoluteLimit")
   private BigDecimal absoluteLimit = null;
 
-  public SavingsAccount(User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
+  public SavingsAccount(Long userId, User user, String iban, BigDecimal balance, BigDecimal transactionLimit,
       BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
-    super(user, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
+    super(userId, user, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
   }
 
   public SavingsAccount() {
