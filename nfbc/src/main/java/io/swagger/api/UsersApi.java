@@ -90,6 +90,6 @@ public interface UsersApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/users/{id}", produces = { "application/json" }, consumes = {
                         "application/json" }, method = RequestMethod.PUT)
-        ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body, @PathVariable("id") long id);
+        ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body);
 
 }

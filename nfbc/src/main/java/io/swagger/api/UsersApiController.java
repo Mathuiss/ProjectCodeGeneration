@@ -83,9 +83,16 @@ public class UsersApiController implements UsersApi {
         }
     }
 
-    public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body, @PathVariable("id") long id) {
-
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body) {
+        try
+        {
+            service.UpdateUser(body);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch(Exception ex)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

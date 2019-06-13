@@ -27,9 +27,9 @@ public class User {
 
     @JsonProperty("id")
     @Id
-    @SequenceGenerator(name = "userId_seq")
+    @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private Integer id;
+    private long id;
 
     @JsonProperty("name")
     private String name;
@@ -76,7 +76,7 @@ public class User {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    public User id(Integer id) {
+    public User id(long id) {
         this.id = id;
         return this;
     }
@@ -88,13 +88,11 @@ public class User {
      **/
     @ApiModelProperty(value = "")
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    // public void setId(Integer id) {
-    // this.id = id;
-    // }
+
 
     public User name(String name) {
         this.name = name;
