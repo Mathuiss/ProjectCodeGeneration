@@ -31,24 +31,26 @@ public class LoginApiControllerIntegrationTest {
     }
 
     @Test
-    public void LoginPostTest(){
+    public void LoginPostTest() {
         Body body = new Body("test@gmail.com", "W@chtwoord1");
         ResponseEntity<SessionToken> responseEntity = loginApi.loginPost(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
+
     @Test
-    public void userExistMethodTest(){
+    public void userExistMethodTest() {
         assertEquals(true, sessionService.userExist("test@gmail.com"));
     }
 
     @Test
-    public void GetUserIdTest(){
+    public void GetUserIdTest() {
         assertEquals(3, sessionService.getUserIdByEmail("test@gmail.com"));
     }
 
     @Test
-    public void isUserActiveTest(){
+    public void isUserActiveTest() {
         assertEquals(true, sessionService.isUserActive(3));
     }
-
 }
+
+
