@@ -18,8 +18,8 @@ import javax.validation.constraints.*;
  * CurrentAccount
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Entity
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class CurrentAccount extends Account  {
 
   @JsonProperty("AbsoluteLimit")

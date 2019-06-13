@@ -20,9 +20,8 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class Account {
-
   @ManyToOne
-  @JoinColumn(name="id", nullable = false)
+  @JoinColumn(name = "id", nullable = false)
   private User user;
 
   @JsonProperty("IBAN")

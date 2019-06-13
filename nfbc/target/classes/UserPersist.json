@@ -12,5 +12,47 @@
     "accounts": [],
     "isEmployee": false,
     "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Patatjes",
+    "email": "patat@gmail.com",
+    "hash": "patatjes123",
+    "streetname": "WestOost",
+    "zipcode": "1234BA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0612345678",
+    "accounts": [],
+    "isEmployee": true,
+    "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "test",
+    "email": "test@gmail.com",
+    "hash": "W@chtwoord1",
+    "streetname": "Amsterdam",
+    "zipcode": "1060 AA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0611111111",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
+  },
+  {
+    "id": 5,
+    "name": "actief",
+    "email": "actief@gmail.com",
+    "hash": "actiefikben",
+    "streetname": "WestOost",
+    "zipcode": "1234BA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0612345678",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": false
   }
 ]
