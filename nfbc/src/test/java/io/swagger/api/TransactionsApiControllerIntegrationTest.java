@@ -30,7 +30,7 @@ public class TransactionsApiControllerIntegrationTest {
         body.setReciever("NL00INHO0627184637");
         body.setAmount(new BigDecimal(0));
         body.setTimestamp(OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        body.setUser(1);
+        body.setUser(Long.valueOf(1));
 
         ResponseEntity<Transaction> responseEntity = api.createTransaction(body);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -38,7 +38,7 @@ public class TransactionsApiControllerIntegrationTest {
 
     @Test
     public void fetchTransactionTest() throws Exception {
-        Integer user = 0;
+        long user = 0;
         String sender = "NL00INHO0000000002";
         String reciever = "NL00INHO0000000001";
         String accounttype = "";

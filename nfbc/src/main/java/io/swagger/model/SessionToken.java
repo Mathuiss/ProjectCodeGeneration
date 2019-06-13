@@ -5,10 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,17 +31,17 @@ public class SessionToken {
   private String userRole = null;
 
   @JsonProperty("timestamp")
-  private  String timestamp;
+  private String timestamp = null;
 
   @JsonProperty("isActive")
-  private  boolean isActive;
+  private boolean isActive = false;
 
   public long getUserId() {
     return userId;
   }
 
   public void setUserId(long userId) {
-    userId = userId;
+    this.userId = userId;
   }
 
   public String getTimestamp() {
@@ -68,7 +65,8 @@ public class SessionToken {
     return this;
   }
 
-  public  SessionToken() {}
+  public SessionToken() {
+  }
 
   /**
    * Get sessionToken
@@ -85,7 +83,7 @@ public class SessionToken {
     this.sessionToken = sessionToken;
   }
 
-  public void setSessionToken(long unique) throws NoSuchAlgorithmException {
+  public void generateSessionToken(long unique) throws NoSuchAlgorithmException {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
     digest.update(Long.toString(unique).getBytes());
     byte[] bytes = digest.digest();
@@ -127,7 +125,8 @@ public class SessionToken {
       return false;
     }
     SessionToken sessionToken = (SessionToken) o;
-    return Objects.equals(this.sessionToken, sessionToken.sessionToken) && Objects.equals(this.userRole, sessionToken.userRole);
+    return Objects.equals(this.sessionToken, sessionToken.sessionToken)
+        && Objects.equals(this.userRole, sessionToken.userRole);
   }
 
   @Override

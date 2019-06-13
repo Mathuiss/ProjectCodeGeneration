@@ -19,9 +19,11 @@ import io.swagger.repositories.TransactionRepository;
 @Service
 public class TransactionService {
     private TransactionRepository transactions;
+    private SecurityService security;
 
-    public TransactionService(TransactionRepository transactions) {
+    public TransactionService(TransactionRepository transactions, SecurityService security) {
         this.transactions = transactions;
+        this.security = security;
 
         loadOnStartup();
     }
@@ -42,7 +44,7 @@ public class TransactionService {
         }
     }
 
-    public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Integer user, String sender,
+    public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Long userId, String sender,
             String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -76,8 +78,8 @@ public class TransactionService {
             }
 
             // Check for user
-            if (user != null) {
-                if (user != transaction.getUser()) {
+            if (userId != null) {
+                if (userId != transaction.getUserId()) {
                     continue;
                 }
             }
