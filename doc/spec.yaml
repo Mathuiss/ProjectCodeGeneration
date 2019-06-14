@@ -1,0 +1,584 @@
+openapi: 3.0.0
+info:
+  version: "0.1"
+  title: "404's Project Code Generation"
+  description: "Dit is het project van groep 404"
+paths:
+  /accounts:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Accounts
+      summary: base for savingsaccount and currentAccounts
+      operationId: fetchAccount
+      description: Calling this allows you to fetch the account data
+      parameters:
+      - in: query
+        name: type
+        description: Enter the type of account eg. savings
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: List of all accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: bad input parameter
+        401:
+          description: Unauthorized operation
+
+  /accounts/{iban}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Accounts
+      description: Get the account related to given id
+      summary: Get the account related to given id
+      operationId: GetAccountByIban
+      parameters:
+      - in: path
+        name: iban
+        description: IBAN of the account you want to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Account corresponding to the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        401:
+          description: Unauthorized
+    patch:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Accounts
+      description: update account by given IBAN
+      operationId: UpdateAccountByIBAN
+      parameters:
+      - in: path
+        name: iban
+        required: true
+        schema:
+          type: string 
+      - in: query 
+        name: iban
+        required: true
+        schema:
+          type: object
+          properties: 
+            DailyLimit: 
+              type: integer
+            AbsoluteLimit:
+              type: number
+          minProperties: 1
+          maxProperties: 1
+          additionalProperties: false
+        style: form
+        explode: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'     
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        401:
+          description: Unauthorized
+    
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Accounts
+      description: delete specified account
+      operationId: DeleteAccountByIBAN
+      parameters:
+        - in: path
+          name: iban
+          description: id of the account you want to (soft)delete
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Account'
+        400:
+          description: Id is not correctly formatted
+        401:
+          description: Unauthorized
+ 
+  /users:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      summary: User 
+      operationId: getUsers
+      description: Get all users
+      responses:
+        200:
+          description: list of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        400:
+          description: bad input parameter
+        401:
+          description: Unauthorized
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      description: Create new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Post succesfull
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        400:
+            description: bad input parameter
+        401:
+          description: Unauthorized
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      description: Updated user
+      requestBody:
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Post succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+            description: bad input parameter
+        401:
+          description: Unauthorized
+      
+  /users/{id}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      description: Get user corresponding with id
+      summary: Gets user corresponding with id
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: id
+          description: id of the user you want to get
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Single user corresponding with given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Id is not correctly formatted
+        401:
+          description: Unauthorized
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      description: delete specified user
+      operationId: DeleteUserById
+      parameters:
+        - in: path
+          name: id
+          description: id of the user you want to (soft)delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string                  
+        400:
+          description: Id is not correctly formatted
+        401:
+          description: Unauthorized
+
+  /users/transactions:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Users
+      description: All transactions of this user
+      operationId: GetTransactionOfUser
+      parameters:
+        - in: query
+          name: account
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of all transactions for this user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        400:
+          description: bad input parameter
+        401:
+          description: Unauthorized
+        
+  /transactions:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Transactions
+      summary: Transaction 
+      operationId: fetchTransaction
+      parameters:
+        - in: query
+          name: datetimestart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: datetimeend
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: user
+          schema:
+            type: integer
+        - in: query
+          name: sender
+          schema:
+            type: string
+        - in: query
+          name: reciever
+          schema:
+            type: string
+        - in: query
+          name: accounttype
+          schema:
+            type: string
+        - in: query
+          name: minvalue
+          schema:
+            type: number
+        - in: query
+          name: maxvalue
+          schema:
+            type: number
+        - in: query
+          name: transactiontype
+          schema:
+            type: string
+      responses:
+        200:
+          description: Get all transactions
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        401:
+          description: Unauthorized
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Transactions
+      summary: Transaction 
+      operationId: createTransaction
+      description: Calling this allows you to fetch banking Transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        200:
+          description: banking Transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        400:
+          description: bad input parameter    
+  
+  /transactions/{id}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Transactions
+      parameters:
+        - in: path
+          name: id
+          description: Id of the transactions you want to get
+          required: true
+          schema:
+            type: integer
+      description: Get transaction with id
+      operationId: GetTransactionById
+      responses:
+        200:
+          description: Single transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  
+  /withdraw:
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Transactions
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        200: 
+          description: ok
+        400:
+          description: Bad input
+        401: 
+          description: Unauthorized
+
+  /deposit:
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Transactions
+      requestBody: 
+        required: true
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+      responses:
+        200: 
+          description: ok
+        400:
+          description: Bad input
+        401:
+          description: Unauthorized
+    
+  /login:
+    post:
+      tags:
+        - Login
+      requestBody: 
+        required: true
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+                required:
+                  - username
+                  - password
+      responses:
+        200: 
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionToken:
+                    type: string
+                  userRole:
+                    type: string
+
+        400:
+          description: Abnormal input
+
+  /logout:
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Login
+      description: logout
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionToken:
+                  type: string
+                userRole:
+                  type: string
+      responses:
+        200:
+          description: Post succesfull
+        400:
+            description: bad input parameter
+        401:
+          description: Unauthorized
+          
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        IBAN: 
+          type: string
+          pattern: 'NL\d{2}INHO0\d{9}'
+        balance:
+          type: number
+        TransactionLimit:
+          type: number
+        DailyLimit:
+          type: integer
+        Active:
+          type: boolean
+
+    CurrentAccount:
+      type: object
+      properties:
+        AbsoluteLimit:
+          type: number
+
+    SavingsAccount:
+      type: object
+      properties:
+        AbsoluteLimit:
+          type: number
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        hash:
+          type: string 
+        streetname:
+          type: string
+        zipcode:
+          type: string  #redex
+          pattern: '\d{4}[A-Z]{2}'
+        addressnumber:
+          type: integer
+        appendix:
+          type: string
+        PhoneNumber:
+          type: string
+        CurrentAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrentAccount'
+        SavingsAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SavingsAccount'
+        IsEmployee:
+          type: boolean
+    
+    Transaction:
+      type: object
+      properties:
+        TransactionId:
+          type: integer
+        sender:
+          type: string
+          pattern: 'NL\d{2}INHO0\d{9}'
+        reciever:
+          type: string
+          pattern: 'NL\d{2}INHO0\d{9}'
+        user:
+          type: integer
+        amount:
+          type: number
+        timestamp:
+          type: string
+          format: date-time
+           
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-authtoken
+    
+
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/RobbinKragtwijk/404CodeGeneration/0.1

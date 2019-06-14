@@ -1,9 +1,9 @@
 [
   {
-    "id": 1,
+    "userId": 1,
     "name": "Jelle Spreij",
     "email": "jelle.jelle@jelle.jelle",
-    "hash": "abcde",
+    "hash": "36bbe50ed96841d10443bcb670d6554f0a34b761be67ec9c4a8ad2c0c44ca42c",
     "streetname": "Oostwest",
     "zipcode": "1234AB",
     "addressnumber": "10",
@@ -14,10 +14,10 @@
     "isActive": true
   },
   {
-    "id": 2,
+    "userId": 2,
     "name": "Patatjes",
     "email": "patat@gmail.com",
-    "hash": "patatjes123",
+    "hash": "4f288c269e519dd507a51ba07d44ac283a66cd50b618da188a22483e801aba39",
     "streetname": "WestOost",
     "zipcode": "1234BA",
     "addressnumber": "10",
@@ -28,10 +28,10 @@
     "isActive": false
   },
   {
-    "id": 3,
+    "userId": 3,
     "name": "test",
     "email": "test@gmail.com",
-    "hash": "W@chtwoord1",
+    "hash": "984f2a88d92096b1fb8c0dba37d06cc06f268bf7c59d284edd80065795ccb6e1",
     "streetname": "Amsterdam",
     "zipcode": "1060AA",
     "addressnumber": "10",
@@ -42,10 +42,10 @@
     "isActive": true
   },
   {
-    "id": 4,
+    "userId": 4,
     "name": "actief",
     "email": "actief@gmail.com",
-    "hash": "actiefikben",
+    "hash": "dc00c903852bb19eb250aeba05e534a6d211629d77d055033806b783bae09937",
     "streetname": "WestOost",
     "zipcode": "1234BA",
     "addressnumber": "10",

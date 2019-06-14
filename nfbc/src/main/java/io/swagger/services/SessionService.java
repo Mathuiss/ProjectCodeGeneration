@@ -1,5 +1,7 @@
 package io.swagger.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -11,6 +13,11 @@ import io.swagger.model.SessionToken;
 import io.swagger.model.User;
 import io.swagger.repositories.SessionRepository;
 import io.swagger.repositories.UserRepository;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class SessionService {
@@ -24,10 +31,9 @@ public class SessionService {
     }
 
     public boolean userExist(String email) {
-        logger.info("in boolean method userExis " + email);
 
         for (User user : userRepository.findAll()) {
-            logger.info("looking in list");
+
             if (user.getEmail().equals(email)) {
                 logger.info("--- Userexist ---");
                 return true;
@@ -47,14 +53,12 @@ public class SessionService {
         return 0;
     }
 
-    public boolean passwordCheck(long id, String password) {
-        // for (User user : getUserList()) {
+    public boolean passwordCheck(long id, String password) throws NoSuchAlgorithmException {
+
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.getHash().equals(password)) {
-                    logger.info("found user password" + user.getHash());
-                    return true;
-                }
+                logger.info("password is " + user.compareHash(password));
+                return user.compareHash(password);
             }
         }
         return false;
@@ -66,7 +70,7 @@ public class SessionService {
                 if (user.getIsActive()) {
                     return true;
                 } else {
-                    logger.info("user is deactivated");
+                    logger.info("user is not active");
                 }
             }
         }
@@ -77,7 +81,7 @@ public class SessionService {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
                 if (user.getIsEmployee()) {
-                    logger.info("user is eployee");
+                    logger.info("user is employee");
                     return true;
                 }
             }
@@ -86,13 +90,15 @@ public class SessionService {
         return false;
     }
 
-    public SessionToken getSessionToken(Body body, long userId) throws Exception {
+    public SessionToken getSessionToken(long userId) throws Exception {
         SessionToken sessionToken = new SessionToken();
-        sessionToken.setSessionToken(System.currentTimeMillis());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        sessionToken.generateSessionToken(System.currentTimeMillis());
+        sessionToken.setTimestamp(LocalDateTime.now().format(formatter));
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 
-        logger.info("--- getSessionToken tot zover ---");
+        logger.info("--- getSessionToken ---");
 
         // Get user from id and check existence
         Optional<User> result = userRepository.findById(userId);
@@ -111,12 +117,22 @@ public class SessionService {
         return sessionToken;
     }
 
-    public boolean isSessionTokenEmpty(SessionToken sessionTokenModel) {
-        if (!sessionTokenModel.getSessionToken().isEmpty()) {
-            return true;
+    public void doesSessionTokenExist(String sessionToken) throws Exception {
+        Optional<SessionToken> sessionRes = sessionRepository.findById(sessionToken);
+
+        if (!sessionRes.isPresent()) {
+            throw new Exception("No session token found for: " + sessionToken);
         }
-        return false;
     }
 
+    public void deActivateSessionToken(SessionToken sessionToken) {
 
+        if (sessionToken.isActive()) {
+            sessionToken.setActive(false);
+
+            sessionRepository.save(sessionToken);
+
+            logger.info("sessionToken state " + sessionToken.isActive());
+        }
+    }
 }

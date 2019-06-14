@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -23,6 +26,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class Transaction {
   @JsonProperty("TransactionId")
   @Id
+  @SequenceGenerator(name = "transaction_sequence", initialValue = 0)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_sequence")
   private long transactionId = 0;
 
   @JsonProperty("sender")
@@ -43,6 +48,18 @@ public class Transaction {
   public Transaction transactionId(Integer transactionId) {
     this.transactionId = transactionId;
     return this;
+  }
+
+  public Transaction() {
+  }
+
+  public Transaction(long id, String sender, String reciever, long userId, double amount, String timestamp) {
+    this.transactionId = id;
+    this.sender = sender;
+    this.reciever = reciever;
+    this.userId = userId;
+    this.amount = BigDecimal.valueOf(amount);
+    this.timestamp = timestamp;
   }
 
   /**
