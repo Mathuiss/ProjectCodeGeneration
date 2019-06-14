@@ -29,21 +29,56 @@ public class UsersApiController implements UsersApi {
 
     private UserService service;
 
+    private final HttpServletRequest request;
+
+
+
     @org.springframework.beans.factory.annotation.Autowired
     public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService service) {
         this.service = service;
+        this.request = request;
     }
 
     public ResponseEntity<InlineResponse200> deleteUserById(
-            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id) {
-        try {
-            service.deleteUserById(id);
-            return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<InlineResponse200>(HttpStatus.BAD_REQUEST);
-        }
+            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id)
+    {
+        
+        try 
+        {
+            if (security.isAllowed(request.getHeader("session"), "employee"))
+            {
+                    try
+                    {
+                        service.deleteUserById(id);
+                        return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.error(ex.getMessage(), ex);
+                        return new ResponseEntity<InlineResponse200>(HttpStatus.BAD_REQUEST);
+                    }
+                } 
+                else
+                {
+                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                }
+            }
+
+            
+            catch (Exception e) 
+            {
+                
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+       
     }
+    
+            
+        
+        
+        
+        
+    
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
             @ApiParam(value = "", required = true) @PathVariable("id") long id,
