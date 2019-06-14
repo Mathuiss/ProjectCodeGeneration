@@ -20,6 +20,7 @@ import io.swagger.model.Account;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
+import io.swagger.services.SecurityService;
 import io.swagger.services.UserService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
@@ -31,110 +32,143 @@ public class UsersApiController implements UsersApi {
 
     private final HttpServletRequest request;
 
-
+    private SecurityService security;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService service) {
+    public UsersApiController(HttpServletRequest request, UserService service, SecurityService security) {
         this.service = service;
         this.request = request;
+        this.security = security;
     }
 
     public ResponseEntity<InlineResponse200> deleteUserById(
-            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id)
-    {
-        
-        try 
-        {
-            if (security.isAllowed(request.getHeader("session"), "employee"))
-            {
-                    try
-                    {
-                        service.deleteUserById(id);
-                        return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
-                    }
-                    catch (Exception ex)
-                    {
-                        log.error(ex.getMessage(), ex);
-                        return new ResponseEntity<InlineResponse200>(HttpStatus.BAD_REQUEST);
-                    }
-                } 
-                else
-                {
-                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            @ApiParam(value = "id of the user you want to (soft)delete", required = true) @PathVariable("id") long id) {
+        try {
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    service.deleteUserById(id);
+                    return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<InlineResponse200>(HttpStatus.BAD_REQUEST);
                 }
-            }
-
-            
-            catch (Exception e) 
-            {
-                
+            } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-       
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
     }
-    
-            
-        
-        
-        
-        
-    
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
             @ApiParam(value = "", required = true) @PathVariable("id") long id,
             @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account) {
+
         try {
-            Iterable<Transaction> transactions = service.getTransactionOfUser(id);
-            return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<Iterable<Transaction>>(HttpStatus.BAD_REQUEST);
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    Iterable<Transaction> transactions = service.getTransactionOfUser(id);
+                    return new ResponseEntity<Iterable<Transaction>>(transactions, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<Iterable<Transaction>>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
     }
 
     public ResponseEntity<User> getUserById(
             @ApiParam(value = "id of the user you want to get", required = true) @PathVariable("id") long id) {
+
         try {
-            User user = service.getUserById(id);
-            return new ResponseEntity<User>(user, HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    User user = service.getUserById(id);
+                    return new ResponseEntity<User>(user, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
     }
 
     public ResponseEntity<Iterable<User>> getUsers(
             @ApiParam(value = "which users you want to get", required = false) @PathParam("state") String query) {
+
         try {
-            Iterable<User> users = service.getAllUsers(query);
-            return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    Iterable<User> users = service.getAllUsers(query);
+                    return new ResponseEntity<Iterable<User>>(users, HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
     }
 
     public ResponseEntity<User> usersPost(@ApiParam(value = "") @Valid @RequestBody User body) {
+
         try {
-            service.createUser(body);
-            return new ResponseEntity<User>(HttpStatus.CREATED);
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<User>(HttpStatus.CONFLICT);
+            if (security.isAllowed(request.getHeader("session"), "employee")) {
+                try {
+                    service.createUser(body);
+                    return new ResponseEntity<User>(HttpStatus.CREATED);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<User>(HttpStatus.CONFLICT);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
     }
 
     public ResponseEntity<User> usersPut(@ApiParam(value = "") @Valid @RequestBody User body) {
-        try
-        {
-            service.updateUser(body);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+        try {
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
+                try {
+                    service.updateUser(body);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        catch(Exception ex)
-        {
-            log.error(ex.getMessage(), ex);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
     }
 
 }

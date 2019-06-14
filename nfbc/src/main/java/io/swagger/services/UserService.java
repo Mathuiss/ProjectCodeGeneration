@@ -114,8 +114,8 @@ public class UserService {
     }
 
     public Iterable<Transaction> getTransactionOfUser(long id) {
-            Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
-            return result;       
+        Iterable<Transaction> result = userRepository.findTransactionByUserId(id);
+        return result;
     }
 
     public void updateUser(User changedUser) throws Exception {
