@@ -10,33 +10,76 @@
 </head>
 
 <body>
-    <header>
-        <h1>NFBC</h1>
-    </header>
+<header>
+    <h1>NFBC</h1>
+</header>
 
-    <div class="signin">
-        <form>
+<div class="signin">
+    <form id="addPost">
 
-            <h2>log in</h2>
+        <h2>log in</h2>
 
-            <input id="username" type="text" name="username" placeholder="Username">
-            <input id="password" type="password" name="pass" placeholder="Password">
+        <input id="username" type="text" name="username" placeholder="Username">
+        <input id="password" type="password" name="password" placeholder="Password">
 
-            <button id="getText">klikme</button>
-            <a href="homeScreen.html"><input type="button" value="Log In"></a><br><br>
-
-            <div id="foutmelding">
-                <a href="#"
-                    style="margin-right: 0px; font-size: 13px; font-family: Verdana, Geneva, Tahoma, sans-serif">
-                    loginnaam of wachtwoord is fout</a>
-            </div>
-        </form>
-    </div>
-
-    <script>
+        <!--<button id="getPost">klikme</button>-->
+        <input type="submit" value="submit">
 
 
-    </script>
+        <!--<a href="homeScreen.html"><input type="button" value="Log In"></a><br><br>
+        <div id="foutmelding">
+            <a href="#"
+                style="margin-right: 0px; font-size: 13px; font-family: Verdana, Geneva, Tahoma, sans-serif">
+                loginnaam of wachtwoord is fout</a>
+        </div>
+        document.getElementById('getPost').addEventListener('click', getPost);
+
+
+                    function getPost() {
+            fetch('http://localhost:8080/login')
+                .then((res) => res.json())
+                .then((data) => {
+                    let output = '<h2>Posts</h2>';
+                    data.forEach(function (post) {
+                        output += `
+                    <div>
+                        <h3>${post.username}</h3>
+                        <p>${post.pass}</p>
+                    </div>
+                `;
+                    });
+                    document.getElementById('output').innerHTML = output;
+                });
+        }
+    -->
+    </form>
+</div>
+
+<script>
+        $(document).ready(function () {
+            var url = "login/";
+
+            $("#submit").click(function (e) {
+                e.preventDefault();
+                var body = {
+                    "password": $("#password").val(),
+                    "username": $("#username").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(body),
+                    contentType: "application/json",
+                    success: function (success) {
+                        $("#result").text((success));
+                    }
+                })
+            });
+        });
+
+
+</script>
 
 
 
