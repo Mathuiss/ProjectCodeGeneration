@@ -55,20 +55,21 @@
                         delete success.timestamp;
                         delete success.isActive;
 
-                        var name = "sessionToken";
+                        var name = "ApiKeyAuth";
                         var value = success.sessionToken;
 
                         document.cookie = name + "=" + value; //verloop tijd, date. 
 
                         location.href = "homepage.html";
+                        sessionStorage.setItem('ApiKeyAuth', document.cookie);
 
                     },
                     statusCode: {
                         400: function () {
-                            alert("function bad");
+                            alert("Bad request");
                         },
                         401: function () {
-                            alert("function bad");
+                            alert("Unauthorizeda");
                         }
                     }
                 })
