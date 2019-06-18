@@ -52,19 +52,14 @@
 
                         delete success.active;
 
-                        var name = "ApiKeyAuth";
-                        var value = success.sessionToken;
-
-                        document.cookie = name + "=" + value; //verloop tijd, date.                         
                         location.href = "homepage.html";
 
                         sessionStorage.clear();
-                        sessionStorage.setItem('ApiKeyAuth', document.cookie);
+                        sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
                         sessionStorage.setItem('user', success.user);
                         sessionStorage.setItem('userRole', success.userRole);
                         sessionStorage.setItem('timestamp', success.timestamp);
                         sessionStorage.setItem('isActive', success.isActive);
-                        sessionStorage.setItem('sessiontoken', value);
 
                     },
                     statusCode: {

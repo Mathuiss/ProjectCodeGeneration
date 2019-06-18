@@ -16,10 +16,12 @@
 </head>
 
 <body>
-    <!--<input id="Logout" type="submit" value="Logout">-->
+    <!--<input id="Logout" type="submit" value="Logout">
     <input id="test" type="test" value="test">
+    <input id="Logout" type="submit" value="Logout">-->
+
     <input id="submit" type="submit" value="Logout">
-    <input id="Logout" type="submit" value="Logout">
+
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
@@ -36,7 +38,7 @@
         $("#submit").click(function (e) {
             e.preventDefault();
             var body = {
-                "sessionToken": sessionStorage.getItem('sessiontoken'),
+                "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
                 "user": sessionStorage.getItem('user'),
                 "userRole": sessionStorage.getItem('userRole'),
                 "timestamp": sessionStorage.getItem('timestamp'),
@@ -52,7 +54,7 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    alert('good');
+                    alert('logging out');
 
                     sessionStorage.clear();
                     location.href = "index.html";
