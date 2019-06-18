@@ -20,7 +20,7 @@
     <input id="test" type="test" value="test">
     <input id="Logout" type="submit" value="Logout">-->
 
-    <input id="Logout" type="Logout" value="Logout">
+    <input type="Logout" value="Logout" id="Logout">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
@@ -32,7 +32,8 @@
     });
     document.getElementById("Logout").addEventListener("click", $(document).ready(function () {
 
-        var url = "http://localhost:8080/logout";
+        //var url = "http://localhost:8080/logout";
+        var url = "/logout";
 
 
         $("#Logout").click(function (e) {
@@ -54,7 +55,7 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    alert('logging out');
+                    //alert('logging out');
 
                     sessionStorage.clear();
                     location.href = "index.html";
@@ -64,9 +65,15 @@
                 statusCode: {
                     400: function () {
                         alert("Bad request");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     },
                     401: function () {
                         alert("Unauthorized");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     }
                 }
             })
