@@ -25,6 +25,9 @@
 
 
 <script>
+    document.getElementById("redirect-transactions").addEventListener("click", function () {
+        location.href = "transactions.html";
+    });
     document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
         var url = "http://localhost:8080/logout";
@@ -40,9 +43,6 @@
                 "isActive": sessionStorage.getItem('isActive')
 
             };
-    document.getElementById("redirect-transactions").addEventListener("click", function () {
-        location.href = "transactions.html";
-    });
 
             $.ajax({
                 method: "POST",

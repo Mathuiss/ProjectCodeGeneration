@@ -25,13 +25,13 @@
 
 
 <script>
+    document.getElementById("redirect-transactions").addEventListener("click", function () {
+        location.href = "transactions.html";
+    });
     document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
         var url = "http://localhost:8080/logout";
 
-
-        //alert(sessionStorage.getItem('ApiKeyAuth'));
-    });
 
         $("#submit").click(function (e) {
             e.preventDefault();
@@ -41,9 +41,6 @@
                 "userRole": sessionStorage.getItem('userRole'),
                 "timestamp": sessionStorage.getItem('timestamp'),
                 "isActive": sessionStorage.getItem('isActive')
-    document.getElementById("redirect-transactions").addEventListener("click", function () {
-        location.href = "transactions.html";
-    });
 
             };
 
