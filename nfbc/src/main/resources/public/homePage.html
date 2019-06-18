@@ -9,11 +9,20 @@
 </head>
 
 <body>
-
+    <input id="Logout" type="submit" value="Logout">
 </body>
 
 <script>
-    alert(sessionStorage.getItem('ApiKeyAuth'));
+    document.getElementById("Logout").addEventListener("click", function () {
+
+        sessionStorage.clear();
+        location.href = "index.html";
+
+
+        //alert(sessionStorage.getItem('ApiKeyAuth'));
+    });
+
+
 </script>
 
 </html>

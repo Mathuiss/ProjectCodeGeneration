@@ -30,6 +30,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
         document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+
             var url = "http://localhost:8080/login";
 
             $("#submit").click(function (e) {
@@ -39,7 +40,7 @@
                     "password": $("#password").val()
 
                 };
-                alert(" username: " + body.username + " password: --> " + body.password);
+                //alert(" username: " + body.username + " password: --> " + body.password);
 
                 $.ajax({
                     method: "POST",
@@ -62,6 +63,7 @@
 
                         location.href = "homepage.html";
                         sessionStorage.setItem('ApiKeyAuth', document.cookie);
+
 
                     },
                     statusCode: {
