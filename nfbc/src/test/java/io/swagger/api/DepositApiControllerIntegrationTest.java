@@ -23,7 +23,7 @@ public class DepositApiControllerIntegrationTest {
     public void depositPostTest() throws Exception {
         Transaction body = new Transaction();
         ResponseEntity<Void> responseEntity = api.depositPost(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
 }
