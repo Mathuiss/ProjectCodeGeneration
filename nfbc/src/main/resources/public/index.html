@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
+    <title>NFBC</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <header>
+        <h1>NFBC</h1>
+    </header>
+
+    <div class="signin">
+        <form id="addPost">
+
+            <h2>log in</h2>
+
+            <input id="username" type="email" name="username" placeholder="Username" autocomplete="email" required>
+            <input id="password" type="password" name="password" placeholder="Password" required>
+
+            <input id="submit" type="submit" value="submit">
+
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+
+            var url = "http://localhost:8080/login";
+
+            $("#submit").click(function (e) {
+                e.preventDefault();
+                var body = {
+                    "username": $("#username").val(),
+                    "password": $("#password").val()
+
+                };
+                //alert(" username: " + body.username + " password: --> " + body.password);
+
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: JSON.stringify(body),
+                    contentType: "application/json",
+                    success: function (success) {
+                        $("#result").text((success));
+
+                        delete success.active;
+                        delete success.user;
+                        delete success.userRole;
+                        delete success.timestamp;
+                        delete success.isActive;
+
+                        var name = "ApiKeyAuth";
+                        var value = success.sessionToken;
+
+                        document.cookie = name + "=" + value; //verloop tijd, date. 
+
+                        location.href = "homepage.html";
+                        sessionStorage.setItem('ApiKeyAuth', document.cookie);
+
+
+                    },
+                    statusCode: {
+                        400: function () {
+                            alert("Bad request");
+                        },
+                        401: function () {
+                            alert("Unauthorizeda");
+                        }
+                    }
+                })
+            });
+        }));
+        ;
+
+    </script>
+
+</body>
+
+</html>

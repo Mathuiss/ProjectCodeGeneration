@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="Logout" type="submit" value="Logout">
+</body>
+
+<script>
+    document.getElementById("Logout").addEventListener("click", function () {
+
+        sessionStorage.clear();
+        location.href = "index.html";
+
+
+        //alert(sessionStorage.getItem('ApiKeyAuth'));
+    });
+
+
+</script>
+
+</html>
