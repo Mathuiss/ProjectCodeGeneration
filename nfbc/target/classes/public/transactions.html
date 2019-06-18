@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <title>NFBC</title>
+    </head>
+    <body>
+        <input type="submit" value="Create Transaction" id="create">
+        <input type="submit" value="View Transactions" id="view">
+
+        <div id="query-box">
+            Date time start
+            <input type="text" id="datetimestart">
+            Date time end
+            <input type="text" id="datetimeend">
+            User
+            <input type="text" id="user">
+
+        </div>
+        <div id="show">
+
+        </div>
+    </body>
+    <script>
+        document.getElementById("view").addEventListener("click", function () {
+            var url = "http://localhost:8080/transactions";
+
+            if (sessionStorage.getItem("userRole") == "Employee") {
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: {
+                        "datetimestart": datetimestart,
+                        "datetimeend": datetimeend,
+                        "user": user,
+                        "sender": sender,
+                        "reciever": reciever,
+                        "accountype": accountType,
+                        "minvalue": minvalue,
+                        "maxvalue": maxvalue,
+                        "transactiontype": transactiontype
+                    },
+                    success: function (success) {
+
+                    },
+                    statusCode: {
+                        404: function () {
+
+                        },
+                        401: function () {
+
+                        },
+                        400: function () {
+
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: {
+                        "user": sessionStorage.getItem("user"),
+                    },
+                    success: function (success) {
+                        document.getElementById("show").append(success);
+                    },
+                    statusCode: {
+                        404: function () {
+
+                        },
+                        401: function () {
+
+                        },
+                        400: function () {
+
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</html>

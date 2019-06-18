@@ -10,6 +10,7 @@
 
 <body>
     <input id="Logout" type="submit" value="Logout">
+    <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
 <script>
@@ -20,6 +21,10 @@
 
 
         //alert(sessionStorage.getItem('ApiKeyAuth'));
+    });
+
+    document.getElementById("redirect-transactions").addEventListener("click", function () {
+        location.href = "transactions.html";
     });
 
 
