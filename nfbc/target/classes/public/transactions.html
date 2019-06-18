@@ -1,6 +1,7 @@
 <html>
     <head>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <meta charset="utf-8">
         <title>NFBC</title>
     </head>
     <body>
@@ -44,13 +45,13 @@
                     },
                     statusCode: {
                         404: function () {
-
+                            alert("Not found");
                         },
                         401: function () {
-
+                            alert("Unauthorized");
                         },
                         400: function () {
-
+                            alert("Bad Request");
                         }
                     }
                 });
@@ -61,18 +62,21 @@
                     data: {
                         "user": sessionStorage.getItem("user"),
                     },
+                    headers: {
+                        "session": sessionStorage.getItem("sessionToken")
+                    },
                     success: function (success) {
                         document.getElementById("show").append(success);
                     },
                     statusCode: {
                         404: function () {
-
+                            alert("Not found");
                         },
                         401: function () {
-
+                            alert("Unauthorized");
                         },
                         400: function () {
-
+                            alert("Bad Request");
                         }
                     }
                 });

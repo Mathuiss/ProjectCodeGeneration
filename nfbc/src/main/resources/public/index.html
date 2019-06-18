@@ -56,7 +56,6 @@
                         var value = success.sessionToken;
 
                         document.cookie = name + "=" + value; //verloop tijd, date.                         
-                        location.href = "homepage.html";
 
                         sessionStorage.clear();
                         sessionStorage.setItem('ApiKeyAuth', document.cookie);
@@ -66,6 +65,7 @@
                         sessionStorage.setItem('isActive', success.isActive);
                         sessionStorage.setItem('sessiontoken', value);
 
+                        location.href = "homepage.html";
                     },
                     statusCode: {
                         400: function () {

@@ -18,8 +18,7 @@
 <body>
     <!--<input id="Logout" type="submit" value="Logout">-->
     <input id="test" type="test" value="test">
-    <input id="submit" type="submit" value="Logout">
-    <input id="Logout" type="submit" value="Logout">
+    <input id="logout" type="submit" value="Logout">
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
@@ -28,12 +27,11 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
-    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+    document.getElementById("logout").addEventListener("click", function () {
 
         var url = "http://localhost:8080/logout";
 
-
-        $("#submit").click(function (e) {
+        $("#logout").click(function (e) {
             e.preventDefault();
             var body = {
                 "sessionToken": sessionStorage.getItem('sessiontoken'),
@@ -51,9 +49,6 @@
                 contentType: "application/json",
                 success: function (success) {
                     $("#result").text((success));
-
-                    alert('good');
-
                     sessionStorage.clear();
                     location.href = "index.html";
 
@@ -69,7 +64,7 @@
                 }
             })
         });
-    }));
+    });
     ;
 
 
