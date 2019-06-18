@@ -168,7 +168,7 @@ public class User {
     }
 
     public boolean compareHash(String password) throws NoSuchAlgorithmException {
-        //System.out.println(hash);
+        // System.out.println(hash);
 
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         digest.update(password.getBytes());
@@ -179,7 +179,7 @@ public class User {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         // Get complete hashed password in hex format
-        //System.out.println(sb.toString());
+        // System.out.println(sb.toString());
         return hash.equals(sb.toString());
     }
 
@@ -398,8 +398,8 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts,
-                /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
+        return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
+                accounts, /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
     }
 
     @Override

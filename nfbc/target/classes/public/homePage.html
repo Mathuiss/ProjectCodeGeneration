@@ -5,22 +5,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>NFBC HOME</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        if (sessionStorage.getItem('ApiKeyAuth') == null) {
+            location.href = "index.html";
+        }
+    </script>
 </head>
 
 <body>
-    <input id="Logout" type="submit" value="Logout">
+    <!--<input id="Logout" type="submit" value="Logout">-->
+    <input id="test" type="test" value="test">
+    <input id="submit" type="submit" value="Logout">
 </body>
 
+
 <script>
-    document.getElementById("Logout").addEventListener("click", function () {
+    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
-        sessionStorage.clear();
-        location.href = "index.html";
+        var url = "http://localhost:8080/logout";
 
-        delete cookie;
-        //alert(sessionStorage.getItem('ApiKeyAuth'));
-    });
+
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            var body = {
+                "sessionToken": sessionStorage.getItem('sessiontoken'),
+                "user": sessionStorage.getItem('user'),
+                "userRole": sessionStorage.getItem('userRole'),
+                "timestamp": sessionStorage.getItem('timestamp'),
+                "isActive": sessionStorage.getItem('isActive')
+
+            };
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
+
+                    alert('good');
+
+                    sessionStorage.clear();
+                    location.href = "index.html";
+
+                    //alert(sessionStorage.getItem('ApiKeyAuth'));
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+            })
+        });
+    }));
+    ;
 
 
 </script>
