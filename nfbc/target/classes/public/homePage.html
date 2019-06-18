@@ -20,7 +20,7 @@
     <input id="test" type="test" value="test">
     <input id="Logout" type="submit" value="Logout">-->
 
-    <input id="submit" type="submit" value="Logout">
+    <input id="Logout" type="Logout" value="Logout">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
@@ -30,12 +30,12 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
-    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+    document.getElementById("Logout").addEventListener("click", $(document).ready(function () {
 
         var url = "http://localhost:8080/logout";
 
 
-        $("#submit").click(function (e) {
+        $("#Logout").click(function (e) {
             e.preventDefault();
             var body = {
                 "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
