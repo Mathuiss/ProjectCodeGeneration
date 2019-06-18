@@ -60,8 +60,8 @@
 
                         document.cookie = name + "=" + value; //verloop tijd, date. 
 
-                        window.open("homepage.html", document.cookie);
-                        window.close();
+                        location.href = "homepage.html";
+
                     },
                     statusCode: {
                         400: function () {
