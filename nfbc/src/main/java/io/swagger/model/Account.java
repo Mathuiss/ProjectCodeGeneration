@@ -1,64 +1,144 @@
 package io.swagger.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.springframework.validation.annotation.Validated;
 
+import io.swagger.CustomIbanGenerator;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Account
  */
+
+// @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
+// property = "type")
+// @JsonSubTypes({ @Type(value = SavingsAccount.class, name = "savings"),
+// @Type(value = CurrentAccount.class, name = "current") })
 @Validated
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public class Account {
-  @ManyToOne
-  @JoinColumn(name = "id", nullable = false)
-  private User user;
+public abstract class Account {
+  Random random = new Random();
 
-  @JsonProperty("IBAN")
+  @JsonProperty("userId")
+  private Long userId = null;
+
+  // @ManyToOne()
+  // @JoinColumn(name = "user")
+  // @JsonProperty("user")
+  // private User user = null;
+
+  @JsonProperty("iban")
   @Id
-  private String IBAN = null;
+  private String iban = null;
 
   @JsonProperty("balance")
   private BigDecimal balance = null;
 
-  @JsonProperty("TransactionLimit")
+  @JsonProperty("transactionLimit")
   private BigDecimal transactionLimit = null;
 
-  @JsonProperty("DailyLimit")
+  @JsonProperty("absoluteLimit")
+  protected BigDecimal absoluteLimit = null;
+
+  @JsonProperty("dailyLimit")
   private Integer dailyLimit = null;
 
-  @JsonProperty("Active")
-  private Boolean active = null;
+  @JsonProperty("isActive")
+  private Boolean isActive = null;
 
-  public Account IBAN(String IBAN) {
-    this.IBAN = IBAN;
+  @JsonProperty("accountType")
+  private String accountType = null;
+
+  protected Account(Long userId/* , User user */, String iban, BigDecimal balance, BigDecimal transactionLimit,
+      BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
+    this.userId = userId;
+    // this.user = user;
+    this.iban = iban;
+    this.balance = balance;
+    this.transactionLimit = transactionLimit;
+    this.absoluteLimit = absoluteLimit;
+    this.dailyLimit = dailyLimit;
+    this.isActive = isActive;
+    this.accountType = accountType;
+  }
+
+  protected Account() {
+  }
+
+  public Account userId(Long userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get IBAN
+   * Get userId
    * 
-   * @return IBAN
+   * @return userId
+   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setuserId(Long userId) {
+    this.userId = userId;
+  }
+
+  // public User getUser() {
+  // return user;
+  // }
+
+  // public void setUser(User user) {
+  // this.user = user;
+  // }
+
+  public Account iban(String iban) {
+    this.iban = iban;
+    return this;
+  }
+
+  /**
+   * Get iban
+   * 
+   * @return iban
    **/
   @ApiModelProperty(value = "")
 
   @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
-  public String getIBAN() {
-    return IBAN;
+  public String getIban() {
+    return iban;
   }
 
-  public void setIBAN(String IBAN) {
-    this.IBAN = IBAN;
+  // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
+  // @GenericGenerator(name = "iban_seq", strategy =
+  // "io.swagger.CustomIbanGenerator", parameters = {
+  // @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
+  // @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0")
+  // })
+  public void setIban() {
+    final String COUNTRY_CODE = "NL";
+    NumberFormat controlFormatter = new DecimalFormat("00");
+    String controlCode = controlFormatter.format(random.nextInt(99));
+    final String BANK_CODE = "INHO0";
+    NumberFormat accountFormatter = new DecimalFormat("00");
+    String accountCode = accountFormatter.format(random.nextInt(999999999));
+
+    this.iban = COUNTRY_CODE + controlCode + BANK_CODE + accountCode;
   }
 
   public Account balance(BigDecimal balance) {
@@ -103,6 +183,25 @@ public class Account {
     this.transactionLimit = transactionLimit;
   }
 
+  public Account absoluteLimit(BigDecimal absoluteLimit) {
+    this.absoluteLimit = absoluteLimit;
+    return this;
+  }
+
+  /**
+   * Get absoluteLimit
+   * 
+   * @return absoluteLimit
+   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public BigDecimal getAbsoluteLimit() {
+    return absoluteLimit;
+  }
+
+  public abstract void setAbsoluteLimit(BigDecimal absoluteLimit) throws Exception;
+
   public Account dailyLimit(Integer dailyLimit) {
     this.dailyLimit = dailyLimit;
     return this;
@@ -123,24 +222,40 @@ public class Account {
     this.dailyLimit = dailyLimit;
   }
 
-  public Account active(Boolean active) {
-    this.active = active;
+  public Account isActive(Boolean isActive) {
+    this.isActive = isActive;
     return this;
   }
 
   /**
-   * Get active
+   * Get isActive
    * 
-   * @return active
+   * @return isActive
    **/
   @ApiModelProperty(value = "")
 
-  public Boolean isActive() {
-    return active;
+  public Boolean getIsActive() {
+    return isActive;
   }
 
-  public void setActive(Boolean active) {
-    this.active = active;
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public Account accountType(String accountType) {
+    this.accountType = accountType;
+    return this;
+  }
+
+  /**
+   * Get accountType
+   * 
+   * @return accountType
+   **/
+  @ApiModelProperty(value = "")
+
+  public String accountType() {
+    return accountType;
   }
 
   @Override
@@ -152,14 +267,17 @@ public class Account {
       return false;
     }
     Account account = (Account) o;
-    return Objects.equals(this.IBAN, account.IBAN) && Objects.equals(this.balance, account.balance)
+    return Objects.equals(this.userId, account.userId) && Objects.equals(this.iban, account.iban)
+        && Objects.equals(this.balance, account.balance)
         && Objects.equals(this.transactionLimit, account.transactionLimit)
-        && Objects.equals(this.dailyLimit, account.dailyLimit) && Objects.equals(this.active, account.active);
+        && Objects.equals(this.absoluteLimit, account.absoluteLimit)
+        && Objects.equals(this.dailyLimit, account.dailyLimit) && Objects.equals(this.isActive, account.isActive)
+        && Objects.equals(this.accountType, account.accountType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(IBAN, balance, transactionLimit, dailyLimit, active);
+    return Objects.hash(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive, accountType);
   }
 
   @Override
@@ -167,11 +285,14 @@ public class Account {
     StringBuilder sb = new StringBuilder();
     sb.append("class Account {\n");
 
-    sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    iban: ").append(toIndentedString(iban)).append("\n");
     sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    transactionLimit: ").append(toIndentedString(transactionLimit)).append("\n");
+    sb.append("    absoluteLimit: ").append(toIndentedString(absoluteLimit)).append("\n");
     sb.append("    dailyLimit: ").append(toIndentedString(dailyLimit)).append("\n");
-    sb.append("    active: ").append(toIndentedString(active)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    accountType: ").append(toIndentedString(accountType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

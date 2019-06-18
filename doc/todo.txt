@@ -1,0 +1,17 @@
+Allen:
+Authenticatie toevoegen aan controllers.
+
+Mathijs:
+Filter toevoegen uit Accounts en Users branches
+IT schrijven
+Security branch maken.
+
+Jelle:
+IT schrijven
+
+Sander:
+ManyToOne fixen.
+IT schrijven.
+Aanvullende test schrijven
+
+Robbin:

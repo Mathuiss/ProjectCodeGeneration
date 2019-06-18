@@ -1,6 +1,6 @@
 [
   {
-    "id": 2,
+    "userId": 1,
     "name": "Jelle Spreij",
     "email": "jelle.jelle@jelle.jelle",
     "hash": "36bbe50ed96841d10443bcb670d6554f0a34b761be67ec9c4a8ad2c0c44ca42c",
@@ -14,10 +14,10 @@
     "isActive": true
   },
   {
-    "id": 3,
+    "userId": 2,
     "name": "Patatjes",
     "email": "patat@gmail.com",
-    "hash": "4f288c269e519dd507a51ba07d44ac283a66cd50b618da188a22483e801aba39",
+    "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
     "streetname": "WestOost",
     "zipcode": "1234BA",
     "addressnumber": "10",
@@ -25,10 +25,10 @@
     "phoneNumber": "0612345678",
     "accounts": [],
     "isEmployee": true,
-    "isActive": true
+    "isActive": false
   },
   {
-    "id": 4,
+    "userId": 3,
     "name": "test",
     "email": "test@gmail.com",
     "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
@@ -42,7 +42,7 @@
     "isActive": true
   },
   {
-    "id": 5,
+    "userId": 4,
     "name": "actief",
     "email": "actief@gmail.com",
     "hash": "dc00c903852bb19eb250aeba05e534a6d211629d77d055033806b783bae09937",
@@ -53,6 +53,6 @@
     "phoneNumber": "0612345678",
     "accounts": [],
     "isEmployee": false,
-    "isActive": false
+    "isActive": true
   }
 ]

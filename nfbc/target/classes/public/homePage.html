@@ -19,6 +19,8 @@
     <!--<input id="Logout" type="submit" value="Logout">-->
     <input id="test" type="test" value="test">
     <input id="submit" type="submit" value="Logout">
+    <input id="Logout" type="submit" value="Logout">
+    <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
 
@@ -28,6 +30,9 @@
         var url = "http://localhost:8080/logout";
 
 
+        //alert(sessionStorage.getItem('ApiKeyAuth'));
+    });
+
         $("#submit").click(function (e) {
             e.preventDefault();
             var body = {
@@ -36,6 +41,9 @@
                 "userRole": sessionStorage.getItem('userRole'),
                 "timestamp": sessionStorage.getItem('timestamp'),
                 "isActive": sessionStorage.getItem('isActive')
+    document.getElementById("redirect-transactions").addEventListener("click", function () {
+        location.href = "transactions.html";
+    });
 
             };
 
@@ -66,6 +74,7 @@
         });
     }));
     ;
+
 
 
 </script>

@@ -1,6 +1,7 @@
 package io.swagger.services;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ public class SessionService {
     public boolean isUserActive(long id) {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.isActive()) {
+                if (user.getIsActive()) {
                     return true;
                 } else {
                     logger.info("user is not active");
@@ -79,7 +80,7 @@ public class SessionService {
     public boolean isEmployee(long id) {
         for (User user : userRepository.findAll()) {
             if (user.getuserId() == id) {
-                if (user.isEmployee()) {
+                if (user.getIsEmployee()) {
                     logger.info("user is employee");
                     return true;
                 }
@@ -91,9 +92,9 @@ public class SessionService {
 
     public SessionToken getSessionToken(long userId) throws Exception {
         SessionToken sessionToken = new SessionToken();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         sessionToken.generateSessionToken(System.currentTimeMillis());
-        sessionToken.setTimestamp(LocalDateTime.now().toString());
+        sessionToken.setTimestamp(LocalDateTime.now().format(formatter));
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 
@@ -105,7 +106,7 @@ public class SessionService {
             throw new Exception("User not found for id: " + userId);
         }
 
-        if (result.get().isEmployee()) {
+        if (result.get().getIsEmployee()) {
             sessionToken.setUserRole("Employee");
         } else {
             sessionToken.setUserRole("User");
@@ -115,7 +116,6 @@ public class SessionService {
         sessionRepository.save(sessionToken);
         return sessionToken;
     }
-
 
     public void doesSessionTokenExist(String sessionToken) throws Exception {
         Optional<SessionToken> sessionRes = sessionRepository.findById(sessionToken);
@@ -127,11 +127,10 @@ public class SessionService {
 
     public void deActivateSessionToken(SessionToken sessionToken) {
 
-        if(sessionToken.isActive()){
+        if (sessionToken.isActive()) {
             sessionToken.setActive(false);
 
             sessionRepository.save(sessionToken);
-
 
             logger.info("sessionToken state " + sessionToken.isActive());
         }

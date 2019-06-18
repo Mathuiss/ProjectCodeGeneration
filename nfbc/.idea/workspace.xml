@@ -24,7 +24,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/swagger/api/LogoutApiController.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/swagger/services/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret line="41" column="43" selection-start-line="41" selection-start-column="43" selection-end-line="41" selection-end-column="43" />
@@ -242,15 +242,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="swagger" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nfbc" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nfbc" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="swagger" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -286,7 +277,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Swagger2SpringBoot">
+  <component name="RunManager" selected="JUnit.UsersApiControllerIntegrationTest.usersPutTest">
     <configuration name="Swagger2SpringBoot" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.swagger.Swagger2SpringBoot" />
       <module name="nfbc" />
@@ -300,7 +291,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginApiControllerIntegrationTest.doesSessionTokenExistTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UsersApiControllerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="nfbc" />
       <extension name="coverage">
         <pattern>
@@ -309,14 +300,29 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.swagger.api" />
-      <option name="MAIN_CLASS_NAME" value="io.swagger.api.LoginApiControllerIntegrationTest" />
-      <option name="METHOD_NAME" value="doesSessionTokenExistTest" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsersApiControllerIntegrationTest.getTransactionOfUserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="nfbc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.swagger.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.swagger.api" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="getTransactionOfUserTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginApiControllerIntegrationTest.loginPostTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UsersApiControllerIntegrationTest.getUsersTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="nfbc" />
       <extension name="coverage">
         <pattern>
@@ -325,14 +331,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.swagger.api" />
-      <option name="MAIN_CLASS_NAME" value="io.swagger.api.LoginApiControllerIntegrationTest" />
-      <option name="METHOD_NAME" value="loginPostTest" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="getUsersTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogoutApiControllerIntegrationTest.logoutPostTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UsersApiControllerIntegrationTest.usersPutTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="nfbc" />
       <extension name="coverage">
         <pattern>
@@ -341,24 +347,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.swagger.api" />
-      <option name="MAIN_CLASS_NAME" value="io.swagger.api.LogoutApiControllerIntegrationTest" />
-      <option name="METHOD_NAME" value="logoutPostTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogoutApiControllerIntegrationTest.logoutPostTestResultOk" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="nfbc" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.swagger.api.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.swagger.api" />
-      <option name="MAIN_CLASS_NAME" value="io.swagger.api.LogoutApiControllerIntegrationTest" />
-      <option name="METHOD_NAME" value="logoutPostTestResultOk" />
+      <option name="MAIN_CLASS_NAME" value="io.swagger.api.UsersApiControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="usersPutTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -366,11 +356,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.usersPutTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.getTransactionOfUserTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest.getUsersTest" />
+        <item itemvalue="JUnit.UsersApiControllerIntegrationTest" />
         <item itemvalue="Application.Swagger2SpringBoot" />
-        <item itemvalue="JUnit.LoginApiControllerIntegrationTest.loginPostTest" />
-        <item itemvalue="JUnit.LoginApiControllerIntegrationTest.doesSessionTokenExistTest" />
-        <item itemvalue="JUnit.LogoutApiControllerIntegrationTest.logoutPostTestResultOk" />
-        <item itemvalue="JUnit.LogoutApiControllerIntegrationTest.logoutPostTest" />
       </list>
     </recent_temporary>
   </component>
@@ -391,8 +381,8 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogoutApiControllerIntegrationTest_logoutPostTest - 2019.06.13 at 22h 45m 44s.xml">
-      <configuration name="LogoutApiControllerIntegrationTest.logoutPostTest" configurationId="JUnit" />
+    <history-entry file="LoginTest_doesUserExist - 2019.06.13 at 12h 08m 38s.xml">
+      <configuration name="LoginTest.doesUserExist" configurationId="JUnit" />
     </history-entry>
     <history-entry file="LogoutApiControllerIntegrationTest_logoutPostTestResultOk - 2019.06.13 at 23h 31m 11s.xml">
       <configuration name="LogoutApiControllerIntegrationTest.logoutPostTestResultOk" configurationId="JUnit" />
@@ -403,23 +393,23 @@
     <history-entry file="LogoutApiControllerIntegrationTest_logoutPostTestResultOk - 2019.06.13 at 23h 34m 41s.xml">
       <configuration name="LogoutApiControllerIntegrationTest.logoutPostTestResultOk" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogoutApiControllerIntegrationTest_logoutPostTestResultOk - 2019.06.13 at 23h 39m 33s.xml">
-      <configuration name="LogoutApiControllerIntegrationTest.logoutPostTestResultOk" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest - 2019.06.13 at 21h 21m 35s.xml">
+      <configuration name="UsersApiControllerIntegrationTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LoginApiControllerIntegrationTest_doesSessionTokenExistTest - 2019.06.13 at 23h 54m 01s.xml">
-      <configuration name="LoginApiControllerIntegrationTest.doesSessionTokenExistTest" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest_getUsersTest - 2019.06.13 at 21h 22m 49s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.getUsersTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LoginApiControllerIntegrationTest_doesSessionTokenExistTest - 2019.06.13 at 23h 54m 22s.xml">
-      <configuration name="LoginApiControllerIntegrationTest.doesSessionTokenExistTest" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 23m 05s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LoginApiControllerIntegrationTest_doesSessionTokenExistTest - 2019.06.13 at 23h 55m 44s.xml">
-      <configuration name="LoginApiControllerIntegrationTest.doesSessionTokenExistTest" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest_getTransactionOfUserTest - 2019.06.13 at 21h 38m 36s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.getTransactionOfUserTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LoginApiControllerIntegrationTest_doesSessionTokenExistTest - 2019.06.13 at 23h 56m 10s.xml">
-      <configuration name="LoginApiControllerIntegrationTest.doesSessionTokenExistTest" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 44m 42s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LoginApiControllerIntegrationTest_loginPostTest - 2019.06.18 at 15h 04m 24s.xml">
-      <configuration name="LoginApiControllerIntegrationTest.loginPostTest" configurationId="JUnit" />
+    <history-entry file="UsersApiControllerIntegrationTest_usersPutTest - 2019.06.13 at 21h 46m 05s.xml">
+      <configuration name="UsersApiControllerIntegrationTest.usersPutTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -432,7 +422,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8288191" visible="true" weight="0.24733475" />
       <window_info id="Structure" order="1" sideWeight="0.17118093" side_tool="true" visible="true" weight="0.24733475" />
@@ -741,10 +732,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/swagger/Swagger2SpringBoot.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/io/swagger/api/UsersApiControllerIntegrationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        <state relative-caret-position="340">
+          <caret line="36" column="3" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
         </state>
       </provider>
     </entry>
