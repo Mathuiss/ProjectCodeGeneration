@@ -6,9 +6,7 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
 <header>
     <h1>NFBC</h1>
@@ -57,35 +55,27 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-        $(document).ready(function () {
-            var url = "8080/login";
+    $(document).ready(function () {
+        var url = "8080/login";
 
-            $("#submit").click(function (e) {
-                e.preventDefault();
-                var body = {
-                    "password": $("#password").val(),
-                    "username": $("#username").val()
-                };
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            var body = {
+                "password": $("#password").val(),
+                "username": $("#username").val()
+            };
 
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: JSON.stringify(body),
-                    contentType: "application/json",
-                    success: function (success) {
-                        $("#result").text((success));
-                    }
-                })
-            });
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
+                }
+            })
         });
-
-
+    });
 </script>
-
-
-
-
-
 </body>
-
 </html>
