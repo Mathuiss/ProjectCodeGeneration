@@ -6,7 +6,7 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="style.css">
-
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 
 <body>
@@ -27,7 +27,6 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
         document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
@@ -38,9 +37,7 @@
                 var body = {
                     "username": $("#username").val(),
                     "password": $("#password").val()
-
                 };
-                //alert(" username: " + body.username + " password: --> " + body.password);
 
                 $.ajax({
                     method: "POST",
@@ -50,21 +47,8 @@
                     success: function (success) {
                         $("#result").text((success));
 
-                        delete success.active;
-                        delete success.user;
-                        delete success.userRole;
-                        delete success.timestamp;
-                        delete success.isActive;
-
-                        var name = "ApiKeyAuth";
-                        var value = success.sessionToken;
-
-                        document.cookie = name + "=" + value; //verloop tijd, date. 
-
-                        location.href = "homepage.html";
                         sessionStorage.setItem('ApiKeyAuth', document.cookie);
-
-
+                        location.href = "homepage.html";
                     },
                     statusCode: {
                         400: function () {

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <input id="Logout" type="submit" value="Logout">
+
+    <input id="get" type="submit" value="Get all accounts">
+    <input id="getIban" type="submit" value="Get single account">
+    <input id="create" type="submit" value="Create new account">
+    <input id="delete" type="submit" value="Delete account">
+    <input id="update" type="submit" value="Update account">
+    <div id="query-box">
+        <input type="text">
+    </div>
+</body>
+
+<script>
+    document.getElementById("Logout").addEventListener("click", function () {
+        sessionStorage.clear();
+        location.href = "index.html";
+    });
+
+    document.getElementById("get").addEventListener("click", $(document).ready(function () {
+        debugger;
+        var url = "http://localhost:8080/accounts";
+
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            debugger;
+            var body = sessionStorage.getItem('ApiKeyAuth');
+
+            $.ajax({
+                method: "GET",
+                url: url,
+                headers: {
+                    "session": sessionStorage.getItem("ApiKeyAuth")
+                },
+                body: {
+                    "accountType": accountType,
+                },
+                success: function (success) {
+
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+            }
+            )
+            debugger;
+        });
+        debugger;
+    }))
+
+    document.getElementById("getIban").addEventListener("click", $(document).ready(function () {
+
+    }))
+
+    document.getElementById("create").addEventListener("click", $(document).ready(function () {
+
+    }))
+
+    document.getElementById("delete").addEventListener("click", $(document).ready(function () {
+
+    }))
+
+    document.getElementById("update").addEventListener("click", $(document).ready(function () {
+
+    }));
+    debugger;
+    ;
+
+
+</script>
+
+</html>
