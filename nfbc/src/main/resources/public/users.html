@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="Home" type="submit" value="Home">
+    <input id="getUsers" type="submit" value="get users">
+
+
+    <ul id="content"></ul>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+
+
+        document.getElementById("getUsers").addEventListener("click", $(document).ready(function () {
+            var url = "/users";
+            var $content = $("content");
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+            $("#getUsers").on("click", function () {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: "application/json",
+                    headers: { "session": sessionStorage.getItem("ApiKeyAuth") },
+                    success: function (users) {
+                        console.log("success", data);
+                        $.each(data, function (i, item) {
+                            $content.append("<li>id: " + users.userId + ", name: " + users.name + "</li>");
+                        })
+                    },
+                    statusCode: {
+                        400: function () {
+                            alert("Bad request");
+                        },
+                        401: function () {
+                            alert("Unauthorized");
+                        }
+                    }
+
+                });
+
+            });
+        }));
+
+    </script>
+    <script>
+        document.getElementById("Home").addEventListener("click", function () {
+            location.href = "homepage.html";
+        });
+    </script>
+</body>
+
+</html>
