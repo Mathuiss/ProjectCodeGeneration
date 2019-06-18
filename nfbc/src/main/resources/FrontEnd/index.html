@@ -22,65 +22,42 @@
         <input id="username" type="email" name="username" placeholder="Username" autocomplete="email" required>
         <input id="password" type="password" name="password" placeholder="Password" required>
 
-        <!--<button id="getPost">klikme</button>-->
         <input type="submit" value="submit">
 
-
-        <!--<a href="homeScreen.html"><input type="button" value="Log In"></a><br><br>
-        <div id="foutmelding">
-            <a href="#"
-                style="margin-right: 0px; font-size: 13px; font-family: Verdana, Geneva, Tahoma, sans-serif">
-                loginnaam of wachtwoord is fout</a>
-        </div>
-        document.getElementById('getPost').addEventListener('click', getPost);
-
-
-                    function getPost() {
-            fetch('http://localhost:8080/login')
-                .then((res) => res.json())
-                .then((data) => {
-                    let output = '<h2>Posts</h2>';
-                    data.forEach(function (post) {
-                        output += `
-                    <div>
-                        <h3>${post.username}</h3>
-                        <p>${post.pass}</p>
-                    </div>
-                `;
-                    });
-                    document.getElementById('output').innerHTML = output;
-                });
-        }
-    -->
     </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script>
+<script type="text/javascript">
         $(document).ready(function () {
-            var url = "8080/login";
+            var url = "http://localhost:8080/login";
 
             $("#submit").click(function (e) {
+                alert("3");
                 e.preventDefault();
                 var body = {
-                    "password": $("#password").val(),
-                    "username": $("#username").val()
-                };
+                    "username": $("#username").val(),
+                    "password": $("#password").val()
 
+                };
+                alert(body.password + " username " + body.username);
                 $.ajax({
                     type: "POST",
                     url: url,
                     data: JSON.stringify(body),
                     contentType: "application/json",
                     success: function (success) {
-                        $("#result").text((success));
+                        //$("#result").text((success));
+                        alert(text((success)));
                     }
+
                 })
+                    .then(response => response.json())
+                alert("5");
             });
         });
 
-
-</script>
+    </script>
 
 
 
