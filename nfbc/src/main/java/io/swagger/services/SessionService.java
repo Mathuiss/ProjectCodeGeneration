@@ -107,9 +107,9 @@ public class SessionService {
         }
 
         if (result.get().getIsEmployee()) {
-            sessionToken.setUserRole("Employee");
+            sessionToken.setUserRole("employee");
         } else {
-            sessionToken.setUserRole("User");
+            sessionToken.setUserRole("customer");
             logger.info("user role is: " + sessionToken.getUserRole());
         }
 

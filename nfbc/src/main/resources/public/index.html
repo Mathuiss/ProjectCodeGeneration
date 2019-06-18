@@ -51,19 +51,15 @@
                         $("#result").text((success));
 
                         delete success.active;
-                        delete success.user;
-                        delete success.userRole;
-                        delete success.timestamp;
-                        delete success.isActive;
-
-                        var name = "ApiKeyAuth";
-                        var value = success.sessionToken;
-
-                        document.cookie = name + "=" + value; //verloop tijd, date. 
 
                         location.href = "homepage.html";
-                        sessionStorage.setItem('ApiKeyAuth', document.cookie);
 
+                        sessionStorage.clear();
+                        sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
+                        sessionStorage.setItem('user', success.user);
+                        sessionStorage.setItem('userRole', success.userRole);
+                        sessionStorage.setItem('timestamp', success.timestamp);
+                        sessionStorage.setItem('isActive', success.isActive);
 
                     },
                     statusCode: {
@@ -71,7 +67,7 @@
                             alert("Bad request");
                         },
                         401: function () {
-                            alert("Unauthorizeda");
+                            alert("Unauthorized");
                         }
                     }
                 })
