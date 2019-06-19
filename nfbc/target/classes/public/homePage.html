@@ -20,7 +20,7 @@
     <input id="test" type="test" value="test">
     <input id="Logout" type="submit" value="Logout">-->
 
-    <input type="Logout" value="Logout" id="Logout">
+    <input id="logout" type="submit" value="Logout">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
@@ -30,13 +30,12 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
-    document.getElementById("Logout").addEventListener("click", $(document).ready(function () {
+    document.getElementById("logout").addEventListener("click", function () {
 
         //var url = "http://localhost:8080/logout";
         var url = "/logout";
 
-
-        $("#Logout").click(function (e) {
+        $("#logout").click(function (e) {
             e.preventDefault();
             var body = {
                 "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
@@ -54,8 +53,6 @@
                 contentType: "application/json",
                 success: function (success) {
                     $("#result").text((success));
-
-                    //alert('logging out');
 
                     sessionStorage.clear();
                     location.href = "index.html";
@@ -78,7 +75,7 @@
                 }
             })
         });
-    }));
+    });
     ;
 
 
