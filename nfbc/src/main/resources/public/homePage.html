@@ -21,6 +21,7 @@
     <input id="Logout" type="submit" value="Logout">-->
 
     <input id="submit" type="submit" value="Logout">
+    <input id="users" type="submit" value="users">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
@@ -30,6 +31,11 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
+
+    document.getElementById("users").addEventListener("click", function () {
+        location.href = "users.html";
+    });
+
     document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
         var url = "http://localhost:8080/logout";
@@ -49,7 +55,7 @@
             $.ajax({
                 method: "POST",
                 url: url,
-                data: JSON.stringify(body),
+                body: JSON.stringify(body),
                 contentType: "application/json",
                 success: function (success) {
                     $("#result").text((success));
