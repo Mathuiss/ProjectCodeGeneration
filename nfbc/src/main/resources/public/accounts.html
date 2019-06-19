@@ -50,19 +50,28 @@
 <script>
 
     document.getElementById("get").addEventListener("click", function () {
-        var url = "/accounts";
+        var url = "http://localhost:8080/accounts";
         var key = sessionStorage.getItem("ApiKeyAuth");
 
+        // var json = "{";
+
+        // if (document.getElementById("accountType").value != "") {
+        //     json += '"accountType": "' + document.getElementById("accountType").value + '",';
+        // }
+
+        // json += "}";
+        // json = json.replace(",}", "}");
+
+        // console.log("accountType: " + document.getElementById("accountType").value);
+
+        // if (sessionStorage.getItem("userRole") == "employee") {
         $.ajax({
             method: "GET",
             url: url,
+            //data: JSON.parse(json),
             headers: {
                 "session": key
             },
-            body: {
-                "accounttype": $("#accountType").val().trim(),
-            },
-            contentType: "application/json",
             success: function (accounts) {
                 console.log("success");
                 $.each(accounts, function (i, item) {
@@ -82,23 +91,39 @@
                 },
                 401: function () {
                     alert("Unauthorized");
+                },
+                404: function () {
+                    alert("Not found");
                 }
             }
         });
+        // }
+        // else {
+        //     alert("Not found");
+        // };
 
         document.getElementById("getIban").addEventListener("click", function () {
-            //var path = $("#iban").val().trim();
-            var path = "NL00INHO0000000003";
-            var url = "/accounts/" + path;
+            var path = $("#iban").val().trim();
+            //var path = "NL00INHO0000000003";
+            var url = "http://localhost:8080/accounts/" + path;
             var key = sessionStorage.getItem("ApiKeyAuth");
+
+            var json = "{";
+
+            if (document.getElementById("iban").value != "") {
+                json += '"iban": ' + document.getElementById("iban").value + '"';
+            }
+
+            json += "}";
+            json = json.replace(",}", "}");
 
             $.ajax({
                 method: "GET",
                 url: url,
+                data: JSON.parse(json),
                 headers: {
                     "session": key
                 },
-                contentType: "application/json",
                 success: function (accounts) {
                     console.log("success");
                     $.each(accounts, function (i, item) {
