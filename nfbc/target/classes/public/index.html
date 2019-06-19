@@ -6,7 +6,7 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
 </head>
 
 <body>
@@ -22,17 +22,18 @@
             <input id="username" type="email" name="username" placeholder="Username" autocomplete="email" required>
             <input id="password" type="password" name="password" placeholder="Password" required>
 
-            <input id="submit" type="submit" value="submit">
+            <input id="login" type="submit" value="submit">
 
         </form>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
-        document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+        document.getElementById("login").addEventListener("click", $(document).ready(function () {
 
             var url = "http://localhost:8080/login";
 
-            $("#submit").click(function (e) {
+            $("#login").click(function (e) {
                 e.preventDefault();
                 var body = {
                     "username": $("#username").val(),
@@ -49,20 +50,14 @@
 
                         delete success.active;
 
-                        var name = "ApiKeyAuth";
-                        var value = success.sessionToken;
-
-                        document.cookie = name + "=" + value; //verloop tijd, date.                         
-                        location.href = "homepage.html";
-
                         sessionStorage.clear();
-                        sessionStorage.setItem('ApiKeyAuth', document.cookie);
+                        sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
                         sessionStorage.setItem('user', success.user);
                         sessionStorage.setItem('userRole', success.userRole);
                         sessionStorage.setItem('timestamp', success.timestamp);
                         sessionStorage.setItem('isActive', success.isActive);
-                        sessionStorage.setItem('sessiontoken', value);
 
+                        location.href = "homepage.html";
                     },
                     statusCode: {
                         400: function () {

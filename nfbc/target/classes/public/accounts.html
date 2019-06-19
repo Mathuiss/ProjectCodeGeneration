@@ -5,49 +5,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Accounts</title>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 
 <body>
-    <input id="Logout" type="submit" value="Logout">
 
     <input id="get" type="submit" value="Get all accounts">
     <input id="getIban" type="submit" value="Get single account">
     <input id="create" type="submit" value="Create new account">
     <input id="delete" type="submit" value="Delete account">
     <input id="update" type="submit" value="Update account">
+
     <div id="query-box">
-        <input type="text">
+        <form>
+            <label id="iban">iban</label>
+            <input id="iban" name="iban" type="text">
+
+            <label id="userId">user ID</label>
+            <input id="userId" name="userId" type="number">
+
+            <label id="isActive">is active</label>
+            <input id="isActive" name="isActive" type="text">
+
+            <label id="accountType">account type</label>
+            <input id="accountType" name="accountType" type="text">
+
+            <label id="balance">balance</label>
+            <input id="balance" name="balance" type="number">
+
+            <label id="absoluteLimit">absolute limit</label>
+            <input id="absoluteLimit" name="absoluteLimit" type="number">
+
+            <label id="dailyLimit">daily limit</label>
+            <input id="dailyLimit" name="dailyLimit" type="number">
+
+            <label id="transactionLimit">transaction limit</label>
+            <input id="transactionLimit" name="transactionLimit" type="number">
+        </form>
     </div>
+    <ul id="content"></ul>
 </body>
 
 <script>
-    document.getElementById("Logout").addEventListener("click", function () {
-        sessionStorage.clear();
-        location.href = "index.html";
-    });
 
-    document.getElementById("get").addEventListener("click", $(document).ready(function () {
-        debugger;
-        var url = "http://localhost:8080/accounts";
+    document.getElementById("get").addEventListener("click", function () {
+        var url = "/accounts";
+        var key = sessionStorage.getItem("ApiKeyAuth");
 
-        $("#submit").click(function (e) {
-            e.preventDefault();
-            debugger;
-            var body = sessionStorage.getItem('ApiKeyAuth');
+        $.ajax({
+            method: "GET",
+            url: url,
+            headers: {
+                "session": key
+            },
+            body: {
+                "accounttype": $("#accountType").val().trim(),
+            },
+            contentType: "application/json",
+            success: function (accounts) {
+                console.log("success");
+                $.each(accounts, function (i, item) {
+                    document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
+                    document.getElementById("content").innerHTML += "userId: " + item.userId + " ";
+                    document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
+                    document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
+                    document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
+                    document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
+                    document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
+                    document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
+                })
+            },
+            statusCode: {
+                400: function () {
+                    alert("Bad request");
+                },
+                401: function () {
+                    alert("Unauthorized");
+                }
+            }
+        });
+
+        document.getElementById("getIban").addEventListener("click", function () {
+            //var path = $("#iban").val().trim();
+            var path = "NL00INHO0000000003";
+            var url = "/accounts/" + path;
+            var key = sessionStorage.getItem("ApiKeyAuth");
 
             $.ajax({
                 method: "GET",
                 url: url,
                 headers: {
-                    "session": sessionStorage.getItem("ApiKeyAuth")
+                    "session": key
                 },
-                body: {
-                    "accountType": accountType,
-                },
-                success: function (success) {
-
+                contentType: "application/json",
+                success: function (accounts) {
+                    console.log("success");
+                    $.each(accounts, function (i, item) {
+                        document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
+                        document.getElementById("content").innerHTML += "userId: " + item.userId + " ";
+                        document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
+                        document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
+                        document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
+                        document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
+                        document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
+                        document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
+                    })
                 },
                 statusCode: {
                     400: function () {
@@ -57,30 +120,21 @@
                         alert("Unauthorized");
                     }
                 }
-            }
-            )
-            debugger;
+            })
         });
-        debugger;
-    }))
 
-    document.getElementById("getIban").addEventListener("click", $(document).ready(function () {
+        document.getElementById("create").addEventListener("click", function () {
 
-    }))
+        });
 
-    document.getElementById("create").addEventListener("click", $(document).ready(function () {
+        document.getElementById("delete").addEventListener("click", function () {
 
-    }))
+        });
 
-    document.getElementById("delete").addEventListener("click", $(document).ready(function () {
+        document.getElementById("update").addEventListener("click", function () {
 
-    }))
-
-    document.getElementById("update").addEventListener("click", $(document).ready(function () {
-
-    }));
-    debugger;
-    ;
+        });
+    })
 
 
 </script>
