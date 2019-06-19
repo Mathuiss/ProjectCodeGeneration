@@ -31,7 +31,8 @@
     <script>
         document.getElementById("login").addEventListener("click", $(document).ready(function () {
 
-            var url = "http://localhost:8080/login";
+        //var url = "http://localhost:8080/login";
+        var url = "/login";
 
             $("#login").click(function (e) {
                 e.preventDefault();
@@ -40,15 +41,15 @@
                     "password": $("#password").val()
                 };
 
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: JSON.stringify(body),
-                    contentType: "application/json",
-                    success: function (success) {
-                        $("#result").text((success));
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
 
-                        delete success.active;
+                    delete success.active;
 
                         sessionStorage.clear();
                         sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
@@ -59,21 +60,16 @@
 
                         location.href = "homepage.html";
                     },
-                    statusCode: {
-                        400: function () {
-                            alert("Bad request");
-                        },
-                        401: function () {
-                            alert("Unauthorized");
-                        }
+                    401: function () {
+                        alert("Unauthorized");
                     }
-                })
-            });
-        }));
-        ;
+                }
+            })
+        });
+    }));
+    ;
 
-    </script>
+</script>
 
-</body>
 
 </html>
