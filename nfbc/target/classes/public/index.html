@@ -27,30 +27,32 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>
-        document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
 
-            var url = "http://localhost:8080/login";
+        //var url = "http://localhost:8080/login";
+        var url = "/login";
 
-            $("#submit").click(function (e) {
-                e.preventDefault();
-                var body = {
-                    "username": $("#username").val(),
-                    "password": $("#password").val()
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            var body = {
+                "username": $("#username").val(),
+                "password": $("#password").val()
 
-                };
-                //alert(" username: " + body.username + " password: --> " + body.password);
+            };
+            //alert(" username: " + body.username + " password: --> " + body.password);
 
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: JSON.stringify(body),
-                    contentType: "application/json",
-                    success: function (success) {
-                        $("#result").text((success));
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
 
-                        delete success.active;
+                    delete success.active;
 
                         sessionStorage.clear();
                         sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
@@ -61,21 +63,16 @@
 
                         location.href = "homepage.html";
                     },
-                    statusCode: {
-                        400: function () {
-                            alert("Bad request");
-                        },
-                        401: function () {
-                            alert("Unauthorized");
-                        }
+                    401: function () {
+                        alert("Unauthorized");
                     }
-                })
-            });
-        }));
-        ;
+                }
+            })
+        });
+    }));
+    ;
 
-    </script>
+</script>
 
-</body>
 
 </html>

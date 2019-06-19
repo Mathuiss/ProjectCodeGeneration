@@ -32,7 +32,8 @@
     });
     document.getElementById("logout").addEventListener("click", function () {
 
-        var url = "http://localhost:8080/logout";
+        //var url = "http://localhost:8080/logout";
+        var url = "/logout";
 
         $("#logout").click(function (e) {
             e.preventDefault();
@@ -61,9 +62,15 @@
                 statusCode: {
                     400: function () {
                         alert("Bad request");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     },
                     401: function () {
                         alert("Unauthorized");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     }
                 }
             })

@@ -46,7 +46,6 @@ public class SessionService {
     public long getUserIdByEmail(String email) {
         for (User user : userRepository.findAll()) {
             if (user.getEmail().equals(email)) {
-                logger.info("found user id " + user.getuserId());
                 return user.getuserId();
             }
         }
@@ -98,8 +97,6 @@ public class SessionService {
         sessionToken.setActive(true);
         sessionToken.setUserId(userId);
 
-        logger.info("--- getSessionToken ---");
-
         // Get user from id and check existence
         Optional<User> result = userRepository.findById(userId);
         if (!result.isPresent()) {
@@ -110,7 +107,6 @@ public class SessionService {
             sessionToken.setUserRole("employee");
         } else {
             sessionToken.setUserRole("customer");
-            logger.info("user role is: " + sessionToken.getUserRole());
         }
 
         sessionRepository.save(sessionToken);
