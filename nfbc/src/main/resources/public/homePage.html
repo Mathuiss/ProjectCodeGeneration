@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
         if (sessionStorage.getItem('ApiKeyAuth') == null) {
+            alert(sessionStorage.getItem('ApiKeyAuth'));
             location.href = "index.html";
         }
     </script>
@@ -18,9 +19,11 @@
 <body>
     <!--<input id="Logout" type="submit" value="Logout">
     <input id="test" type="test" value="test">
-    <input id="Logout" type="submit" value="Logout">-->
+    <input id="Logout" type="submit" value="Logout">
+    <input id="logout" type="submit" value="Logout">-->
 
-    <input id="logout" type="submit" value="Logout">
+
+    <input type="logout" value="logout" id="logout">
     <input id="users" type="submit" value="users">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
@@ -37,11 +40,17 @@
     });
 
     document.getElementById("logout").addEventListener("click", function () {
-       //var url = "http://localhost:8080/logout";
-       var url = "/logout";
+        var url = "http://localhost:8080/logout";
+        //var url = "/logout";
+        //alert(sessionStorage.getItem('ApiKeyAuth'));
+        //alert(sessionStorage.getItem('user'));
+        //alert(sessionStorage.getItem('userRole'));
+        //alert(sessionStorage.getItem('timestamp'));
+        //alert(sessionStorage.getItem('isActive'));
 
         $("#logout").click(function (e) {
             e.preventDefault();
+            debugger;
             var body = {
                 "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
                 "user": sessionStorage.getItem('user'),
@@ -62,7 +71,7 @@
                     sessionStorage.clear();
                     location.href = "index.html";
 
-                    //alert(sessionStorage.getItem('ApiKeyAuth'));
+                    alert(sessionStorage.getItem('ApiKeyAuth'));
                 },
                 statusCode: {
                     400: function () {
