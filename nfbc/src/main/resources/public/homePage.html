@@ -31,14 +31,14 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
-    document.getElementById("logout").addEventListener("click", function () {
 
     document.getElementById("users").addEventListener("click", function () {
         location.href = "users.html";
     });
 
-        //var url = "http://localhost:8080/logout";
-        var url = "/logout";
+    document.getElementById("logout").addEventListener("click", function () {
+       //var url = "http://localhost:8080/logout";
+       var url = "/logout";
 
         $("#logout").click(function (e) {
             e.preventDefault();
@@ -81,10 +81,6 @@
             })
         });
     });
-    ;
-
-
-
 </script>
 
 </html>

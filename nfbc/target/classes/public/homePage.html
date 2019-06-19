@@ -20,9 +20,8 @@
     <input id="test" type="test" value="test">
     <input id="Logout" type="submit" value="Logout">-->
 
-    <input id="submit" type="submit" value="Logout">
-    <input id="users" type="submit" value="users">
     <input id="logout" type="submit" value="Logout">
+    <input id="users" type="submit" value="users">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
@@ -32,14 +31,14 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
-    document.getElementById("logout").addEventListener("click", function () {
 
     document.getElementById("users").addEventListener("click", function () {
         location.href = "users.html";
     });
 
-        //var url = "http://localhost:8080/logout";
-        var url = "/logout";
+    document.getElementById("logout").addEventListener("click", function () {
+       //var url = "http://localhost:8080/logout";
+       var url = "/logout";
 
         $("#logout").click(function (e) {
             e.preventDefault();
@@ -82,10 +81,6 @@
             })
         });
     });
-    ;
-
-
-
 </script>
 
 </html>
