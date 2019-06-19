@@ -10,7 +10,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
         if (sessionStorage.getItem('ApiKeyAuth') == null) {
-            alert(sessionStorage.getItem('ApiKeyAuth'));
             location.href = "index.html";
         }
     </script>
@@ -23,7 +22,7 @@
     <input id="logout" type="submit" value="Logout">-->
 
 
-    <input type="logout" value="logout" id="logout">
+    <input id="logout" type="submit" value="logout">
     <input id="users" type="submit" value="users">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
@@ -50,7 +49,6 @@
 
         $("#logout").click(function (e) {
             e.preventDefault();
-            debugger;
             var body = {
                 "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
                 "user": sessionStorage.getItem('user'),

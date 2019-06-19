@@ -113,12 +113,13 @@ public class SessionService {
         return sessionToken;
     }
 
-    public void doesSessionTokenExist(String sessionToken) throws Exception {
-        Optional<SessionToken> sessionRes = sessionRepository.findById(sessionToken);
+    public boolean doesSessionTokenExist(String sessionToken) {
+        return sessionRepository.findById(sessionToken).isPresent();
 
-        if (!sessionRes.isPresent()) {
-            throw new Exception("No session token found for: " + sessionToken);
-        }
+        // if (!sessionRes.isPresent()) {
+        // throw new Exception("No session token found for: " + sessionToken);
+        // }
+        // return(sessionRes.isPresent());
     }
 
     public void deActivateSessionToken(SessionToken sessionToken) {
