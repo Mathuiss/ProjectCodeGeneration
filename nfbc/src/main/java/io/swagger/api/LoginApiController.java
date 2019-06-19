@@ -26,15 +26,15 @@ public class LoginApiController implements LoginApi {
         this.sessionService = sessionService;
     }
 
-    public ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
+    public ResponseEntity<SessionToken> loginPost(
+            @ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         try {
             log.info("--trying--" + body.getUsername());
 
             if (sessionService.userExist(body.getUsername())) {
-                log.info(("username found"));
                 long id = sessionService.getUserIdByEmail(body.getUsername());
                 if (sessionService.passwordCheck(id, body.getPassword())) {
-                    if(sessionService.isUserActive(id)){
+                    if (sessionService.isUserActive(id)) {
                         // toegang geven
                         // sessiontoken maken
                         try {
@@ -44,8 +44,7 @@ public class LoginApiController implements LoginApi {
                             log.error(ex.getMessage(), ex);
                             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                         }
-                    }
-                    else {
+                    } else {
                         return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
                     }
 

@@ -20,7 +20,7 @@
     <input id="test" type="test" value="test">
     <input id="Logout" type="submit" value="Logout">-->
 
-    <input id="submit" type="submit" value="Logout">
+    <input id="logout" type="submit" value="Logout">
     <input id="users" type="submit" value="users">
 
     <input type="submit" value="Transactions" id="redirect-transactions">
@@ -31,17 +31,16 @@
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
+    document.getElementById("logout").addEventListener("click", function () {
 
     document.getElementById("users").addEventListener("click", function () {
         location.href = "users.html";
     });
 
-    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+        //var url = "http://localhost:8080/logout";
+        var url = "/logout";
 
-        var url = "http://localhost:8080/logout";
-
-
-        $("#submit").click(function (e) {
+        $("#logout").click(function (e) {
             e.preventDefault();
             var body = {
                 "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
@@ -60,8 +59,6 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    alert('logging out');
-
                     sessionStorage.clear();
                     location.href = "index.html";
 
@@ -70,14 +67,20 @@
                 statusCode: {
                     400: function () {
                         alert("Bad request");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     },
                     401: function () {
                         alert("Unauthorized");
+
+                        sessionStorage.clear();
+                        location.href = "index.html";
                     }
                 }
             })
         });
-    }));
+    });
     ;
 
 
