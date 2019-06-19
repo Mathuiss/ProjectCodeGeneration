@@ -1,9 +1,6 @@
 package io.swagger.api;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.model.SessionToken;
 import io.swagger.services.SessionService;
@@ -23,20 +20,14 @@ public class LogoutApiController implements LogoutApi {
     private static final Logger log = LoggerFactory.getLogger(LogoutApiController.class);
     private SessionService sessionService;
 
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
-
     @org.springframework.beans.factory.annotation.Autowired
-    public LogoutApiController(ObjectMapper objectMapper, HttpServletRequest request, SessionService sessionService) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    public LogoutApiController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
     public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionToken) {
         // String accept = request.getHeader("Accept");
-
+        log.info("test123");
         try {
             log.info("Try --- methode van logoutpost " + sessionToken.getSessionToken());
             if (sessionService.doesSessionTokenExist(sessionToken.getSessionToken())) {

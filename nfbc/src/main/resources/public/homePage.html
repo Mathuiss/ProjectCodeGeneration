@@ -9,19 +9,13 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
-        if (sessionStorage.getItem('ApiKeyAuth') == null) {
+        if (sessionStorage.getItem('sessionToken') == null) {
             location.href = "index.html";
         }
     </script>
 </head>
 
 <body>
-    <!--<input id="Logout" type="submit" value="Logout">
-    <input id="test" type="test" value="test">
-    <input id="Logout" type="submit" value="Logout">
-    <input id="logout" type="submit" value="Logout">-->
-
-
     <input id="logout" type="submit" value="logout">
     <input id="users" type="submit" value="users">
 
@@ -40,6 +34,7 @@
 
     document.getElementById("logout").addEventListener("click", function () {
         var url = "http://localhost:8080/logout";
+        alert("ik probeer uit te loggen");
         //var url = "/logout";
         //alert(sessionStorage.getItem('ApiKeyAuth'));
         //alert(sessionStorage.getItem('user'));
@@ -47,46 +42,43 @@
         //alert(sessionStorage.getItem('timestamp'));
         //alert(sessionStorage.getItem('isActive'));
 
-        $("#logout").click(function (e) {
-            e.preventDefault();
-            var body = {
-                "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
-                "user": sessionStorage.getItem('user'),
-                "userRole": sessionStorage.getItem('userRole'),
-                "timestamp": sessionStorage.getItem('timestamp'),
-                "isActive": sessionStorage.getItem('isActive')
+        var body = {
+            "sessionToken": sessionStorage.getItem('sessionToken'),
+            "user": sessionStorage.getItem('user'),
+            "userRole": sessionStorage.getItem('userRole'),
+            "timestamp": sessionStorage.getItem('timestamp'),
+            "isActive": sessionStorage.getItem('isActive')
+        };
 
-            };
+        $.ajax({
+            method: "POST",
+            url: url,
+            body: JSON.stringify(body),
+            contentType: "application/json",
+            success: function (success) {
+                $("#result").text((success));
 
-            $.ajax({
-                method: "POST",
-                url: url,
-                body: JSON.stringify(body),
-                contentType: "application/json",
-                success: function (success) {
-                    $("#result").text((success));
+                sessionStorage.clear();
+
+                //alert("ApiKeyAuth: " + sessionStorage.getItem('ApiKeyAuth'));
+
+                location.href = "index.html";
+            },
+            statusCode: {
+                400: function () {
+                    alert("Bad request");
 
                     sessionStorage.clear();
                     location.href = "index.html";
-
-                    alert(sessionStorage.getItem('ApiKeyAuth'));
                 },
-                statusCode: {
-                    400: function () {
-                        alert("Bad request");
+                401: function () {
+                    alert("Unauthorized");
 
-                        sessionStorage.clear();
-                        location.href = "index.html";
-                    },
-                    401: function () {
-                        alert("Unauthorized");
-
-                        sessionStorage.clear();
-                        location.href = "index.html";
-                    }
+                    sessionStorage.clear();
+                    location.href = "index.html";
                 }
-            })
-        });
+            }
+        })
     });
 </script>
 

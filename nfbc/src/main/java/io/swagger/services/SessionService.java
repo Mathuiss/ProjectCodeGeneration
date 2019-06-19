@@ -31,34 +31,35 @@ public class SessionService {
     }
 
     public boolean userExist(String email) {
+        User user = userRepository.findUserByEmail(email);
 
-        for (User user : userRepository.findAll()) {
-
-            if (user.getEmail().equals(email)) {
-                logger.info("--- Userexist ---");
-                return true;
-            }
+        if (user != null) {
+            return true;
         }
-
         return false;
     }
 
     public long getUserIdByEmail(String email) {
-        for (User user : userRepository.findAll()) {
-            if (user.getEmail().equals(email)) {
-                return user.getuserId();
-            }
+        User user = userRepository.findUserByEmail(email);
+
+        if (user != null) {
+            return user.getuserId();
         }
         return 0;
+
+        // for (User user : userRepository.findAll()) {
+        // if (user.getEmail().equals(email)) {
+        // return user.getuserId();
+        // }
+        // }
+        // return 0;
     }
 
     public boolean passwordCheck(long id, String password) throws NoSuchAlgorithmException {
-
-        for (User user : userRepository.findAll()) {
-            if (user.getuserId() == id) {
-                logger.info("password is " + user.compareHash(password));
-                return user.compareHash(password);
-            }
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            logger.info("password is " + user.get().compareHash(password));
+            return user.get().compareHash(password);
         }
         return false;
     }
@@ -123,13 +124,12 @@ public class SessionService {
     }
 
     public void deActivateSessionToken(SessionToken sessionToken) {
-
+        logger.info("sessionToken state: " + sessionToken.isActive());
         if (sessionToken.isActive()) {
             sessionToken.setActive(false);
 
-            sessionRepository.save(sessionToken);
-
-            logger.info("sessionToken state " + sessionToken.isActive());
         }
+        sessionRepository.save(sessionToken);
+        logger.info("sessionToken state: " + sessionToken.isActive());
     }
 }
