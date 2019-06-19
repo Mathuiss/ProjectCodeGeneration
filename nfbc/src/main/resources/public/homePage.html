@@ -5,27 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>NFBC HOME</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        if (sessionStorage.getItem('ApiKeyAuth') == null) {
+            location.href = "index.html";
+        }
+    </script>
 </head>
 
 <body>
-    <input id="Logout" type="submit" value="Logout">
+    <!--<input id="Logout" type="submit" value="Logout">
+    <input id="test" type="test" value="test">
+    <input id="Logout" type="submit" value="Logout">-->
+
+    <input id="submit" type="submit" value="Logout">
+    <input id="users" type="submit" value="users">
+
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
+
 <script>
-    document.getElementById("Logout").addEventListener("click", function () {
-
-        sessionStorage.clear();
-        location.href = "index.html";
-
-
-        //alert(sessionStorage.getItem('ApiKeyAuth'));
-    });
-
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
+
+    document.getElementById("users").addEventListener("click", function () {
+        location.href = "users.html";
+    });
+
+    document.getElementById("submit").addEventListener("click", $(document).ready(function () {
+
+        var url = "http://localhost:8080/logout";
+
+
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            var body = {
+                "sessionToken": sessionStorage.getItem('ApiKeyAuth'),
+                "user": sessionStorage.getItem('user'),
+                "userRole": sessionStorage.getItem('userRole'),
+                "timestamp": sessionStorage.getItem('timestamp'),
+                "isActive": sessionStorage.getItem('isActive')
+
+            };
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                body: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
+
+                    alert('logging out');
+
+                    sessionStorage.clear();
+                    location.href = "index.html";
+
+                    //alert(sessionStorage.getItem('ApiKeyAuth'));
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+            })
+        });
+    }));
+    ;
+
 
 
 </script>
