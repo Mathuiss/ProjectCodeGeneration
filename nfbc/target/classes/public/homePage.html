@@ -19,15 +19,18 @@
     <input id="logout" type="submit" value="logout">
     <input id="users" type="submit" value="users">
 
+    <input type="submit" value="Accounts" id="redirect-accounts">
     <input type="submit" value="Transactions" id="redirect-transactions">
-
-    <p id="result"></p>
 </body>
 
 
 <script>
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
+    });
+
+    document.getElementById("redirect-accounts").addEventListener("click", function () {
+        location.href = "accounts.html";
     });
 
     document.getElementById("users").addEventListener("click", function () {
@@ -44,7 +47,7 @@
         //alert(sessionStorage.getItem('timestamp'));
         //alert(sessionStorage.getItem('isActive'));
 
-        var req = {
+        var body = {
             "sessionToken": sessionStorage.getItem('sessionToken'),
             "user": sessionStorage.getItem('user'),
             "userRole": sessionStorage.getItem('userRole'),
@@ -55,7 +58,7 @@
         $.ajax({
             method: "POST",
             url: url,
-            body: JSON.stringify(req),
+            body: JSON.stringify(body),
             contentType: "application/json",
             success: function (success) {
                 $("#result").text((success));
@@ -70,15 +73,14 @@
                 400: function () {
                     alert("Bad request");
 
-
-                    // sessionStorage.clear();
-                    // location.href = "index.html";
+                    sessionStorage.clear();
+                    location.href = "index.html";
                 },
                 401: function () {
                     alert("Unauthorized");
 
-                    // sessionStorage.clear();
-                    // location.href = "index.html";
+                    sessionStorage.clear();
+                    location.href = "index.html";
                 }
             }
         })

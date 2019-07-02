@@ -19,6 +19,7 @@
     <input id="logout" type="submit" value="logout">
     <input id="users" type="submit" value="users">
 
+    <input type="submit" value="Accounts" id="redirect-accounts">
     <input type="submit" value="Transactions" id="redirect-transactions">
 </body>
 
@@ -26,6 +27,10 @@
 <script>
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
+    });
+
+    document.getElementById("redirect-accounts").addEventListener("click", function () {
+        location.href = "accounts.html";
     });
 
     document.getElementById("users").addEventListener("click", function () {
