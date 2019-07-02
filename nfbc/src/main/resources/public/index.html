@@ -34,13 +34,11 @@
             e.preventDefault();
 
             var url = "/login";
-            //var url = "http://localhost:8080/login";
 
             var body = {
                 "username": $("#username").val(),
                 "password": $("#password").val()
             };
-            //alert(" username: " + body.username + " password: --> " + body.password);
 
             $.ajax({
                 method: "POST",
@@ -50,8 +48,7 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    //delete success.active;
-
+                    sessionStorage.setItem('active', success.active);
                     sessionStorage.setItem('sessionToken', success.sessionToken);
                     sessionStorage.setItem('user', success.user);
                     sessionStorage.setItem('userRole', success.userRole);
@@ -65,7 +62,7 @@
                         alert("Bad request");
                     },
                     401: function () {
-                        alert("Unauthorized");
+                        alert("Unauthorized, username of password incorrect");
                     }
                 }
             })

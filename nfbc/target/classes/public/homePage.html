@@ -35,29 +35,34 @@
     document.getElementById("logout").addEventListener("click", function () {
         var url = "/logout"
 
-        var body = {
-            "active": sessionStorage.getItem('active'),
-            "sessionToken": sessionStorage.getItem('sessionToken'),
-            "user": sessionStorage.getItem('user'),
-            "userRole": sessionStorage.getItem('userRole'),
-            "timestamp": sessionStorage.getItem('timestamp'),
-            "isActive": sessionStorage.getItem('isActive')
-        };
+        alert(sessionStorage.getItem('sessionToken'));
+
+        active = sessionStorage.getItem("active")
+        sessionToken = sessionStorage.getItem('sessionToken');
+        user = sessionStorage.getItem('user');
+        userRole = sessionStorage.getItem('userRole');
+        timestamp = sessionStorage.getItem('timestamp');
+        isActive = sessionStorage.getItem('isActive');
 
         $.ajax({
             method: "POST",
             url: url,
-            body: JSON.stringify(body),
             contentType: "application/json",
-            success: function (success) {
-                $("#result").text((success));
-
+            data: JSON.stringify({
+                "active": active,
+                "sessionToken": sessionToken,
+                "user": user,
+                "userRole": userRole,
+                "timestamp": timestamp,
+                "isActive": isActive
+            }),
+            success: function () {
                 sessionStorage.clear();
                 location.href = "index.html";
             },
             statusCode: {
                 400: function () {
-                    //alert("Bad request");
+                    alert("Bad request");
 
                     sessionStorage.clear();
                     location.href = "index.html";

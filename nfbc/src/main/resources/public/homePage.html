@@ -37,22 +37,26 @@
 
         alert(sessionStorage.getItem('sessionToken'));
 
-        var body = {
-            "sessionToken": sessionStorage.getItem('sessionToken'),
-            "user": sessionStorage.getItem('user'),
-            "userRole": sessionStorage.getItem('userRole'),
-            "timestamp": sessionStorage.getItem('timestamp'),
-            "isActive": sessionStorage.getItem('isActive')
-        };
+        active = sessionStorage.getItem("active")
+        sessionToken = sessionStorage.getItem('sessionToken');
+        user = sessionStorage.getItem('user');
+        userRole = sessionStorage.getItem('userRole');
+        timestamp = sessionStorage.getItem('timestamp');
+        isActive = sessionStorage.getItem('isActive');
 
         $.ajax({
             method: "POST",
             url: url,
-            body: JSON.stringify(body),
             contentType: "application/json",
-            success: function (success) {
-                $("#result").text((success));
-
+            data: JSON.stringify({
+                "active": active,
+                "sessionToken": sessionToken,
+                "user": user,
+                "userRole": userRole,
+                "timestamp": timestamp,
+                "isActive": isActive
+            }),
+            success: function () {
                 sessionStorage.clear();
                 location.href = "index.html";
             },

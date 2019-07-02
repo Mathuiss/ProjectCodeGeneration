@@ -48,21 +48,21 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    sessionStorage.setItem('active', success.active)
+                    sessionStorage.setItem('active', success.active);
                     sessionStorage.setItem('sessionToken', success.sessionToken);
                     sessionStorage.setItem('user', success.user);
                     sessionStorage.setItem('userRole', success.userRole);
                     sessionStorage.setItem('timestamp', success.timestamp);
                     sessionStorage.setItem('isActive', success.isActive);
 
-                    location.href = "homePage.html";
+                    location.href = "homepage.html";
                 },
                 statusCode: {
                     400: function () {
                         alert("Bad request");
                     },
                     401: function () {
-                        alert("Unauthorized, login details are not correct");
+                        alert("Unauthorized, username of password incorrect");
                     }
                 }
             })
