@@ -6,41 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Accounts</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js">
+
+        console.log(sessionStorage.getItem('userRole'));
+        console.log(sessionStorage.getItem('sessionToken'));
+
+    </script>
 </head>
 
 <body>
 
-    <input id="get" type="submit" value="Get all accounts">
-    <input id="getIban" type="submit" value="Get single account">
-    <input id="create" type="submit" value="Create new account">
-    <input id="delete" type="submit" value="Delete account">
-    <input id="update" type="submit" value="Update account">
+    <input type="submit" value="Home" id="home-btn">
+    <input type="submit" value="Get all accounts" id="get">
+    <input type="submit" value="Get single account" id="getIban">
+    <input type="submit" value="Create new account" id="create">
+    <input type="submit" value="Delete account" id="delete">
+    <input type="submit" value="Update account" id="update">
 
     <div id="query-box">
         <form>
-            <label id="iban">iban</label>
+            <label>iban</label>
             <input id="iban" name="iban" type="text">
 
-            <label id="userId">user ID</label>
+            <label>user ID</label>
             <input id="userId" name="userId" type="number">
 
-            <label id="isActive">is active</label>
+            <label>is active</label>
             <input id="isActive" name="isActive" type="text">
 
-            <label id="accountType">account type</label>
+            <label>account type</label>
             <input id="accountType" name="accountType" type="text">
 
-            <label id="balance">balance</label>
+            <label>balance</label>
             <input id="balance" name="balance" type="number">
 
-            <label id="absoluteLimit">absolute limit</label>
+            <label>absolute limit</label>
             <input id="absoluteLimit" name="absoluteLimit" type="number">
 
-            <label id="dailyLimit">daily limit</label>
+            <label>daily limit</label>
             <input id="dailyLimit" name="dailyLimit" type="number">
 
-            <label id="transactionLimit">transaction limit</label>
+            <label>transaction limit</label>
             <input id="transactionLimit" name="transactionLimit" type="number">
         </form>
     </div>
@@ -48,81 +54,31 @@
 </body>
 
 <script>
+    document.getElementById("home-btn").addEventListener("click", function () {
+        location.href = "homePage.html";
+    });
 
     document.getElementById("get").addEventListener("click", function () {
-        var url = "http://localhost:8080/accounts";
-        var key = sessionStorage.getItem("ApiKeyAuth");
+        var url = "/accounts";
 
-        // var json = "{";
+        var json = "{";
 
-        // if (document.getElementById("accountType").value != "") {
-        //     json += '"accountType": "' + document.getElementById("accountType").value + '",';
-        // }
+        if (document.getElementById("accountType").value != "") {
+            json += '"accountType": "' + document.getElementById("accountType").value + '",';
+        }
 
-        // json += "}";
-        // json = json.replace(",}", "}");
+        json += "}";
+        json = json.replace(",}", "}");
 
-        // console.log("accountType: " + document.getElementById("accountType").value);
+        console.log("accountType: " + document.getElementById("accountType").value);
 
-        // if (sessionStorage.getItem("userRole") == "employee") {
-        $.ajax({
-            method: "GET",
-            url: url,
-            //data: JSON.parse(json),
-            headers: {
-                "session": key
-            },
-            success: function (accounts) {
-                console.log("success");
-                $.each(accounts, function (i, item) {
-                    document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
-                    document.getElementById("content").innerHTML += "userId: " + item.userId + " ";
-                    document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
-                    document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
-                    document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
-                    document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
-                    document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
-                    document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
-                })
-            },
-            statusCode: {
-                400: function () {
-                    alert("Bad request");
-                },
-                401: function () {
-                    alert("Unauthorized");
-                },
-                404: function () {
-                    alert("Not found");
-                }
-            }
-        });
-        // }
-        // else {
-        //     alert("Not found");
-        // };
-
-        document.getElementById("getIban").addEventListener("click", function () {
-            var path = $("#iban").val().trim();
-            //var path = "NL00INHO0000000003";
-            var url = "http://localhost:8080/accounts/" + path;
-            var key = sessionStorage.getItem("ApiKeyAuth");
-
-            var json = "{";
-
-            if (document.getElementById("iban").value != "") {
-                json += '"iban": ' + document.getElementById("iban").value + '"';
-            }
-
-            json += "}";
-            json = json.replace(",}", "}");
-
+        if (sessionStorage.getItem("userRole") == "employee") {
             $.ajax({
                 method: "GET",
                 url: url,
                 data: JSON.parse(json),
                 headers: {
-                    "session": key
+                    "session": sessionStorage.getItem("sessionToken")
                 },
                 success: function (accounts) {
                     console.log("success");
@@ -143,23 +99,72 @@
                     },
                     401: function () {
                         alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
                     }
                 }
-            })
-        });
+            });
+        }
+        else {
+            alert("Not found");
+        };
+    });
 
-        document.getElementById("create").addEventListener("click", function () {
+    document.getElementById("getIban").addEventListener("click", function () {
+        var url = "/accounts/";
 
-        });
+        var json = "{";
 
-        document.getElementById("delete").addEventListener("click", function () {
+        if (document.getElementById("iban").value != "") {
+            json += '"iban": ' + document.getElementById("iban").value + '"';
+        }
 
-        });
+        json += "}";
+        json = json.replace(",}", "}");
+        alert(json);
 
-        document.getElementById("update").addEventListener("click", function () {
+        $.ajax({
+            method: "GET",
+            url: url,
+            data: JSON.parse(json),
+            headers: {
+                "session": sessionStorage.getItem("sessionToken")
+            },
+            success: function (accounts) {
+                $.each(accounts, function (i, item) {
+                    document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
+                    document.getElementById("content").innerHTML += "userId: " + item.userId + " ";
+                    document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
+                    document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
+                    document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
+                    document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
+                    document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
+                    document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
+                })
+            },
+            statusCode: {
+                400: function () {
+                    alert("Bad request");
+                },
+                401: function () {
+                    alert("Unauthorized");
+                }
+            }
+        })
+    });
 
-        });
-    })
+    document.getElementById("create").addEventListener("click", function () {
+
+    });
+
+    document.getElementById("delete").addEventListener("click", function () {
+
+    });
+
+    document.getElementById("update").addEventListener("click", function () {
+
+    });
 
 
 </script>

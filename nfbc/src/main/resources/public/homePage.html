@@ -16,8 +16,8 @@
 </head>
 
 <body>
-    <input id="logout" type="submit" value="logout">
-    <input id="users" type="submit" value="users">
+    <input type="submit" value="Logout" id="logout">
+    <input type="submit" value="Users" id="users">
 
     <input type="submit" value="Accounts" id="redirect-accounts">
     <input type="submit" value="Transactions" id="redirect-transactions">
@@ -38,7 +38,7 @@
     });
 
     document.getElementById("logout").addEventListener("click", function () {
-        var url = "http://localhost:8080/logout";
+        var url = "/logout";
         alert("ik probeer uit te loggen");
         //var url = "/logout";
         //alert(sessionStorage.getItem('ApiKeyAuth'));
@@ -67,7 +67,7 @@
 
                 //alert("ApiKeyAuth: " + sessionStorage.getItem('ApiKeyAuth'));
 
-                location.href = "index.html";
+                // location.href = "index.html";
             },
             statusCode: {
                 400: function () {

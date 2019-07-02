@@ -42,7 +42,13 @@
             };
             //alert(" username: " + body.username + " password: --> " + body.password);
 
-                        delete success.active;
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
 
                     //delete success.active;
 

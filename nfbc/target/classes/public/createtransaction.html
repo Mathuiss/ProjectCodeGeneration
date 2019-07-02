@@ -1,67 +1,70 @@
 <html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-        <meta charset="utf-8">
-        <title>NFBC</title>
-    </head>
-    <body>
-        <input type="submit" value="Back" id="back-btn">
-        <input type="submit" value="Create Trabsaction" id="transaction">
-        <input type="submit" value="Withdraw" id="withdraw">
-        <input type="submit" value="Deposit" id="deposit">
 
-        Sender
-        <input type="text" id="sender">
-        Reciever
-        <input type="text" id="reciever">
-        Amount
-        <input type="number" id="amount">
-        
-        <script>
-            document.getElementById("back-btn").addEventListener("click", function () {
-                location.href = "transactions.html";
-            });
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <meta charset="utf-8">
+    <title>NFBC</title>
+</head>
 
-            document.getElementById("transaction").addEventListener("click", function () {
-                var url = "http://localhost:8080/transactions";
+<body>
+    <input type="submit" value="Back" id="back-btn">
+    <input type="submit" value="Create Trabsaction" id="transaction">
+    <input type="submit" value="Withdraw" id="withdraw">
+    <input type="submit" value="Deposit" id="deposit">
 
-                var now = new Date();
-                console.log(now.format("yyyy-MM-dd HH:mm:ss"));
+    Sender
+    <input type="text" id="sender">
+    Reciever
+    <input type="text" id="reciever">
+    Amount
+    <input type="number" id="amount">
 
-                if (sessionStorage.getItem("userRole") == "employee") {
-                    $.ajax({
-                        method: "POST",
-                        url: url,
-                        contentType: "application/json",
-                        data: {
-                            "sender": document.getElementById("sender").value,
-                            "reciever": document.getElementById("reciever").value,
-                            "user": sessionStorage.getItem("user"),
-                            "amount": document.getElementById("amount").value,
-                            "timestamp": Date.now().toString()
+    <script>
+        document.getElementById("back-btn").addEventListener("click", function () {
+            location.href = "transactions.html";
+        });
+
+        document.getElementById("transaction").addEventListener("click", function () {
+            var url = "http://localhost:8080/transactions";
+
+            var now = new Date();
+            console.log(now.format("yyyy-MM-dd HH:mm:ss"));
+
+            if (sessionStorage.getItem("userRole") == "employee") {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    data: {
+                        "sender": document.getElementById("sender").value,
+                        "reciever": document.getElementById("reciever").value,
+                        "user": sessionStorage.getItem("user"),
+                        "amount": document.getElementById("amount").value,
+                        "timestamp": Date.now().toString()
+                    },
+                    headers: {
+                        "session": sessionStorage.getItem("ApiKeyAuth")
+                    },
+                    success: function () {
+                        alert("Success");
+                    },
+                    statusCode: {
+                        404: function () {
+                            alert("Not found");
                         },
-                        headers: {
-                            "session": sessionStorage.getItem("ApiKeyAuth")
+                        401: function () {
+                            alert("Unauthorized");
                         },
-                        success: function () {
-                            alert("Success");
-                        },
-                        statusCode: {
-                            404: function () {
-                                alert("Not found");
-                            },
-                            401: function () {
-                                alert("Unauthorized");
-                            },
-                            400: function () {
-                                alert("Bad Request");
-                            }
+                        400: function () {
+                            alert("Bad Request");
                         }
-                    });
-                } else {
-                    // TODO: Finish non-employee functionality
-                }
-            });
-        </script>
-    </body>
+                    }
+                });
+            } else {
+                // TODO: Finish non-employee functionality
+            }
+        });
+    </script>
+</body>
+
 </html>
