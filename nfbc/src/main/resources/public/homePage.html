@@ -33,14 +33,9 @@
     });
 
     document.getElementById("logout").addEventListener("click", function () {
-        var url = "http://localhost:8080/logout";
-        alert("ik probeer uit te loggen");
-        //var url = "/logout";
-        //alert(sessionStorage.getItem('ApiKeyAuth'));
-        //alert(sessionStorage.getItem('user'));
-        //alert(sessionStorage.getItem('userRole'));
-        //alert(sessionStorage.getItem('timestamp'));
-        //alert(sessionStorage.getItem('isActive'));
+        var url = "/logout"
+
+        alert(sessionStorage.getItem('sessionToken'));
 
         var body = {
             "sessionToken": sessionStorage.getItem('sessionToken'),
@@ -59,9 +54,6 @@
                 $("#result").text((success));
 
                 sessionStorage.clear();
-
-                //alert("ApiKeyAuth: " + sessionStorage.getItem('ApiKeyAuth'));
-
                 location.href = "index.html";
             },
             statusCode: {

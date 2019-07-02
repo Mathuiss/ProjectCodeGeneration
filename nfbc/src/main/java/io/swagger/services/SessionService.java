@@ -116,19 +116,25 @@ public class SessionService {
 
     public boolean doesSessionTokenExist(String sessionToken) {
         return sessionRepository.findById(sessionToken).isPresent();
+    }
 
-        // if (!sessionRes.isPresent()) {
-        // throw new Exception("No session token found for: " + sessionToken);
-        // }
-        // return(sessionRes.isPresent());
+    public boolean isSessionTokenStillActive(String sessionToken) {
+        Optional<SessionToken> result = sessionRepository.findById(sessionToken);
+        SessionToken dbsSessionToken = result.get();
+
+        logger.info("is active " + dbsSessionToken.isActive());
+        if (dbsSessionToken.isActive()) {
+            return true;
+        }
+        return false;
     }
 
     public void deActivateSessionToken(SessionToken sessionToken) {
         logger.info("sessionToken state: " + sessionToken.isActive());
         if (sessionToken.isActive()) {
             sessionToken.setActive(false);
-
         }
+
         sessionRepository.save(sessionToken);
         logger.info("sessionToken state: " + sessionToken.isActive());
     }
