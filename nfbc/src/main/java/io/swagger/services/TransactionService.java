@@ -147,8 +147,12 @@ public class TransactionService {
                 // TODO: When AccountRepository is available. Use that.
             }
 
-            if (!userObj.getIsEmployee() && checkAccount(transaction.getSender()).getUserId() == token.getUserId()) {
+            if (userObj.getIsEmployee()) {
                 resultList.add(transaction);
+            } else {
+                if (checkAccount(transaction.getSender()).getUserId() == token.getUserId()) {
+                    resultList.add(transaction);
+                }
             }
         }
 
