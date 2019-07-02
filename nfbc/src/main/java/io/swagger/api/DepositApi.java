@@ -24,11 +24,13 @@ import io.swagger.model.Transaction;
 @Api(value = "deposit", description = "the deposit API")
 public interface DepositApi {
 
-    @ApiOperation(value = "", nickname = "depositPost", notes = "", authorizations = {
-            @Authorization(value = "ApiKeyAuth") }, tags = { "Transactions", })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "ok"), @ApiResponse(code = 400, message = "Bad input"),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/deposit", consumes = { "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<Void> depositPost(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body);
+        @ApiOperation(value = "", nickname = "depositPost", notes = "", authorizations = {
+                        @Authorization(value = "ApiKeyAuth") }, tags = { "Transactions", })
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "ok"),
+                        @ApiResponse(code = 400, message = "Bad input"),
+                        @ApiResponse(code = 401, message = "Unauthorized") })
+        @RequestMapping(value = "/deposit", consumes = { "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<Transaction> depositPost(
+                        @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body);
 
 }

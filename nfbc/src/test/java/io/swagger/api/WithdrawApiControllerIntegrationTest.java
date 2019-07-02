@@ -22,7 +22,7 @@ public class WithdrawApiControllerIntegrationTest {
     @Test
     public void withdrawPostTest() throws Exception {
         Transaction body = new Transaction();
-        ResponseEntity<Void> responseEntity = api.withdrawPost(body);
+        ResponseEntity<Transaction> responseEntity = api.withdrawPost(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 

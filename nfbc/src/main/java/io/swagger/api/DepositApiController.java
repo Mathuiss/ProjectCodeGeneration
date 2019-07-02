@@ -35,11 +35,12 @@ public class DepositApiController implements DepositApi {
         this.service = service;
     }
 
-    public ResponseEntity<Void> depositPost(
+    public ResponseEntity<Transaction> depositPost(
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
         try {
             service.deposit(body);
-            return new ResponseEntity<>(HttpStatus.OK);
+            log.info("Created deposit");
+            return new ResponseEntity<Transaction>(body, HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

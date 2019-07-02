@@ -46,14 +46,21 @@ public class TransactionsApiController implements TransactionsApi {
         try {
             if (security.isAllowed(request.getHeader("session"), "customer")) {
                 try {
-                    service.createTransaction(body);
-                    log.info("Transaction created: " + body.getTransactionId());
-                    return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
+                    if (service.hasUserPermission(body, request.getHeader("session"))) {
+                        service.createTransaction(body);
+                        log.info("Transaction created: " + body.getTransactionId());
+                        return new ResponseEntity<Transaction>(body, HttpStatus.CREATED);
+                    } else {
+                        log.info("HACKERMAN incoming. User tried to make transaction with wrong account: s:"
+                                + body.getSender() + " r: " + body.getReciever());
+                        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                    }
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
             } else {
+                log.info("User has no clearence for level customer with session: " + request.getHeader("session"));
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
@@ -74,10 +81,11 @@ public class TransactionsApiController implements TransactionsApi {
             @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
             @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype) {
         try {
-            if (security.isAllowed(request.getHeader("session"), "employee")) {
+            if (security.isAllowed(request.getHeader("session"), "customer")) {
                 try {
                     Iterable<Transaction> transactions = service.getTransactions(datetimestart, datetimeend, userId,
-                            sender, reciever, accounttype, minvalue, maxvalue, transactiontype);
+                            sender, reciever, accounttype, minvalue, maxvalue, transactiontype,
+                            request.getHeader("session"));
 
                     Object[] params = { datetimestart, datetimeend, userId, sender, reciever, accounttype, minvalue,
                             maxvalue, transactiontype };

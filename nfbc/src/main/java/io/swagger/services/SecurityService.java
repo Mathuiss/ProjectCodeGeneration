@@ -64,7 +64,7 @@ public class SecurityService {
 
     // Checks if user has permission to perform operation
     private boolean checkPermission(SessionToken session, User user, String role) {
-        if (!user.getIsEmployee() && !role.equals("employee")) {
+        if (role.equals("employee") && !user.getIsEmployee()) {
             return false;
         }
 
