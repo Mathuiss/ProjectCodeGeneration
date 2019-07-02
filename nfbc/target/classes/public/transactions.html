@@ -5,6 +5,7 @@
         <title>NFBC</title>
     </head>
     <body>
+        <input type="submit" value="Home" id="home-btn">
         <input type="submit" value="Create Transaction" id="create">
         <input type="submit" value="View Transactions" id="view">
 
@@ -30,6 +31,14 @@
         </ul>
     </body>
     <script>
+        document.getElementById("home-btn").addEventListener("click", function () {
+            location.href = "homePage.html";
+        });
+
+        document.getElementById("create").addEventListener("click", function () {
+            location.href = "createtransaction.html"
+        });
+
         document.getElementById("view").addEventListener("click", function () {
             document.getElementById("show").innerHTML = "";
             var url = "http://localhost:8080/transactions";
@@ -71,7 +80,9 @@
             }
 
             json += "}"
-            json = json.replace(",}", "}");
+            if (json.includes(",")) {
+                json = json.replace(",}", "}");
+            }
 
             if (sessionStorage.getItem("userRole") == "employee") {
                 $.ajax({

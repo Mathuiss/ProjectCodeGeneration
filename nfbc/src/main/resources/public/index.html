@@ -6,7 +6,7 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="style.css">
-
+    <script>sessionStorage.clear();</script>
 </head>
 
 <body>
@@ -22,24 +22,25 @@
             <input id="username" type="email" name="username" placeholder="Username" autocomplete="email" required>
             <input id="password" type="password" name="password" placeholder="Password" required>
 
-            <input id="login" type="submit" value="submit">
+            <input id="login" type="submit" value="login">
 
         </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
-        document.getElementById("login").addEventListener("click", $(document).ready(function () {
 
-        //var url = "http://localhost:8080/login";
-        var url = "/login";
+        document.getElementById("login").addEventListener("click", function (e) {
+            e.preventDefault();
 
-            $("#login").click(function (e) {
-                e.preventDefault();
-                var body = {
-                    "username": $("#username").val(),
-                    "password": $("#password").val()
-                };
+            var url = "/login";
+            //var url = "http://localhost:8080/login";
+
+            var body = {
+                "username": $("#username").val(),
+                "password": $("#password").val()
+            };
+            //alert(" username: " + body.username + " password: --> " + body.password);
 
             $.ajax({
                 method: "POST",
@@ -49,16 +50,19 @@
                 success: function (success) {
                     $("#result").text((success));
 
-                    delete success.active;
+                    //delete success.active;
 
-                        sessionStorage.clear();
-                        sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
-                        sessionStorage.setItem('user', success.user);
-                        sessionStorage.setItem('userRole', success.userRole);
-                        sessionStorage.setItem('timestamp', success.timestamp);
-                        sessionStorage.setItem('isActive', success.isActive);
+                    sessionStorage.setItem('sessionToken', success.sessionToken);
+                    sessionStorage.setItem('user', success.user);
+                    sessionStorage.setItem('userRole', success.userRole);
+                    sessionStorage.setItem('timestamp', success.timestamp);
+                    sessionStorage.setItem('isActive', success.isActive);
 
-                        location.href = "homepage.html";
+                    location.href = "homepage.html";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
                     },
                     401: function () {
                         alert("Unauthorized");
@@ -66,10 +70,9 @@
                 }
             })
         });
-    }));
-    ;
 
-</script>
+    </script>
 
+</body>
 
 </html>

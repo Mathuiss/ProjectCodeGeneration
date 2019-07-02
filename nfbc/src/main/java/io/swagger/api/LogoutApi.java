@@ -24,12 +24,12 @@ import io.swagger.model.SessionToken;
 @Api(value = "logout", description = "the logout API")
 public interface LogoutApi {
 
-    @ApiOperation(value = "", nickname = "logoutPost", notes = "logout", authorizations = {
-            @Authorization(value = "ApiKeyAuth") }, tags = { "Login", })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Post succesfull"),
-            @ApiResponse(code = 400, message = "bad input parameter"),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken body);
+        @ApiOperation(value = "", nickname = "logoutPost", notes = "logout", authorizations = {
+                        @Authorization(value = "sessionToken") }, tags = { "Login", })
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "Post succesfull"),
+                        @ApiResponse(code = 400, message = "bad input parameter"),
+                        @ApiResponse(code = 401, message = "Unauthorized") })
+        @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken body);
 
 }

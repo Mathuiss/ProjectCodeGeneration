@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
+    <title>NFBC</title>
+
+</head>
+
+<body>
+    <button id="getUsers">get all users</button>
+
+    <ul id="content"></ul>
+
+
+    <script>
+        $(document).ready(function () {
+            var url = "/users";
+            var $content = $('content')
+
+            $('getUsers').on('click', function () {
+                console.log('wat');
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (users) {
+                        console.log('success', data);
+                        $.each(data, function (i, item) {
+                            $content.append('<li>id: ' + users.userId + ', name: ' + users.name + '</li>');
+                        })
+                    }
+                });
+
+            });
+        });
+
+
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+
+</html>
