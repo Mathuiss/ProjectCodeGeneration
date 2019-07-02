@@ -24,14 +24,11 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 public class User {
 
-    public User() {
-    }
-
     @JsonProperty("userId")
     @Id
     @SequenceGenerator(name = "userId_seq", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userId_seq")
-    private Long userId;
+    private Long userId = Long.valueOf(0);
 
     @JsonProperty("name")
     private String name;
@@ -78,10 +75,28 @@ public class User {
     @JsonProperty("isActive")
     private Boolean isActive;
 
-    public User userId(long userId) {
-        this.userId = userId;
-        return this;
+    public User() {
     }
+
+    public User(String name, String hash, String streetname, String zipcode, Integer addressnumber, String appendix,
+            String phoneNumber, List<Account> accounts, boolean isEmployee, boolean isActive) {
+        // this.userId = userId;
+        this.name = name;
+        this.hash = hash;
+        this.streetname = streetname;
+        this.zipcode = zipcode;
+        this.addressnumber = addressnumber;
+        this.appendix = appendix;
+        this.phoneNumber = phoneNumber;
+        this.accounts = accounts;
+        this.isEmployee = isEmployee;
+        this.isActive = isActive;
+    }
+
+    // public User userId(long userId) {
+    // this.userId = userId;
+    // return this;
+    // }
 
     /**
      * Get id
