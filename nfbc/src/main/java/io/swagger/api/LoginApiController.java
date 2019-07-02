@@ -29,10 +29,10 @@ public class LoginApiController implements LoginApi {
     public ResponseEntity<SessionToken> loginPost(
             @ApiParam(value = "", required = true) @Valid @RequestBody Body body) {
         try {
-            log.info("--trying--" + body.getUsername());
 
             if (sessionService.userExist(body.getUsername())) {
                 long id = sessionService.getUserIdByEmail(body.getUsername());
+                // log.info(String.valueOf(id));
                 if (sessionService.passwordCheck(id, body.getPassword())) {
                     if (sessionService.isUserActive(id)) {
                         // toegang geven

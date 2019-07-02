@@ -6,7 +6,7 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="style.css">
-
+    <script>sessionStorage.clear();</script>
 </head>
 
 <body>
@@ -30,15 +30,15 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
 
-        document.getElementById("login").addEventListener("click", function () {
-            sessionStorage.clear();
+        document.getElementById("login").addEventListener("click", function (e) {
+            e.preventDefault();
+
             var url = "/login";
             //var url = "http://localhost:8080/login";
 
             var body = {
                 "username": $("#username").val(),
                 "password": $("#password").val()
-
             };
             //alert(" username: " + body.username + " password: --> " + body.password);
 
@@ -52,7 +52,7 @@
 
                     //delete success.active;
 
-                    sessionStorage.setItem('ApiKeyAuth', success.sessionToken);
+                    sessionStorage.setItem('sessionToken', success.sessionToken);
                     sessionStorage.setItem('user', success.user);
                     sessionStorage.setItem('userRole', success.userRole);
                     sessionStorage.setItem('timestamp', success.timestamp);
