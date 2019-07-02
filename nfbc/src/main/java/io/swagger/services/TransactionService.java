@@ -13,17 +13,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.Account;
 import io.swagger.model.Transaction;
+import io.swagger.repositories.AccountRepository;
 import io.swagger.repositories.TransactionRepository;
 
 @Service
 public class TransactionService {
     private TransactionRepository transactions;
-    private SecurityService security;
+    private AccountRepository accounts;
 
-    public TransactionService(TransactionRepository transactions, SecurityService security) {
+    public TransactionService(TransactionRepository transactions, AccountRepository accounts) {
         this.transactions = transactions;
-        this.security = security;
+        this.accounts = accounts;
 
         loadOnStartup();
     }
@@ -136,7 +138,21 @@ public class TransactionService {
     }
 
     // Creates a new transaction
-    public void createTransaction(Transaction transaction) {
+    public void createTransaction(Transaction transaction) throws Exception {
+        Account sender = checkAccount(transaction.getSender());
+        Account reciever = checkAccount(transaction.getReciever());
+
+        if (sender.getBalance().subtract(transaction.getAmount()).compareTo(BigDecimal.valueOf(0)) == -1) {
+            throw new Exception("Balance too low: " + sender.getBalance());
+        }
+
+        ArrayList<Account> accountList = new ArrayList<Account>();
+        sender.setBalance(sender.getBalance().subtract(transaction.getAmount()));
+        reciever.setBalance(reciever.getBalance().add(transaction.getAmount()));
+        accountList.add(sender);
+        accountList.add(reciever);
+
+        accounts.saveAll(accountList);
         transactions.save(transaction);
     }
 
@@ -148,5 +164,14 @@ public class TransactionService {
     public void deposit(Transaction transaction) {
         transaction.setReciever("NL00INHO0000000000");
         transactions.save(transaction);
+    }
+
+    private Account checkAccount(String iban) throws Exception {
+        Optional<Account> acc = accounts.findById(iban);
+        if (!acc.isPresent()) {
+            throw new Exception("Sender not found: " + iban);
+        }
+
+        return acc.get();
     }
 }

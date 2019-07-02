@@ -43,7 +43,11 @@
 
     document.getElementById("view").addEventListener("click", function () {
         document.getElementById("show").innerHTML = "";
+<<<<<<< HEAD
         var url = "http://localhost:8080/transactions";
+=======
+        var url = "/transactions";
+>>>>>>> master
 
         console.log(document.getElementById("user").value);
 
@@ -92,7 +96,11 @@
                 url: url,
                 data: JSON.parse(json),
                 headers: {
+<<<<<<< HEAD
                     "session": sessionStorage.getItem("ApiKeyAuth")
+=======
+                    "session": sessionStorage.getItem("sessionToken")
+>>>>>>> master
                 },
                 success: function (transactions) {
                     $.each(transactions, function (n, transaction) {
@@ -124,7 +132,11 @@
                     "user": sessionStorage.getItem("user"),
                 },
                 headers: {
+<<<<<<< HEAD
                     "session": sessionStorage.getItem("ApiKeyAuth")
+=======
+                    "session": sessionStorage.getItem("sessionToken")
+>>>>>>> master
                 },
                 success: function (transactions) {
                     $.each(transactions, function (n, transaction) {

@@ -24,7 +24,7 @@
     "appendix": "",
     "phoneNumber": "0612345678",
     "accounts": [],
-    "isEmployee": true,
+    "isEmployee": false,
     "isActive": true
   },
   {
