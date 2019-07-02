@@ -1,10 +1,9 @@
 package io.swagger.api;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import io.swagger.model.SessionToken;
+import io.swagger.services.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,27 +12,39 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.Body1;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
 @Controller
 public class LogoutApiController implements LogoutApi {
 
     private static final Logger log = LoggerFactory.getLogger(LogoutApiController.class);
-
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
+    private SessionService sessionService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public LogoutApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    public LogoutApiController(SessionService sessionService) {
+        this.sessionService = sessionService;
     }
 
-    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody Body1 body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
+    public ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken sessionToken) {
+        // String accept = request.getHeader("Accept");
+        log.info("test123");
+        try {
+            log.info("Try --- methode van logoutpost " + sessionToken.getSessionToken());
+            if (sessionService.doesSessionTokenExist(sessionToken.getSessionToken())) {
+                sessionService.deActivateSessionToken(sessionToken);
+                return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+            }
 
+            // if (sessionToken.isActive() == true) {
+            // sessionService.deActivateSessionToken(sessionToken);
+
+            // return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+            // }
+            else {
+                return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

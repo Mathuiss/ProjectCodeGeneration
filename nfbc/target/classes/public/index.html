@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
+    <title>NFBC</title>
+    <link rel="stylesheet" href="style.css">
+    <script>sessionStorage.clear();</script>
+</head>
+
+<body>
+    <header>
+        <h1>NFBC</h1>
+    </header>
+
+    <div class="signin">
+        <form id="addPost">
+
+            <h2>log in</h2>
+
+            <input id="username" type="email" name="username" placeholder="Username" autocomplete="email" required>
+            <input id="password" type="password" name="password" placeholder="Password" required>
+
+            <input id="login" type="submit" value="login">
+
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+
+        document.getElementById("login").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            var url = "/login";
+            //var url = "http://localhost:8080/login";
+
+            var body = {
+                "username": $("#username").val(),
+                "password": $("#password").val()
+            };
+            //alert(" username: " + body.username + " password: --> " + body.password);
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function (success) {
+                    $("#result").text((success));
+
+                    //delete success.active;
+
+                    sessionStorage.setItem('sessionToken', success.sessionToken);
+                    sessionStorage.setItem('user', success.user);
+                    sessionStorage.setItem('userRole', success.userRole);
+                    sessionStorage.setItem('timestamp', success.timestamp);
+                    sessionStorage.setItem('isActive', success.isActive);
+
+                    location.href = "homepage.html";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+            })
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -36,8 +36,8 @@ public class Transaction {
   @JsonProperty("reciever")
   private String reciever = null;
 
-  @JsonProperty("user")
-  private Integer user = null;
+  @JsonProperty("userId")
+  private Long userId = null;
 
   @JsonProperty("amount")
   private BigDecimal amount = null;
@@ -53,11 +53,11 @@ public class Transaction {
   public Transaction() {
   }
 
-  public Transaction(long id, String sender, String reciever, Integer user, double amount, String timestamp) {
+  public Transaction(long id, String sender, String reciever, long userId, double amount, String timestamp) {
     this.transactionId = id;
     this.sender = sender;
     this.reciever = reciever;
-    this.user = user;
+    this.userId = userId;
     this.amount = BigDecimal.valueOf(amount);
     this.timestamp = timestamp;
   }
@@ -89,7 +89,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
+  // @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
   public String getSender() {
     return sender;
   }
@@ -110,7 +110,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
+  // @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
   public String getReciever() {
     return reciever;
   }
@@ -119,24 +119,24 @@ public class Transaction {
     this.reciever = reciever;
   }
 
-  public Transaction user(Integer user) {
-    this.user = user;
+  public Transaction userId(Long userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get user
+   * Get userId
    * 
-   * @return user
+   * @return userId
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getUser() {
-    return user;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setUser(Integer user) {
-    this.user = user;
+  public void setUser(Long userId) {
+    this.userId = userId;
   }
 
   public Transaction amount(BigDecimal amount) {
@@ -192,13 +192,13 @@ public class Transaction {
     Transaction transaction = (Transaction) o;
     return Objects.equals(this.transactionId, transaction.transactionId)
         && Objects.equals(this.sender, transaction.sender) && Objects.equals(this.reciever, transaction.reciever)
-        && Objects.equals(this.user, transaction.user) && Objects.equals(this.amount, transaction.amount)
+        && Objects.equals(this.userId, transaction.userId) && Objects.equals(this.amount, transaction.amount)
         && Objects.equals(this.timestamp, transaction.timestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(transactionId, sender, reciever, user, amount, timestamp);
+    return Objects.hash(transactionId, sender, reciever, userId, amount, timestamp);
   }
 
   @Override
@@ -209,7 +209,7 @@ public class Transaction {
     sb.append("    transactionId: ").append(toIndentedString(transactionId)).append("\n");
     sb.append("    sender: ").append(toIndentedString(sender)).append("\n");
     sb.append("    reciever: ").append(toIndentedString(reciever)).append("\n");
-    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("}");

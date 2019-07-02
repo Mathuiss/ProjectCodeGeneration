@@ -22,8 +22,8 @@ public class WithdrawApiControllerIntegrationTest {
     @Test
     public void withdrawPostTest() throws Exception {
         Transaction body = new Transaction();
-        ResponseEntity<Void> responseEntity = api.withdrawPost(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        ResponseEntity<Transaction> responseEntity = api.withdrawPost(body);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
 }

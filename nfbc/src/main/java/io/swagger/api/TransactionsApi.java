@@ -46,7 +46,7 @@ public interface TransactionsApi {
         ResponseEntity<Iterable<Transaction>> fetchTransaction(
                         @ApiParam(value = "") @Valid @RequestParam(value = "datetimestart", required = false) String datetimestart,
                         @ApiParam(value = "") @Valid @RequestParam(value = "datetimeend", required = false) String datetimeend,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Integer user,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Long userId,
                         @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
                         @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
                         @ApiParam(value = "") @Valid @RequestParam(value = "accounttype", required = false) String accounttype,

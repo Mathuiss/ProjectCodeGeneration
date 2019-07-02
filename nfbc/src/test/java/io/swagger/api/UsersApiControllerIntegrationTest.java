@@ -1,5 +1,7 @@
 package io.swagger.api;
 
+import io.swagger.model.Account;
+import io.swagger.model.CurrentAccount;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
@@ -25,43 +27,46 @@ public class UsersApiControllerIntegrationTest {
 
     @Test
     public void deleteUserByIdTest() throws Exception {
-        Integer id = 56;
+        Integer id = 2;
         ResponseEntity<InlineResponse200> responseEntity = api.deleteUserById(id);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void getTransactionOfUserTest() throws Exception {
-        String account = "account_example";
-        ResponseEntity<List<Transaction>> responseEntity = api.getTransactionOfUser(account);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
-    }
+    //@Test
+    //public void getTransactionOfUserTest() throws Exception {
+    //Account account = new CurrentAccount();
+    //long id = 2;
+    //ResponseEntity<Iterable<Transaction>> responseEntity =
+    //api.getTransactionOfUser(id, account);
+    //assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    //}
 
     @Test
     public void getUserByIdTest() throws Exception {
-        Integer id = 56;
+        Integer id = 2;
         ResponseEntity<User> responseEntity = api.getUserById(id);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void getUsersTest() throws Exception {
-        ResponseEntity<List<User>> responseEntity = api.getUsers();
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        ResponseEntity<Iterable<User>> responseEntity = api.getUsers("disabled");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void usersPostTest() throws Exception {
         User body = new User();
-        ResponseEntity<List<User>> responseEntity = api.usersPost(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        ResponseEntity<User> responseEntity = api.usersPost(body);
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
     }
 
     @Test
     public void usersPutTest() throws Exception {
         User body = new User();
+        body.setName("hans");
         ResponseEntity<User> responseEntity = api.usersPut(body);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
 }

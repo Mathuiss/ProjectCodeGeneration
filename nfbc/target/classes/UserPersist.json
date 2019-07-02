@@ -1,0 +1,58 @@
+[
+  {
+    "userId": 1,
+    "name": "Jelle Spreij",
+    "email": "jelle.jelle@jelle.jelle",
+    "hash": "36bbe50ed96841d10443bcb670d6554f0a34b761be67ec9c4a8ad2c0c44ca42c",
+    "streetname": "Oostwest",
+    "zipcode": "1234AB",
+    "addressnumber": "10",
+    "appendix": "A",
+    "phoneNumber": "0201233214",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
+  },
+  {
+    "userId": 2,
+    "name": "Patatjes",
+    "email": "patat@gmail.com",
+    "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "streetname": "WestOost",
+    "zipcode": "1234BA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0612345678",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
+  },
+  {
+    "userId": 3,
+    "name": "test",
+    "email": "test@gmail.com",
+    "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "streetname": "Amsterdam",
+    "zipcode": "1060AA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0611111111",
+    "accounts": [],
+    "isEmployee": true,
+    "isActive": true
+  },
+  {
+    "userId": 4,
+    "name": "actief",
+    "email": "actief@gmail.com",
+    "hash": "dc00c903852bb19eb250aeba05e534a6d211629d77d055033806b783bae09937",
+    "streetname": "WestOost",
+    "zipcode": "1234BA",
+    "addressnumber": "10",
+    "appendix": "",
+    "phoneNumber": "0612345678",
+    "accounts": [],
+    "isEmployee": false,
+    "isActive": true
+  }
+]

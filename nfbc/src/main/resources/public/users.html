@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="Home" type="submit" value="Home">
+    <input id="getUsers" type="submit" value="get users">
+    <input id="getUsersById" type="submit" value="get users by id">
+    <input id="deleteUserById" type="submit" value="delete user by id">
+    <input id="postNewUser" type="submit" value="post new user">
+
+    <ul id="content"></ul>
+
+    <input id="userId" type="userId" name="userId" placeholder="user id" required>
+    <input id="name" type="name" name="name" placeholder="name" required>
+    <input id="email" type="email" name="email" placeholder="email" required>
+    <input id="password" type="password" name="password" placeholder="password" required>
+    <input id="streetname" type="streetname" name="streetname" placeholder="streetname">
+    <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
+    <input id="isEmployee" type="isEmployee" name="isEmployee" placeholder="isEmployee">
+    <input id="isActive" type="isActive" name="isActive" placeholder="isActive">
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+
+
+        document.getElementById("getUsers").addEventListener("click", function () {
+            var url = "/users";
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+            console.log("success");
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/json",
+                headers: { "session": key },
+                success: function (users) {
+                    console.log("success");
+                    $.each(users, function (i, item) {
+                        document.getElementById("content").innerHTML += '<li>id: ' + item.userId + ' name: ' + item.name + '</li>';
+                    })
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+
+        document.getElementById("getUsersById").addEventListener("click", function () {
+            var id = sessionStorage.getItem("user");
+            var url = "/users/" + id;
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+
+            console.log("success");
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/json",
+                headers: { "session": key },
+                success: function (user) {
+                    console.log("success");
+                    document.getElementById("content").innerHTML += '<li>id: ' + user.userId + ' name: ' + user.name + '</li>';
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+
+        document.getElementById("deleteUserById").addEventListener("click", function () {
+            var id = $("#userId").val();
+            var url = "/users/" + id;
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+
+            console.log("success");
+            $.ajax({
+                type: "DELETE",
+                url: url.trim(),
+                headers: { "session": key },
+                success: function (success) {
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+        document.getElementById("postNewUser").addEventListener("click", function () {
+            var url = "/users";
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+            var json = "{";
+
+            if (document.getElementById("name").value != "") {
+                json += '"name": "' + document.getElementById("name").value + '",';
+            }
+
+            if (document.getElementById("email").value != "") {
+                json += '"email": "' + document.getElementById("email").value + '",';
+            }
+
+            if (document.getElementById("password").value != "") {
+                json += '"hash": "' + document.getElementById("password").value + '",';
+            }
+
+            if (document.getElementById("streetname").value != "") {
+                json += '"streetname": "' + document.getElementById("streetname").value + '",';
+            }
+
+            if (document.getElementById("addressnumber").value != "") {
+                json += '"addressnumber": "' + document.getElementById("addressnumber").value + '",';
+            }
+
+            if (document.getElementById("isEmployee").value != "") {
+                json += '"isEmployee": "' + document.getElementById("isEmployee").value + '",';
+            }
+
+            if (document.getElementById("isActive").value != "") {
+                json += '"isActive": "' + true + '",';
+            }
+
+            json += "}"
+            if (json.includes(",")) {
+                json = json.replace(",}", "}");
+            }
+
+            console.log("success");
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.parse(json),
+                headers: { "session": key },
+                success: function (success) {
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+
+
+        document.getElementById("Home").addEventListener("click", function () {
+            location.href = "homepage.html";
+        });
+
+    </script>
+</body>
+
+</html>
