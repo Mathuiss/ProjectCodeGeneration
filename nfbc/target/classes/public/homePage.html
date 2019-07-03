@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NFBC HOME</title>
+    <link rel="stylesheet" href="Style.css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
@@ -16,10 +17,13 @@
 </head>
 
 <body>
-    <input id="logout" type="submit" value="logout">
-    <input id="users" type="submit" value="users">
 
-    <input type="submit" value="Transactions" id="redirect-transactions">
+    <input id="logout" type="submit" value="logout">
+
+    <div class="signin">
+        <input id="users" type="submit" value="users">
+        <input type="submit" value="Transactions" id="redirect-transactions">
+    </div>
 </body>
 
 
@@ -34,8 +38,6 @@
 
     document.getElementById("logout").addEventListener("click", function () {
         var url = "/logout"
-
-        alert(sessionStorage.getItem('sessionToken'));
 
         active = sessionStorage.getItem("active")
         sessionToken = sessionStorage.getItem('sessionToken');
@@ -58,6 +60,7 @@
             }),
             success: function () {
                 sessionStorage.clear();
+                alert('you are logged out');
                 location.href = "index.html";
             },
             statusCode: {

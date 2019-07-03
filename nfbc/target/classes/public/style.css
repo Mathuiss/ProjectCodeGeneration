@@ -10,8 +10,6 @@ header{
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-seri;
     color: #fff;
-
-
 }
 
 .signin{
@@ -83,6 +81,11 @@ a:hover{
     margin: 0 auto;
     margin-top: 120px;
     width: 240px;
+}
+
+#logout{
+    float: right;
+    background-color: aqua;
 }
 
 
