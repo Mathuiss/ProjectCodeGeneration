@@ -1,151 +1,159 @@
 <html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-        <meta charset="utf-8">
-        <title>NFBC</title>
-    </head>
-    <body>
-        <input type="submit" value="Home" id="home-btn">
-        <input type="submit" value="Create Transaction" id="create">
-        <input type="submit" value="View Transactions" id="view">
 
-        <div id="query-box">
-            Date time start
-            <input type="text" id="datetimestart">
-            Date time end
-            <input type="text" id="datetimeend">
-            User
-            <input type="text" id="user">
-            Sender
-            <input type="text" id="sender">
-            Reciever
-            <input type="text" id="reciever">
-            Account type
-            <input type="text" id="accountType">
-            Min value
-            <input type="text" id="minvalue">
-            Max value
-            <input type="text" id="maxvalue">
-        </div>
-        <ul id="show">
-        </ul>
-    </body>
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <meta charset="utf-8">
+    <title>NFBC</title>
     <script>
-        document.getElementById("home-btn").addEventListener("click", function () {
-            location.href = "homePage.html";
-        });
-
-        document.getElementById("create").addEventListener("click", function () {
-            location.href = "createtransaction.html"
-        });
-
-        document.getElementById("view").addEventListener("click", function () {
-            document.getElementById("show").innerHTML = "";
-            var url = "http://localhost:8080/transactions";
-
-            console.log(document.getElementById("user").value);
-
-            var json = "{";
-
-            if (document.getElementById("datetimestart").value != "") {
-                json += '"datetimestart": "' + document.getElementById("datetimestart").value + '",'; 
-            }
-
-            if (document.getElementById("datetimeend").value != "") {
-                json += '"datetimeend": "' + document.getElementById("datetimeend").value + '",'; 
-            }
-
-            if (document.getElementById("user").value != "") {
-                json += '"user": "' + document.getElementById("user").value + '",'; 
-            }
-
-            if (document.getElementById("sender").value != "") {
-                json += '"sender": "' + document.getElementById("sender").value + '",'; 
-            }
-
-            if (document.getElementById("reciever").value != "") {
-                json += '"reciever": "' + document.getElementById("reciever").value + '",'; 
-            }
-
-            if (document.getElementById("accountType").value != "") {
-                json += '"accountType": "' + document.getElementById("accountType").value + '",'; 
-            }
-
-            if (document.getElementById("minvalue").value != "") {
-                json += '"minvalue": "' + document.getElementById("minvalue").value + '",'; 
-            }
-
-            if (document.getElementById("maxvalue").value != "") {
-                json += '"maxvalue": "' + document.getElementById("maxvalue").value + '",'; 
-            }
-
-            json += "}"
-            if (json.includes(",")) {
-                json = json.replace(",}", "}");
-            }
-
-            if (sessionStorage.getItem("userRole") == "employee") {
-                $.ajax({
-                    method: "GET",
-                    url: url,
-                    data: JSON.parse(json),
-                    headers: {
-                        "session": sessionStorage.getItem("ApiKeyAuth")
-                    },
-                    success: function (transactions) {
-                        $.each(transactions, function (n, transaction) {
-                            document.getElementById("show").innerHTML += "<li>Transaction: " + transaction.TransactionId;
-                            document.getElementById("show").innerHTML += "Sender: " + transaction.sender;
-                            document.getElementById("show").innerHTML += "Reciever: " + transaction.reciever;
-                            document.getElementById("show").innerHTML += "User: " + transaction.userId;
-                            document.getElementById("show").innerHTML += "Amount:" + transaction.amount;
-                            document.getElementById("show").innerHTML += "Timestamp: " + transaction.timestamp + "</li>";
-                        })
-                    },
-                    statusCode: {
-                        404: function () {
-                            alert("Not found");
-                        },
-                        401: function () {
-                            alert("Unauthorized");
-                        },
-                        400: function () {
-                            alert("Bad Request");
-                        }
-                    }
-                });
-            } else {
-                $.ajax({
-                    method: "GET",
-                    url: url,
-                    data: {
-                        "user": sessionStorage.getItem("user"),
-                    },
-                    headers: {
-                        "session": sessionStorage.getItem("ApiKeyAuth")
-                    },
-                    success: function (transactions) {
-                        $.each(transactions, function (n, transaction) {
-                            document.getElementById("show").innerHTML += "<li>Transaction: " + transaction.TransactionId;
-                            document.getElementById("show").innerHTML += "Sender: " + transaction.sender;
-                            document.getElementById("show").innerHTML += "Reciever: " + transaction.reciever;
-                            document.getElementById("show").innerHTML += "Amount:" + transaction.amount;
-                            document.getElementById("show").innerHTML += "Timestamp: " + transaction.timestamp + "</li>";
-                        })
-                    },
-                    statusCode: {
-                        404: function () {
-                            alert("Not found");
-                        },
-                        401: function () {
-                            alert("Unauthorized");
-                        },
-                        400: function () {
-                            alert("Bad Request");
-                        }
-                    }
-                });
-            }
-        });
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
     </script>
+</head>
+
+<body>
+    <input type="submit" value="Home" id="home-btn">
+    <input type="submit" value="Create Transaction" id="create">
+    <input type="submit" value="View Transactions" id="view">
+
+    <div id="query-box">
+        Date time start
+        <input type="text" id="datetimestart">
+        Date time end
+        <input type="text" id="datetimeend">
+        User
+        <input type="text" id="user">
+        Sender
+        <input type="text" id="sender">
+        Reciever
+        <input type="text" id="reciever">
+        Account type
+        <input type="text" id="accountType">
+        Min value
+        <input type="text" id="minvalue">
+        Max value
+        <input type="text" id="maxvalue">
+    </div>
+    <ul id="show">
+    </ul>
+</body>
+<script>
+    document.getElementById("home-btn").addEventListener("click", function () {
+        location.href = "homePage.html";
+    });
+
+    document.getElementById("create").addEventListener("click", function () {
+        location.href = "createtransaction.html"
+    });
+
+    document.getElementById("view").addEventListener("click", function () {
+        document.getElementById("show").innerHTML = "";
+        var url = "/transactions";
+
+        console.log(document.getElementById("user").value);
+
+        var json = "{";
+
+        if (document.getElementById("datetimestart").value != "") {
+            json += '"datetimestart": "' + document.getElementById("datetimestart").value + '",';
+        }
+
+        if (document.getElementById("datetimeend").value != "") {
+            json += '"datetimeend": "' + document.getElementById("datetimeend").value + '",';
+        }
+
+        if (document.getElementById("user").value != "") {
+            json += '"user": "' + document.getElementById("user").value + '",';
+        }
+
+        if (document.getElementById("sender").value != "") {
+            json += '"sender": "' + document.getElementById("sender").value + '",';
+        }
+
+        if (document.getElementById("reciever").value != "") {
+            json += '"reciever": "' + document.getElementById("reciever").value + '",';
+        }
+
+        if (document.getElementById("accountType").value != "") {
+            json += '"accountType": "' + document.getElementById("accountType").value + '",';
+        }
+
+        if (document.getElementById("minvalue").value != "") {
+            json += '"minvalue": "' + document.getElementById("minvalue").value + '",';
+        }
+
+        if (document.getElementById("maxvalue").value != "") {
+            json += '"maxvalue": "' + document.getElementById("maxvalue").value + '",';
+        }
+
+        json += "}"
+        if (json.includes(",")) {
+            json = json.replace(",}", "}");
+        }
+
+        if (sessionStorage.getItem("userRole") == "employee") {
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: JSON.parse(json),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (transactions) {
+                    $.each(transactions, function (n, transaction) {
+                        document.getElementById("show").innerHTML += "<li>Transaction: " + transaction.TransactionId;
+                        document.getElementById("show").innerHTML += "Sender: " + transaction.sender;
+                        document.getElementById("show").innerHTML += "Reciever: " + transaction.reciever;
+                        document.getElementById("show").innerHTML += "User: " + transaction.userId;
+                        document.getElementById("show").innerHTML += "Amount:" + transaction.amount;
+                        document.getElementById("show").innerHTML += "Timestamp: " + transaction.timestamp + "</li>";
+                    })
+                },
+                statusCode: {
+                    404: function () {
+                        alert("Not found");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    400: function () {
+                        alert("Bad Request");
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: {
+                    "user": sessionStorage.getItem("user"),
+                },
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (transactions) {
+                    $.each(transactions, function (n, transaction) {
+                        document.getElementById("show").innerHTML += "<li>Transaction: " + transaction.TransactionId;
+                        document.getElementById("show").innerHTML += "Sender: " + transaction.sender;
+                        document.getElementById("show").innerHTML += "Reciever: " + transaction.reciever;
+                        document.getElementById("show").innerHTML += "Amount:" + transaction.amount;
+                        document.getElementById("show").innerHTML += "Timestamp: " + transaction.timestamp + "</li>";
+                    })
+                },
+                statusCode: {
+                    404: function () {
+                        alert("Not found");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    400: function () {
+                        alert("Bad Request");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
 </html>

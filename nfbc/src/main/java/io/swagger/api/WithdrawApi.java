@@ -24,11 +24,13 @@ import io.swagger.model.Transaction;
 @Api(value = "withdraw", description = "the withdraw API")
 public interface WithdrawApi {
 
-    @ApiOperation(value = "", nickname = "withdrawPost", notes = "", authorizations = {
-            @Authorization(value = "ApiKeyAuth") }, tags = { "Transactions", })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "ok"), @ApiResponse(code = 400, message = "Bad input"),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @RequestMapping(value = "/withdraw", consumes = { "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<Void> withdrawPost(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body);
+        @ApiOperation(value = "", nickname = "withdrawPost", notes = "", authorizations = {
+                        @Authorization(value = "ApiKeyAuth") }, tags = { "Transactions", })
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "ok"),
+                        @ApiResponse(code = 400, message = "Bad input"),
+                        @ApiResponse(code = 401, message = "Unauthorized") })
+        @RequestMapping(value = "/withdraw", consumes = { "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<Transaction> withdrawPost(
+                        @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body);
 
 }

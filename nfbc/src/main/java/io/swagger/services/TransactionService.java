@@ -13,17 +13,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.Account;
+import io.swagger.model.SessionToken;
 import io.swagger.model.Transaction;
+import io.swagger.model.User;
+import io.swagger.repositories.AccountRepository;
+import io.swagger.repositories.SessionRepository;
 import io.swagger.repositories.TransactionRepository;
+import io.swagger.repositories.UserRepository;
 
 @Service
 public class TransactionService {
     private TransactionRepository transactions;
-    private SecurityService security;
+    private AccountRepository accounts;
+    private UserRepository users;
+    private SessionRepository sessions;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public TransactionService(TransactionRepository transactions, SecurityService security) {
+    public TransactionService(TransactionRepository transactions, AccountRepository accounts, UserRepository users,
+            SessionRepository sessions) {
         this.transactions = transactions;
-        this.security = security;
+        this.accounts = accounts;
+        this.users = users;
+        this.sessions = sessions;
 
         loadOnStartup();
     }
@@ -45,8 +57,25 @@ public class TransactionService {
     }
 
     public Iterable<Transaction> getTransactions(String datetimestart, String datetimeend, Long userId, String sender,
-            String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String reciever, String accountType, BigDecimal minValue, BigDecimal maxValue, String transactiontype,
+            String sessionToken) throws Exception {
+
+        // Check to make sure the user only get's his own transactions
+        Optional<SessionToken> sessionOpt = sessions.findById(sessionToken);
+
+        if (!sessionOpt.isPresent()) {
+            throw new Exception("No session found for id: " + sessionToken);
+        }
+
+        SessionToken token = sessionOpt.get();
+
+        Optional<User> userOpt = users.findById(token.getUserId());
+
+        if (!sessionOpt.isPresent()) {
+            throw new Exception("User not found for id: " + token.getUserId());
+        }
+
+        User userObj = userOpt.get();
 
         // Setting null filters
         if (datetimestart == null) {
@@ -68,6 +97,7 @@ public class TransactionService {
         Iterable<Transaction> transactionList = transactions.findAll();
         ArrayList<Transaction> resultList = new ArrayList<Transaction>();
 
+        // Applying filters
         for (Transaction transaction : transactionList) {
             // Check for datetime
             if (LocalDateTime.parse(transaction.getTimestamp(), formatter)
@@ -117,7 +147,13 @@ public class TransactionService {
                 // TODO: When AccountRepository is available. Use that.
             }
 
-            resultList.add(transaction);
+            if (userObj.getIsEmployee()) {
+                resultList.add(transaction);
+            } else {
+                if (checkAccount(transaction.getSender()).getUserId() == token.getUserId()) {
+                    resultList.add(transaction);
+                }
+            }
         }
 
         return resultList;
@@ -136,17 +172,73 @@ public class TransactionService {
     }
 
     // Creates a new transaction
-    public void createTransaction(Transaction transaction) {
+    public void createTransaction(Transaction transaction) throws Exception {
+        transaction.setTimestamp(LocalDateTime.now().format(formatter));
+        Account sender = checkAccount(transaction.getSender());
+        Account reciever = checkAccount(transaction.getReciever());
+
+        if (sender.getBalance().subtract(transaction.getAmount()).compareTo(BigDecimal.valueOf(0)) == -1) {
+            throw new Exception("Balance too low: " + sender.getBalance());
+        }
+
+        ArrayList<Account> accountList = new ArrayList<Account>();
+        sender.setBalance(sender.getBalance().subtract(transaction.getAmount()));
+        reciever.setBalance(reciever.getBalance().add(transaction.getAmount()));
+        accountList.add(sender);
+        accountList.add(reciever);
+
+        accounts.saveAll(accountList);
         transactions.save(transaction);
     }
 
-    public void withdraw(Transaction transaction) {
+    public void withdraw(Transaction transaction) throws Exception {
         transaction.setSender("NL00INHO0000000000");
-        transactions.save(transaction);
+        createTransaction(transaction);
     }
 
-    public void deposit(Transaction transaction) {
+    public void deposit(Transaction transaction) throws Exception {
         transaction.setReciever("NL00INHO0000000000");
-        transactions.save(transaction);
+        createTransaction(transaction);
+    }
+
+    public boolean hasUserPermission(Transaction transaction, String sessionToken) throws Exception {
+        Optional<SessionToken> sessionOpt = sessions.findById(sessionToken);
+
+        if (!sessionOpt.isPresent()) {
+            throw new Exception("Session token not found: " + sessionToken);
+        }
+
+        SessionToken session = sessionOpt.get();
+
+        Optional<User> userOpt = users.findById(session.getUserId());
+
+        if (!userOpt.isPresent()) {
+            throw new Exception("User not found for id: " + session.getUserId());
+        }
+
+        User user = userOpt.get();
+
+        if (user.getIsEmployee()) {
+            return true;
+        }
+
+        Iterable<Account> accountList = accounts.findAccountsByUserId(user.getuserId());
+
+        for (Account acc : accountList) {
+            if (acc.getIban().equals(transaction.getSender())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Account checkAccount(String iban) throws Exception {
+        Optional<Account> acc = accounts.findById(iban);
+        if (!acc.isPresent()) {
+            throw new Exception("Sender not found: " + iban);
+        }
+
+        return acc.get();
     }
 }

@@ -35,11 +35,12 @@ public class WithdrawApiController implements WithdrawApi {
         this.service = service;
     }
 
-    public ResponseEntity<Void> withdrawPost(
+    public ResponseEntity<Transaction> withdrawPost(
             @ApiParam(value = "", required = true) @Valid @RequestBody Transaction body) {
         try {
             service.withdraw(body);
-            return new ResponseEntity<>(HttpStatus.OK);
+            log.info("Withdraw created");
+            return new ResponseEntity<Transaction>(body, HttpStatus.OK);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

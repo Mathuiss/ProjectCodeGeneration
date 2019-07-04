@@ -89,7 +89,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
+  // @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
   public String getSender() {
     return sender;
   }
@@ -110,7 +110,7 @@ public class Transaction {
    **/
   @ApiModelProperty(value = "")
 
-  @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
+  // @Pattern(regexp = "NL\\d{2}INHO0\\d{9}")
   public String getReciever() {
     return reciever;
   }

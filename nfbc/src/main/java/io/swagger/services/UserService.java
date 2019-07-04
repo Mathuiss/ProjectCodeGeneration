@@ -33,7 +33,6 @@ public class UserService {
 
     // @Bean("loadUsers")
     public void loadOnStartup() {
-        System.out.println("\n\n\n\n\n\n USERS loading \n\n\n\n\n");
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<List<User>> typeReference = new TypeReference<List<User>>() {
         };
