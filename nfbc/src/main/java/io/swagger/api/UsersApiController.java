@@ -63,8 +63,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-            @ApiParam(value = "", required = true) @PathVariable("id") long id,
-            @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account) {
+            @ApiParam(value = "", required = true) @PathVariable("id") long id) {
 
         try {
             if (security.isAllowed(request.getHeader("session"), "customer")) {
@@ -108,7 +107,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<User>> getUsers(
-            @ApiParam(value = "which users you want to get", required = false) @PathParam("state") String query) {
+            @ApiParam(value = "which users you want to get", required = false) @Valid @RequestParam("state") String query) {
 
         try {
             if (security.isAllowed(request.getHeader("session"), "employee")) {

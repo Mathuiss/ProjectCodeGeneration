@@ -47,10 +47,10 @@ public interface UsersApi {
                         @ApiResponse(code = 200, message = "List of all transactions for this user", response = Transaction.class, responseContainer = "List"),
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/users/transactions", produces = { "application/json" }, method = RequestMethod.GET)
+        @RequestMapping(value = "/users/transactions/{id}", produces = {
+                        "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-                        @ApiParam(value = "", required = true) @PathVariable("id") long id,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account);
+                        @ApiParam(value = "", required = true) @PathVariable("id") long id);
 
         @ApiOperation(value = "Gets user corresponding with id", nickname = "getUserById", notes = "Get user corresponding with id", response = User.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
@@ -70,8 +70,8 @@ public interface UsersApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/users", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<User>> getUsers(
-                        @ApiParam(value = "which users you want to get", required = false) @PathParam("state") String query); // iterable
-                                                                                                                              // veranderd
+                        @ApiParam(value = "which users you want to get", required = false) @RequestParam("state") String state); // iterable
+                                                                                                                                 // veranderd
 
         @ApiOperation(value = "", nickname = "usersPost", notes = "Create new user", response = User.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
