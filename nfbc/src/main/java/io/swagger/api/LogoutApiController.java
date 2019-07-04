@@ -34,14 +34,7 @@ public class LogoutApiController implements LogoutApi {
 
                 sessionService.deActivateSessionToken(sessionToken);
                 return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
-            }
-
-            // if (sessionToken.isActive() == true) {
-            // sessionService.deActivateSessionToken(sessionToken);
-
-            // return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
-            // }
-            else {
+            } else {
                 return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {

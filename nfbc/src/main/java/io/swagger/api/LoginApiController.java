@@ -15,7 +15,6 @@ import io.swagger.model.Body;
 import io.swagger.services.SessionService;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-// @Controller
 @Controller
 public class LoginApiController implements LoginApi {
     private static final Logger log = LoggerFactory.getLogger(LoginApiController.class);;
@@ -33,10 +32,10 @@ public class LoginApiController implements LoginApi {
             if (sessionService.userExist(body.getUsername())) {
                 long id = sessionService.getUserIdByEmail(body.getUsername());
                 // log.info(String.valueOf(id));
+
                 if (sessionService.passwordCheck(id, body.getPassword())) {
                     if (sessionService.isUserActive(id)) {
-                        // toegang geven
-                        // sessiontoken maken
+                        // aansturing sessiontoken maken
                         try {
                             SessionToken sessionToken = sessionService.getSessionToken(id);
                             return new ResponseEntity<SessionToken>(sessionToken, HttpStatus.OK);
@@ -45,17 +44,18 @@ public class LoginApiController implements LoginApi {
                             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                         }
                     } else {
-                        // return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
                         return new ResponseEntity<SessionToken>(HttpStatus.FORBIDDEN);
                     }
 
                 } else {
                     return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
                 }
+
             } else {
                 log.info("user name not found: " + body.getUsername());
                 return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
             }
+
         } catch (Exception ex) {
             log.info("exceptiont");
             return new ResponseEntity<SessionToken>(HttpStatus.BAD_REQUEST);
