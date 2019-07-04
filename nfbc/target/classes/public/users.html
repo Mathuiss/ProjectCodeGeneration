@@ -11,7 +11,8 @@
 <body>
     <input id="Home" type="submit" value="Home">
     <input id="getUsers" type="submit" value="find users">
-    <input id="getUsersById" type="submit" value="find users by id">
+    <input id="getUsersById" type="submit" value="find yourself">
+    <input id="TransactionsOfUserById" type="submit" value="find transactions">
     <input id="deleteUserById" type="submit" value="delete user by id">
     <input id="postNewUser" type="submit" value="create new user">
     <input id="updateUser" type="submit" value="update user">
@@ -36,6 +37,7 @@
 
         document.getElementById("getUsers").addEventListener("click", function () {
 
+            document.getElementById("content").innerHTML = "";
             var url = "/users";
             var key = sessionStorage.getItem("ApiKeyAuth");
 
@@ -48,7 +50,7 @@
                 success: function (users) {
                     console.log("success");
                     $.each(users, function (i, item) {
-                        document.getElementById("content").innerHTML += '<li>id: ' + item.userId + ' name: ' + item.name + ' email: ' + item.email + '</li>';
+                        document.getElementById("content").innerHTML += '<li>id: ' + item.userId + ', name: ' + item.name + ', email: ' + item.email + ', zipcode: ' + item.zipcode + ', phone number: ' + item.phoneNumber + '</li>';
                     })
                 },
                 statusCode: {
@@ -65,6 +67,8 @@
         });
 
         document.getElementById("getUsersById").addEventListener("click", function () {
+
+            document.getElementById("content").innerHTML = "";
             var id = sessionStorage.getItem("user");
             var url = "/users/" + id;
             var key = sessionStorage.getItem("ApiKeyAuth");
@@ -78,7 +82,39 @@
                 headers: { "session": key },
                 success: function (user) {
                     console.log("success");
-                    document.getElementById("content").innerHTML += '<li>id: ' + user.userId + ' name: ' + user.name + ' email: ' + user.email + '</li>';
+                    document.getElementById("content").innerHTML += '<li>id: ' + user.userId + ', name: ' + user.name + ', email: ' + user.email + ', zipcode: ' + user.zipcode + ', phone number: ' + user.phoneNumber + '</li>';
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+        document.getElementById("TransactionsOfUserById").addEventListener("click", function () {
+
+            document.getElementById("content").innerHTML = "";
+            var id = sessionStorage.getItem("user");
+            var url = "/users/transactions/" + id;
+            var key = sessionStorage.getItem("ApiKeyAuth");
+
+            console.log("success");
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/json",
+                headers: { "session": key },
+                success: function (transactions) {
+                    console.log("success");
+                    $.each(transactions, function (i, transaction) {
+                        document.getElementById("content").innerHTML += '<li>transaction id: ' + transaction.TransactionId + ', name: ' + transaction.sender + ', receiver: ' + transaction.reciever + ', amount: ' + transaction.amount + "\u20ac" + ', timestamp: ' + transaction.timestamp + '</li>';
+                    })
                 },
                 statusCode: {
                     400: function () {
@@ -105,6 +141,7 @@
                 url: url.trim(),
                 headers: { "session": key },
                 success: function (success) {
+                    document.getElementById("content").innerHTML = "Deleted user of id: " + id;
                 },
                 statusCode: {
                     400: function () {
@@ -122,6 +159,26 @@
         document.getElementById("postNewUser").addEventListener("click", function () {
             var url = "/users";
             var key = sessionStorage.getItem("ApiKeyAuth");
+
+            if (document.getElementById("name").value == "") {
+                document.getElementById("content").innerHTML = "name cannot be empty ";
+                throw new ArgumentException("name cannot be empty");
+            }
+
+            if (document.getElementById("email").value == "") {
+                document.getElementById("content").innerHTML = "email cannot be empty ";
+                throw new ArgumentException("email cannot be empty");
+            }
+
+            if (document.getElementById("password").value == "") {
+                document.getElementById("content").innerHTML = "password cannot be empty ";
+                throw new ArgumentException("password cannot be empty");
+            }
+
+            if (document.getElementById("isEmployee").value == "") {
+                document.getElementById("content").innerHTML = "isEmployee cannot be empty ";
+                throw new ArgumentException("isEmployee cannot be empty");
+            }
 
             $.ajax({
                 type: "POST",
@@ -144,6 +201,7 @@
                     "session": key
                 },
                 success: function (success, data) {
+                    document.getElementById("content").innerHTML = "created user: " + document.getElementById("name").value;
                 },
                 statusCode: {
                     400: function () {
@@ -222,6 +280,7 @@
 
                     doUpdateUser(key, id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts, isEmployee, isActive)
 
+                    document.getElementById("content").innerHTML = "Changes saved";
                 },
                 statusCode: {
                     400: function () {

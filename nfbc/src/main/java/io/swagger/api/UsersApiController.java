@@ -63,8 +63,7 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Iterable<Transaction>> getTransactionOfUser(
-            @ApiParam(value = "", required = true) @PathVariable("id") long id,
-            @ApiParam(value = "") @Valid @RequestParam(value = "account", required = false) Account account) {
+            @ApiParam(value = "", required = true) @PathVariable("id") long id) {
 
         try {
             if (security.isAllowed(request.getHeader("session"), "customer")) {
