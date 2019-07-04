@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <script>
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
+    </script>
 </head>
 
 <body>
@@ -19,32 +25,65 @@
 
     <ul id="content"></ul>
 
-    <input id="userId" type="userId" name="userId" placeholder="user id">
-    <input id="name" type="name" name="name" placeholder="name">
-    <input id="email" type="email" name="email" placeholder="email">
-    <input id="password" type="password" name="password" placeholder="password">
-    <input id="streetname" type="streetname" name="streetname" placeholder="streetname">
-    <input id="zipcode" type="zipcode" name="zipcode" placeholder="zipcode">
-    <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
-    <input id="appendix" type="appendix" name="appendix" placeholder="appendix">
-    <input id="phoneNumber" type="phoneNumber" name="phoneNumber" placeholder="phoneNumber">
-    <input id="isEmployee" type="isEmployee" name="isEmployee" placeholder="isEmployee">
+    <p>
+        <input id="userId" type="userId" name="userId" placeholder="user id">
+        <label>id for deleting a user</label>
+    </p>
 
+    <p>
+        <select id="option">
+            <option value="all">all</option>
+            <option value="disabled">disabled</option>
+            <option value="employees">employees</option>
+            <option value="notemployees">customers</option>
+        </select>
+        <label>option for searching all users</label>
+    </p>
 
+    <p>
+        <input id="name" type="name" name="name" placeholder="name">
+        <input id="email" type="email" name="email" placeholder="email">
+        <input id="password" type="password" name="password" placeholder="password">
+        <input id="isEmployee" type="isEmployee" name="isEmployee" placeholder="isEmployee">
+        <label>required for creating a user</label>
+
+    </p>
+
+    <p>
+        <input id="streetname" type="streetname" name="streetname" placeholder="streetname">
+        <input id="zipcode" type="zipcode" name="zipcode" placeholder="zipcode">
+        <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
+        <input id="appendix" type="appendix" name="appendix" placeholder="appendix">
+        <input id="phoneNumber" type="phoneNumber" name="phoneNumber" placeholder="phone number">
+    </p>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
+
+
 
         document.getElementById("getUsers").addEventListener("click", function () {
 
             document.getElementById("content").innerHTML = "";
             var url = "/users";
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
+
+            var json = "{";
+
+            if (document.getElementById("option").value != "") {
+                json += '"state": "' + document.getElementById("option").value + '",';
+            }
+
+            json += "}"
+            if (json.includes(",")) {
+                json = json.replace(",}", "}");
+            }
 
             console.log("success");
             $.ajax({
                 type: "GET",
                 url: url,
+                data: JSON.parse(json),
                 contentType: "application/json",
                 headers: { "session": key },
                 success: function (users) {
@@ -71,7 +110,7 @@
             document.getElementById("content").innerHTML = "";
             var id = sessionStorage.getItem("user");
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
 
             console.log("success");
@@ -102,7 +141,7 @@
             document.getElementById("content").innerHTML = "";
             var id = sessionStorage.getItem("user");
             var url = "/users/transactions/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
             console.log("success");
             $.ajax({
@@ -132,7 +171,7 @@
         document.getElementById("deleteUserById").addEventListener("click", function () {
             var id = $("#userId").val();
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
 
             console.log("success");
@@ -158,7 +197,7 @@
 
         document.getElementById("postNewUser").addEventListener("click", function () {
             var url = "/users";
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
             if (document.getElementById("name").value == "") {
                 document.getElementById("content").innerHTML = "name cannot be empty ";
@@ -219,7 +258,7 @@
         document.getElementById("updateUser").addEventListener("click", function () {
             var id = sessionStorage.getItem("user");
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
             var name = document.getElementById("name").value;
             var email = document.getElementById("email").value;

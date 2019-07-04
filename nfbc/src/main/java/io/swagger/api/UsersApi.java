@@ -70,8 +70,8 @@ public interface UsersApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/users", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<User>> getUsers(
-                        @ApiParam(value = "which users you want to get", required = false) @PathParam("state") String query); // iterable
-                                                                                                                              // veranderd
+                        @ApiParam(value = "which users you want to get", required = false) @RequestParam("state") String state); // iterable
+                                                                                                                                 // veranderd
 
         @ApiOperation(value = "", nickname = "usersPost", notes = "Create new user", response = User.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Users", })
