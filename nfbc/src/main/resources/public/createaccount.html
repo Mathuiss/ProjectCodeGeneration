@@ -19,15 +19,13 @@
     <div id="query-box">
         <form>
             <p>
-                <input id="userId" name="userId" type="number" required="true">
+                <input id="userId" type="number" required="true">
                 <label for="userId">What is the user's id? *</label>
             </p>
             <p>
                 <select id="accountType" required="true">
-                    <optgroup label="accountType">
-                        <option value="savings">Savings</option>
-                        <option value="current">Current</option>
-                    </optgroup>
+                    <option value="savings">Savings</option>
+                    <option value="current">Current</option>
                 </select>
                 <label for="accountType">What is the type of account? *</label>
             </p>
@@ -58,44 +56,63 @@
 
         document.getElementById("account").addEventListener("click", function () {
             if (sessionStorage.getItem("userRole") == "employee") {
-                createAccount("/accounts");
+                createAccount("/accounts/");
             }
             else {
                 alert("Unauthorized");
             }
         });
 
-        function createAccount(url) {
+        // TODO: Disables the Absolute Limit field when the account type is set to 'savings'
+        // a savings account can't be below 0;
+        // document.getElementById("absoluteLimit").addEventListener("click", function () {
+        //     if (document.getElementById("accountType").value == "savings") {
+        //         document.getElementById("absoluteLimit").disabled = true;
+        //     }
+        //     else {
+        //         alert("Unauthorized");
+        //     }
+        // });
+
+        function createAccount() {
+            var userId = document.getElementById("userId").value;
+            var accountType = document.getElementById("accountType").value;
+            var isActive = true;
+            var balance = document.getElementById("balance").value;
+            var absoluteLimit = document.getElementById("absoluteLimit").value;
+            var dailyLimit = document.getElementById("dailyLimit").value;
+            var transactionLimit = document.getElementById("transactionLimit").value;
+
+            if (accountType != "savings") {
+                var absoluteLimit = document.getElementById("absoluteLimit").value;
+            }
+            else {
+                absoluteLimit = "0";
+            }
+
+            var jsonData = JSON.stringify({
+                "userId": userId,
+                "accountType": accountType,
+                "isActive": isActive,
+                "balance": balance,
+                "absoluteLimit": absoluteLimit,
+                "dailyLimit": dailyLimit,
+                "transactionLimit": transactionLimit
+            });
+
             $.ajax({
                 method: "POST",
-                url: url,
+                url: "/accounts",
+                data: jsonData,
+                dataType: 'json',
                 contentType: "application/json",
-                data: JSON.stringify({
-                    "iban": "",
-                    "userId": document.getElementById("userId").value,
-                    "isActive": document.getElementById("isActive").value,
-                    "accountType": document.getElementById("accountType").value,
-                    "balance": document.getElementById("balance").value,
-                    "absoluteLimit": document.getElementById("absoluteLimit").value,
-                    "dailyLimit": document.getElementById("dailyLimit").value,
-                    "transactionLimit": document.getElementById("transactionLimit").value,
-                }),
                 headers: {
                     "session": sessionStorage.getItem("sessionToken")
                 },
-                success: function () {
-                    alert("Success" + data);
+                success: function (success, data) {
                 },
-                statusCode: {
-                    404: function () {
-                        alert("Not found");
-                    },
-                    401: function () {
-                        alert("Unauthorized");
-                    },
-                    400: function () {
-                        alert("Bad Request");
-                    }
+                error: function (req, textStatus, errorThrown) {
+                    alert(textStatus + ', ' + errorThrown)
                 }
             });
         };

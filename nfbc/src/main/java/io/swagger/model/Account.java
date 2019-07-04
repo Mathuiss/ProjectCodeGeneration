@@ -254,7 +254,7 @@ public abstract class Account {
    **/
   @ApiModelProperty(value = "")
 
-  public String accountType() {
+  public String getAccountType() {
     return accountType;
   }
 

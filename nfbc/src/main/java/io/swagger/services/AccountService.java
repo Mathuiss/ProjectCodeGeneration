@@ -6,13 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder.Case;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.util.concurrent.ExecutionError;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.model.Account;
 import io.swagger.model.CurrentAccount;
@@ -26,6 +32,8 @@ import io.swagger.repositories.UserRepository;
 public class AccountService {
     private AccountRepository accounts;
     private UserRepository users;
+
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
 
     public AccountService(AccountRepository accounts, UserRepository users) {
         this.accounts = accounts;
@@ -46,7 +54,7 @@ public class AccountService {
         ArrayList<Account> accountList = new ArrayList<>();
         try {
             List<CurrentAccount> accountJsonList = mapper.readValue(inputStream, typeReference);
-            // We're using the currentAccountList because it's less restricted
+            // We're using CurrentAccount because it accepts all types of accounts
             // and Account is abstract
             for (CurrentAccount acc : accountJsonList) {
 
@@ -58,18 +66,18 @@ public class AccountService {
 
                 // User user = userRes.get();
 
-                switch (acc.accountType()) {
+                switch (acc.getAccountType()) {
                 case "current":
                     CurrentAccount currentAccount = new CurrentAccount(acc.getUserId(), /* user, */ acc.getIban(),
                             acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
-                            acc.getIsActive(), acc.accountType());
+                            acc.getIsActive(), acc.getAccountType());
 
                     accountList.add(currentAccount);
                     break;
                 case "savings":
                     SavingsAccount savingsAccount = new SavingsAccount(acc.getUserId(), /* user, */ acc.getIban(),
                             acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
-                            acc.getIsActive(), acc.accountType());
+                            acc.getIsActive(), acc.getAccountType());
 
                     accountList.add(savingsAccount);
                     break;
@@ -84,13 +92,15 @@ public class AccountService {
     }
 
     // Get all accounts
-    public Iterable<Account> getAccounts(String iban, Long userId, Boolean isActive, String accountType,
-            Integer dailyLimit, BigDecimal transactionLimit, BigDecimal absoluteLimit) {
+    public Iterable<Account> getAccounts(String iban, Long userId, String isActive, BigDecimal balance,
+            String accountType, Integer dailyLimit, BigDecimal transactionLimit, BigDecimal absoluteLimit) {
 
         Iterable<Account> accountList = accounts.findAll();
         ArrayList<Account> resultList = new ArrayList<Account>();
 
+        // Apply filters
         for (Account account : accountList) {
+
             // check if iban is found in the list
             if (iban != null) {
                 if (iban != account.getIban()) {
@@ -107,8 +117,21 @@ public class AccountService {
 
             // check for active
             if (isActive != null) {
-                if (isActive != account.getIsActive()) {
+                switch (isActive) {
+                case "all":
                     continue;
+                case "true":
+                    if (account.getIsActive() == true) {
+                        continue;
+                    }
+                    break;
+                case "false":
+                    if (account.getIsActive() == false) {
+                        continue;
+                    }
+                    break;
+                default:
+                    break;
                 }
             }
 
@@ -117,7 +140,7 @@ public class AccountService {
                 if (accountType == "all") {
                     continue;
                 }
-                if (accountType != account.accountType()) {
+                if (accountType != account.getAccountType()) {
                     continue;
                 }
             }
@@ -147,8 +170,10 @@ public class AccountService {
         }
 
         return resultList;
+
     }
 
+    // Redundant
     public Account getAccount(String iban) throws Exception {
         Optional<Account> result = accounts.findById(iban);
 
@@ -164,14 +189,39 @@ public class AccountService {
         accounts.save(account);
     }
 
-    public void createAccount(Account body) {
+    public void createAccount(Account body) throws Exception {
         body.setIban();
+
+        Optional<User> result = users.findById(body.getUserId());
+
+        // checks if result is not null to avoid NullPointerException
+        if (!result.isPresent()) {
+            throw new Exception("No user found for userId " + body.getUserId());
+        }
+
+        if (body.getAccountType() == "savings") {
+            BigDecimal big = new BigDecimal("0");
+            body.setAbsoluteLimit(big);
+
+            Account savAcc = new SavingsAccount(body.getUserId(), body.getIban(), body.getBalance(),
+                    body.getTransactionLimit(), body.getAbsoluteLimit(), body.getDailyLimit(), body.getIsActive(),
+                    body.getAccountType());
+
+            accounts.save(savAcc);
+        }
+
+        if (body.getAccountType() == "current") {
+            Account curAcc = new CurrentAccount(body.getUserId(), body.getIban(), body.getBalance(),
+                    body.getTransactionLimit(), body.getAbsoluteLimit(), body.getDailyLimit(), body.getIsActive(),
+                    body.getAccountType());
+
+            accounts.save(curAcc);
+        }
         // Optional<User> userResult = users.findById(body.getUserId());
         // if (!userResult.isPresent()) {
         // throw new Exception("User not found for id: " + body.getUserId());
         // }
         // User user = userResult.get().addAccount(body);
-        accounts.save(body);
         // users.save(user);
     }
 
@@ -187,5 +237,10 @@ public class AccountService {
         account.setIsActive(false);
 
         accounts.save(account);
+    }
+
+    public boolean doesUserExist(Long userId) throws Exception {
+
+        return true;
     }
 }

@@ -29,7 +29,7 @@ import io.swagger.model.Account;
 @Api(value = "accounts", description = "the accounts API")
 public interface AccountsApi {
 
-        @ApiOperation(value = "", nickname = "deleteAccountByIban", notes = "delete specified account", response = Account.class, responseContainer = "List", authorizations = {
+        @ApiOperation(value = "Account", nickname = "deleteAccountByIban", notes = "delete specified account", response = Account.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
         @ApiResponses(value = {
                         @ApiResponse(code = 200, message = "OK", response = Account.class, responseContainer = "List"),
@@ -48,12 +48,13 @@ public interface AccountsApi {
         @RequestMapping(value = "/accounts", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Account>> fetchAccount(
                         @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "userid", required = false) Long userId,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "isactive", required = false) Boolean isActive,
-                        @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accountType,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "dailylimit", required = false) Integer dailyLimit,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionlimit", required = false) BigDecimal transactionLimit,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "absolutelimit", required = false) BigDecimal absoluteLimit);
+                        @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Long userId,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) String isActive,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "balance", required = false) BigDecimal balance,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "accountType", required = false) String accountType,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimit", required = false) Integer dailyLimit,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimit", required = false) BigDecimal transactionLimit,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimit", required = false) BigDecimal absoluteLimit);
 
         @ApiOperation(value = "Get the account related to given id", nickname = "getAccountByIban", notes = "Get the account related to given id", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
@@ -64,7 +65,7 @@ public interface AccountsApi {
         ResponseEntity<Account> getAccountByIban(
                         @ApiParam(value = "Iban of the account you want to get", required = true) @PathVariable("iban") String iban);
 
-        @ApiOperation(value = "", nickname = "updateAccountByIban", notes = "update account by given Iban", response = Account.class, authorizations = {
+        @ApiOperation(value = "Account", nickname = "updateAccountByIban", notes = "update account by given Iban", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
         @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Account.class),
                         @ApiResponse(code = 401, message = "Unauthorized") })
@@ -73,7 +74,7 @@ public interface AccountsApi {
         ResponseEntity<Account> updateAccountByIban(
                         @ApiParam(value = "", required = true) @Valid @RequestBody Account body);
 
-        @ApiOperation(value = "", nickname = "createAccount", notes = "create new account", response = Account.class, authorizations = {
+        @ApiOperation(value = "Account", nickname = "createAccount", notes = "create new account", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
         @ApiResponses(value = { @ApiResponse(code = 201, message = "CREATED", response = Account.class),
                         @ApiResponse(code = 401, message = "Unauthorized") })

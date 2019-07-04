@@ -18,7 +18,8 @@
     <input type="submit" value="Home" id="home-btn">
 
     <input type="submit" value="Create new account" id="create">
-    <input type="submit" value="View account(s)" id="get">
+    <input type="submit" value="View all" id="read">
+    <input type="submit" value="View single" id="readSingle">
     <input type="submit" value="Update account" id="update">
     <input type="submit" value="Delete account" id="delete">
 
@@ -34,13 +35,19 @@
             </p>
             <p>
                 <select id="accountType">
-                    <optgroup label="accountType">
-                        <option value="all">All</option>
-                        <option value="savings">Savings</option>
-                        <option value="current">Current</option>
-                    </optgroup>
+                    <option value="all">All</option>
+                    <option value="savings">Savings</option>
+                    <option value="current">Current</option>
                 </select>
                 <label for="accountType">What is the type of account?</label>
+            </p>
+            <p>
+                <select id="isActive">
+                    <option value="all">All</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label for="isActive">Is the account active?</label>
             </p>
             <p>
                 <input id="balance" name="balance" type="number" step="0.01">
@@ -68,9 +75,18 @@
         location.href = "homepage.html";
     });
 
-    document.getElementById("get").addEventListener("click", function () {
+    document.getElementById("create").addEventListener("click", function () {
+        if (sessionStorage.getItem("userRole") == "employee") {
+            location.href = "createaccount.html";
+        }
+        else {
+            // TODO: Finish non-employee functionality
+        }
+    });
+
+    document.getElementById("read").addEventListener("click", function () {
         document.getElementById("content").innerHTML = "";
-        var url = "/accounts/";
+        var url = "/accounts";
 
         if (sessionStorage.getItem("userRole") == "employee") {
             $.ajax({
@@ -111,33 +127,56 @@
         };
     });
 
-    document.getElementById("create").addEventListener("click", function () {
-        if (sessionStorage.getItem("userRole") == "employee") {
-            location.href = "createaccount.html";
-        }
-        else {
-            // TODO: Finish non-employee functionality
-        }
-    });
-
-    document.getElementById("delete").addEventListener("click", function () {
+    document.getElementById("readSingle").addEventListener("click", function () {
         document.getElementById("content").innerHTML = "";
-        var url = "/accounts";
-
-        var json = "{";
-
-        if (document.getElementById("iban").value != "") {
-            json += '"iban": "' + document.getElementById("iban").value + '",';
-        }
-
-        json += "}";
-        json = json.replace(",}", "}");
+        var iban = document.getElementById("iban").value;
+        var url = "/accounts/" + iban;
 
         if (sessionStorage.getItem("userRole") == "employee") {
             $.ajax({
-                method: "DELETE",
+                method: "GET",
                 url: url,
-                data: JSON.parse(json),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (account) {
+                    console.log("success");
+                    document.getElementById("content").innerHTML += "<li>iban: " + account.iban + " ";
+                    document.getElementById("content").innerHTML += "userId: " + account.userId + " ";
+                    document.getElementById("content").innerHTML += "active: " + account.isActive + " ";
+                    document.getElementById("content").innerHTML += "account type: " + account.accountType + " ";
+                    document.getElementById("content").innerHTML += "balance: " + account.balance + " ";
+                    document.getElementById("content").innerHTML += "absolute limit: " + account.absoluteLimit + " ";
+                    document.getElementById("content").innerHTML += "daily limit: " + account.dailyLimit + " ";
+                    document.getElementById("content").innerHTML += "transaction limit: " + account.transactionLimit + "</li>";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+        else {
+            // TODO: Finish non-employee functionality
+        };
+    });
+
+    document.getElementById("update").addEventListener("click", function () {
+        document.getElementById("content").innerHTML = "";
+        var url = "/accounts";
+
+        if (sessionStorage.getItem("userRole") == "employee") {
+            $.ajax({
+                method: "PUT",
+                url: url,
+                data: JSON.parse(buildJson()),
                 headers: {
                     "session": sessionStorage.getItem("sessionToken")
                 },
@@ -169,15 +208,24 @@
         }
     });
 
-    document.getElementById("update").addEventListener("click", function () {
+    document.getElementById("delete").addEventListener("click", function () {
         document.getElementById("content").innerHTML = "";
         var url = "/accounts";
 
+        var json = "{";
+
+        if (document.getElementById("iban").value != "") {
+            json += '"iban": "' + document.getElementById("iban").value + '",';
+        }
+
+        json += "}";
+        json = json.replace(",}", "}");
+
         if (sessionStorage.getItem("userRole") == "employee") {
             $.ajax({
-                method: "PUT",
+                method: "DELETE",
                 url: url,
-                data: JSON.parse(buildJson()),
+                data: JSON.parse(json),
                 headers: {
                     "session": sessionStorage.getItem("sessionToken")
                 },
@@ -247,6 +295,7 @@
         json += "}";
         json = json.replace(",}", "}");
 
+        console.log(json);
         return json;
     }
 

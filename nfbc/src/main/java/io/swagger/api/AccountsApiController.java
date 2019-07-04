@@ -1,12 +1,14 @@
 package io.swagger.api;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.logging.log4j.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -62,18 +64,26 @@ public class AccountsApiController implements AccountsApi {
 
     public ResponseEntity<Iterable<Account>> fetchAccount(
             @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
-            @ApiParam(value = "") @Valid @RequestParam(value = "userid", required = false) Long userId,
-            @ApiParam(value = "") @Valid @RequestParam(value = "isactive", required = false) Boolean isActive,
-            @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accountType,
-            @ApiParam(value = "") @Valid @RequestParam(value = "dailylimit", required = false) Integer dailyLimit,
-            @ApiParam(value = "") @Valid @RequestParam(value = "transactionlimit", required = false) BigDecimal transactionLimit,
-            @ApiParam(value = "") @Valid @RequestParam(value = "absolutelimit", required = false) BigDecimal absoluteLimit) {
+            @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Long userId,
+            @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) String isActive,
+            @ApiParam(value = "") @Valid @RequestParam(value = "balance", required = false) BigDecimal balance,
+            @ApiParam(value = "") @Valid @RequestParam(value = "accountType", required = false) String accountType,
+            @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimit", required = false) Integer dailyLimit,
+            @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimit", required = false) BigDecimal transactionLimit,
+            @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimit", required = false) BigDecimal absoluteLimit) {
 
         try {
             if (security.isAllowed(request.getHeader("session"), "employee")) {
                 try {
-                    Iterable<Account> accounts = service.getAccounts(iban, userId, isActive, accountType, dailyLimit,
-                            transactionLimit, absoluteLimit);
+                    Iterable<Account> accounts = service.getAccounts(iban, userId, isActive, balance, accountType,
+                            dailyLimit, transactionLimit, absoluteLimit);
+                    request.getHeader("session");
+
+                    Object[] params = { iban, userId, isActive, accountType, balance, dailyLimit, transactionLimit,
+                            absoluteLimit };
+                    log.info(MessageFormat.format("Accounts fetched with args: {0} {1} {2} {3} {4} {5} {6} {7}",
+                            params));
+
                     return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
@@ -106,6 +116,7 @@ public class AccountsApiController implements AccountsApi {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
     }
 
     // Gets account with filled in iban and lets hibernate replace entity with same
@@ -116,12 +127,14 @@ public class AccountsApiController implements AccountsApi {
             if (security.isAllowed(request.getHeader("session"), "customer")) {
                 try {
                     service.saveAccount(body);
+                    log.info("Account updated: " + body.getIban());
                     return new ResponseEntity<Account>(HttpStatus.OK);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
                     return new ResponseEntity<Account>(HttpStatus.CONFLICT);
                 }
             } else {
+                log.info("User has no clearance to update this account. User:" + body.getUserId());
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -137,16 +150,19 @@ public class AccountsApiController implements AccountsApi {
             if (security.isAllowed(request.getHeader("session"), "employee")) {
                 try {
                     service.createAccount(body);
-                    return new ResponseEntity<Account>(HttpStatus.CREATED);
+                    log.info("Account created: " + body.getIban());
+                    return new ResponseEntity<Account>(body, HttpStatus.CREATED);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
-                    return new ResponseEntity<Account>(HttpStatus.CONFLICT);
+                    return new ResponseEntity<Account>(HttpStatus.BAD_REQUEST);
                 }
             } else {
+                log.info("User has no clearance to create new accounts. User:" + body.getUserId());
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
         } catch (Exception e) {
+            log.warn(e.getMessage());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
