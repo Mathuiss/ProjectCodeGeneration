@@ -30,6 +30,8 @@
         <input id="logout" type="submit" value="Logout">
         <form id="logOutForm">
             <h3>User info</h3>
+            UserName: <span id="getUserName"></span>
+            <br />
             user id: <span id="getUserId"></span>
             <br />
             user role: <span id="userOrEmployee"></span>
@@ -45,6 +47,7 @@
 
 
 <script>
+    document.getElementById("getUserName").innerHTML = sessionStorage.getItem('userName');
     document.getElementById("getUserId").innerHTML = sessionStorage.getItem('user');
     document.getElementById("userOrEmployee").innerHTML = sessionStorage.getItem('userRole');
     document.getElementById("getLoginTime").innerHTML = sessionStorage.getItem('timestamp');
