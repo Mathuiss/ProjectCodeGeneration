@@ -4,6 +4,11 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <meta charset="utf-8">
     <title>NFBC</title>
+    <script>
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
+    </script>
 </head>
 
 <body>
@@ -20,55 +25,62 @@
     <input type="number" id="amount">
 
     <script>
-        if (sessionStorage.getItem("userRole") != "employee") {
-            document.getElementById("sender").setAttribute("disabled", true);
-        }
-
-
         document.getElementById("back-btn").addEventListener("click", function () {
             location.href = "transactions.html";
         });
 
         document.getElementById("transaction").addEventListener("click", function () {
-            var url = "/transactions";
-
-            var now = new Date();
-            console.log(now.format("yyyy-MM-dd HH:mm:ss"));
-
-            if (sessionStorage.getItem("userRole") == "employee") {
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    contentType: "application/json",
-                    data: {
-                        "sender": document.getElementById("sender").value,
-                        "reciever": document.getElementById("reciever").value,
-                        "user": sessionStorage.getItem("user"),
-                        "amount": document.getElementById("amount").value,
-                        "timestamp": Date.now().toString()
-                    },
-                    headers: {
-                        "session": sessionStorage.getItem("sessionToken")
-                    },
-                    success: function () {
-                        alert("Success");
-                    },
-                    statusCode: {
-                        404: function () {
-                            alert("Not found");
-                        },
-                        401: function () {
-                            alert("Unauthorized");
-                        },
-                        400: function () {
-                            alert("Bad Request");
-                        }
-                    }
-                });
-            } else {
-                // TODO: Finish non-employee functionality
-            }
+            createTransaction("/transactions");
         });
+
+        document.getElementById("withdraw").addEventListener("click", function () {
+            createTransaction("/withdraw");
+        });
+
+        document.getElementById("deposit").addEventListener("click", function () {
+            createTransaction("/deposit");
+        });
+
+        function createTransaction(url) {
+            $.ajax({
+                method: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "sender": document.getElementById("sender").value,
+                    "reciever": document.getElementById("reciever").value,
+                    "user": sessionStorage.getItem("user"),
+                    "amount": document.getElementById("amount").value,
+                    "timestamp": Date.now().toString()
+                }),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function () {
+                    alert("Success" + data);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("Not found");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    400: function () {
+                        alert("Bad Request");
+                    }
+                }
+            });
+        }
+
+        function getFormattedDate() {
+            var date = new Date();
+            var str = date.getFullYear() + "-" + (date.getMonth() + 1).toString(10)
+                + "-" + date.getDate().toString(10) + " " + date.getHours().toString(10)
+                + ":" + date.getMinutes().toString(10) + ":" + date.getSeconds().toString(10);
+
+            return str;
+        }
     </script>
 </body>
 
