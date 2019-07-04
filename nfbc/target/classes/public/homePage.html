@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NFBC HOME</title>
+    <link rel="stylesheet" href="Style.css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
@@ -16,15 +17,41 @@
 </head>
 
 <body>
-    <input id="logout" type="submit" value="logout">
-    <input id="users" type="submit" value="users">
+    <div class="signin">
+        <h2>Menu</h2>
 
-    <input type="submit" value="Accounts" id="redirect-accounts">
-    <input type="submit" value="Transactions" id="redirect-transactions">
+        <input id="users" type="submit" value="users">
+        <input type="submit" value="Accounts" id="redirect-accounts">
+        <input type="submit" value="Transactions" id="redirect-transactions">
+
+    </div>
+
+    <div class="signout">
+        <input id="logout" type="submit" value="Logout">
+        <form id="logOutForm">
+            <h3>User info</h3>
+            UserName: <span id="getUserName"></span>
+            <br />
+            user id: <span id="getUserId"></span>
+            <br />
+            user role: <span id="userOrEmployee"></span>
+            <br />
+            login time: <span id="getLoginTime"></span>
+        </form>
+    </div>
+
+    <footer>
+        ©NFBC
+    </footer>
 </body>
 
 
 <script>
+    document.getElementById("getUserName").innerHTML = sessionStorage.getItem('userName');
+    document.getElementById("getUserId").innerHTML = sessionStorage.getItem('user');
+    document.getElementById("userOrEmployee").innerHTML = sessionStorage.getItem('userRole');
+    document.getElementById("getLoginTime").innerHTML = sessionStorage.getItem('timestamp');
+
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });
@@ -38,35 +65,30 @@
     });
 
     document.getElementById("logout").addEventListener("click", function () {
-        var url = "/logout";
+        var url = "/logout"
 
-        //var url = "/logout";
-        //alert(sessionStorage.getItem('ApiKeyAuth'));
-        //alert(sessionStorage.getItem('user'));
-        //alert(sessionStorage.getItem('userRole'));
-        //alert(sessionStorage.getItem('timestamp'));
-        //alert(sessionStorage.getItem('isActive'));
-
-        var body = {
-            "sessionToken": sessionStorage.getItem('sessionToken'),
-            "user": sessionStorage.getItem('user'),
-            "userRole": sessionStorage.getItem('userRole'),
-            "timestamp": sessionStorage.getItem('timestamp'),
-            "isActive": sessionStorage.getItem('isActive')
-        };
+        active = sessionStorage.getItem("active")
+        sessionToken = sessionStorage.getItem('sessionToken');
+        user = sessionStorage.getItem('user');
+        userRole = sessionStorage.getItem('userRole');
+        timestamp = sessionStorage.getItem('timestamp');
+        isActive = sessionStorage.getItem('isActive');
 
         $.ajax({
             method: "POST",
             url: url,
-            body: JSON.stringify(body),
             contentType: "application/json",
-            success: function (success) {
-                $("#result").text((success));
-
+            data: JSON.stringify({
+                "active": active,
+                "sessionToken": sessionToken,
+                "user": user,
+                "userRole": userRole,
+                "timestamp": timestamp,
+                "isActive": isActive
+            }),
+            success: function () {
                 sessionStorage.clear();
-
-                //alert("ApiKeyAuth: " + sessionStorage.getItem('ApiKeyAuth'));
-
+                alert('you are logged out');
                 location.href = "index.html";
             },
             statusCode: {

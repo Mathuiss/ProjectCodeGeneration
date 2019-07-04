@@ -31,5 +31,6 @@ public interface LogoutApi {
                         @ApiResponse(code = 401, message = "Unauthorized") })
         @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.POST)
         ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken body);
-
+        // ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody
+        // String sessionToken);
 }
