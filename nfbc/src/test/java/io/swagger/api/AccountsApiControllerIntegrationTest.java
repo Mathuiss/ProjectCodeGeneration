@@ -30,8 +30,7 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void fetchAccountTest() throws Exception {
-        String accountType = "";
-        ResponseEntity<Iterable<Account>> responseEntity = api.fetchAccount(accountType);
+        ResponseEntity<Iterable<Account>> responseEntity = api.fetchAccount(null, null, null, null, null, null, null);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 

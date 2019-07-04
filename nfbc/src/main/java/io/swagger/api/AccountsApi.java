@@ -5,6 +5,8 @@
  */
 package io.swagger.api;
 
+import java.math.BigDecimal;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,13 @@ public interface AccountsApi {
                         @ApiResponse(code = 401, message = "Unauthorized operation") })
         @RequestMapping(value = "/accounts", produces = { "application/json" }, method = RequestMethod.GET)
         ResponseEntity<Iterable<Account>> fetchAccount(
-                        @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accounttype);
+                        @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "userid", required = false) Long userId,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "isactive", required = false) Boolean isActive,
+                        @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accountType,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "dailylimit", required = false) Integer dailyLimit,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionlimit", required = false) BigDecimal transactionLimit,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "absolutelimit", required = false) BigDecimal absoluteLimit);
 
         @ApiOperation(value = "Get the account related to given id", nickname = "getAccountByIban", notes = "Get the account related to given id", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })

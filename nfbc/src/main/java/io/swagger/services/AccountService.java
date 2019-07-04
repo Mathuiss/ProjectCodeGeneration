@@ -84,8 +84,69 @@ public class AccountService {
     }
 
     // Get all accounts
-    public Iterable<Account> getAccounts() {
-        return accounts.findAll();
+    public Iterable<Account> getAccounts(String iban, Long userId, Boolean isActive, String accountType,
+            Integer dailyLimit, BigDecimal transactionLimit, BigDecimal absoluteLimit) {
+
+        Iterable<Account> accountList = accounts.findAll();
+        ArrayList<Account> resultList = new ArrayList<Account>();
+
+        for (Account account : accountList) {
+            // check if iban is found in the list
+            if (iban != null) {
+                if (iban != account.getIban()) {
+                    continue;
+                }
+            }
+
+            // check for userId
+            if (userId != null) {
+                if (userId != account.getUserId()) {
+                    continue;
+                }
+            }
+
+            // check for active
+            if (isActive != null) {
+                if (isActive != account.getIsActive()) {
+                    continue;
+                }
+            }
+
+            // check for account type
+            if (accountType != null) {
+                if (accountType == "all") {
+                    continue;
+                }
+                if (accountType != account.accountType()) {
+                    continue;
+                }
+            }
+
+            // check for daily limit
+            if (dailyLimit != null) {
+                if (dailyLimit != account.getDailyLimit()) {
+                    continue;
+                }
+            }
+
+            // check for transaction limit
+            if (transactionLimit != null) {
+                if (transactionLimit != account.getTransactionLimit()) {
+                    continue;
+                }
+            }
+
+            // check for absolute limit
+            if (absoluteLimit != null) {
+                if (absoluteLimit != account.getAbsoluteLimit()) {
+                    continue;
+                }
+            }
+
+            resultList.add(account);
+        }
+
+        return resultList;
     }
 
     public Account getAccount(String iban) throws Exception {
@@ -103,7 +164,7 @@ public class AccountService {
         accounts.save(account);
     }
 
-    public void createAccount(Account body) throws Exception {
+    public void createAccount(Account body) {
         body.setIban();
         // Optional<User> userResult = users.findById(body.getUserId());
         // if (!userResult.isPresent()) {

@@ -1,5 +1,7 @@
 package io.swagger.api;
 
+import java.math.BigDecimal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -59,11 +61,19 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<Iterable<Account>> fetchAccount(
-            @ApiParam(value = "Enter the type of account eg. savings") @Valid @PathVariable(value = "accounttype", required = false) String AccountType) {
+            @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
+            @ApiParam(value = "") @Valid @RequestParam(value = "userid", required = false) Long userId,
+            @ApiParam(value = "") @Valid @RequestParam(value = "isactive", required = false) Boolean isActive,
+            @ApiParam(value = "Enter the type of account eg. savings") @Valid @RequestParam(value = "accounttype", required = false) String accountType,
+            @ApiParam(value = "") @Valid @RequestParam(value = "dailylimit", required = false) Integer dailyLimit,
+            @ApiParam(value = "") @Valid @RequestParam(value = "transactionlimit", required = false) BigDecimal transactionLimit,
+            @ApiParam(value = "") @Valid @RequestParam(value = "absolutelimit", required = false) BigDecimal absoluteLimit) {
+
         try {
             if (security.isAllowed(request.getHeader("session"), "employee")) {
                 try {
-                    Iterable<Account> accounts = service.getAccounts();
+                    Iterable<Account> accounts = service.getAccounts(iban, userId, isActive, accountType, dailyLimit,
+                            transactionLimit, absoluteLimit);
                     return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);

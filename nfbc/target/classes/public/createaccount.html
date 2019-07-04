@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>NFBC</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js">
+
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
+
+    </script>
+</head>
+
+<body>
+    <input type="submit" value="Back" id="back-btn">
+    <input type="submit" value="Create Account" id="account">
+
+    <div id="query-box">
+        <form>
+            <p>
+                <input id="userId" name="userId" type="number" required="true">
+                <label for="userId">What is the user's id? *</label>
+            </p>
+            <p>
+                <select id="accountType" required="true">
+                    <optgroup label="accountType">
+                        <option value="savings">Savings</option>
+                        <option value="current">Current</option>
+                    </optgroup>
+                </select>
+                <label for="accountType">What is the type of account? *</label>
+            </p>
+            <p>
+                <input id="balance" name="balance" type="number" step="0.01" required="true">
+                <label for="balance">How much money does the account have? *</label>
+            </p>
+            <p>
+                <input id="absoluteLimit" name="absoluteLimit" type="number" step="0.01" required="true">
+                <label for="absoluteLimit">What is the minimum amount allowed? *</label>
+            </p>
+            <p>
+                <input id="dailyLimit" name="dailyLimit" type="number" required="true">
+                <label for="dailyLimit">What is the amount of transactions allowed per day? *</label>
+            </p>
+            <p>
+                <input id="transactionLimit" name="transactionLimit" type="number" step="0.01" required="true">
+                <label for="transactionLimit">What is the amount allowed per transaction? *</label>
+            </p>
+        </form>
+    </div>
+    <ul id="content"></ul>
+
+    <script>
+        document.getElementById("back-btn").addEventListener("click", function () {
+            location.href = "accounts.html";
+        });
+
+        document.getElementById("account").addEventListener("click", function () {
+            if (sessionStorage.getItem("userRole") == "employee") {
+                createAccount("/accounts");
+            }
+            else {
+                alert("Unauthorized");
+            }
+        });
+
+        function createAccount(url) {
+            $.ajax({
+                method: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "iban": "",
+                    "userId": document.getElementById("userId").value,
+                    "isActive": document.getElementById("isActive").value,
+                    "accountType": document.getElementById("accountType").value,
+                    "balance": document.getElementById("balance").value,
+                    "absoluteLimit": document.getElementById("absoluteLimit").value,
+                    "dailyLimit": document.getElementById("dailyLimit").value,
+                    "transactionLimit": document.getElementById("transactionLimit").value,
+                }),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function () {
+                    alert("Success" + data);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("Not found");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    400: function () {
+                        alert("Bad Request");
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>

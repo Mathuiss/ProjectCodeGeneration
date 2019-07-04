@@ -20,24 +20,17 @@
     <input type="number" id="amount">
 
     <script>
-<<<<<<< HEAD
-=======
         if (sessionStorage.getItem("userRole") != "employee") {
             document.getElementById("sender").setAttribute("disabled", true);
         }
 
 
->>>>>>> master
         document.getElementById("back-btn").addEventListener("click", function () {
             location.href = "transactions.html";
         });
 
         document.getElementById("transaction").addEventListener("click", function () {
-<<<<<<< HEAD
-            var url = "http://localhost:8080/transactions";
-=======
             var url = "/transactions";
->>>>>>> master
 
             var now = new Date();
             console.log(now.format("yyyy-MM-dd HH:mm:ss"));
@@ -55,11 +48,7 @@
                         "timestamp": Date.now().toString()
                     },
                     headers: {
-<<<<<<< HEAD
-                        "session": sessionStorage.getItem("ApiKeyAuth")
-=======
                         "session": sessionStorage.getItem("sessionToken")
->>>>>>> master
                     },
                     success: function () {
                         alert("Success");
