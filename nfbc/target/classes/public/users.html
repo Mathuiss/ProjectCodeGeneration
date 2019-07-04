@@ -17,17 +17,17 @@
 <body>
     <input id="Home" type="submit" value="Home">
     <input id="getUsers" type="submit" value="find users">
-    <input id="getUsersById" type="submit" value="find yourself">
+    <input id="getUsersById" type="submit" value="find user">
     <input id="TransactionsOfUserById" type="submit" value="find transactions">
     <input id="deleteUserById" type="submit" value="delete user by id">
     <input id="postNewUser" type="submit" value="create new user">
-    <input id="updateUser" type="submit" value="update user">
+    <input id="updateUser" type="submit" value="update your user">
 
     <ul id="content"></ul>
 
     <p>
         <input id="userId" type="userId" name="userId" placeholder="user id">
-        <label>id for deleting a user</label>
+        <label>id for deleting users, finding users and finding transactions of users (for employees).</label>
     </p>
 
     <p>
@@ -55,6 +55,8 @@
         <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
         <input id="appendix" type="appendix" name="appendix" placeholder="appendix">
         <input id="phoneNumber" type="phoneNumber" name="phoneNumber" placeholder="phone number">
+        <label>not required for creating a user, zipcode must have 4 digits and 2 uppercase letters (like
+            1023DE)</label>
     </p>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -108,10 +110,16 @@
         document.getElementById("getUsersById").addEventListener("click", function () {
 
             document.getElementById("content").innerHTML = "";
-            var id = sessionStorage.getItem("user");
-            var url = "/users/" + id;
+            var id;
             var key = sessionStorage.getItem("sessionToken");
 
+            if (sessionStorage.getItem("userRole") == "employee" && $("#userId").val() != "") {
+                id = $("#userId").val();
+            } else {
+                id = sessionStorage.getItem("user");
+            }
+
+            var url = "/users/" + id;
 
             console.log("success");
             $.ajax({
@@ -133,15 +141,21 @@
                 }
 
             });
-
         });
 
         document.getElementById("TransactionsOfUserById").addEventListener("click", function () {
 
             document.getElementById("content").innerHTML = "";
-            var id = sessionStorage.getItem("user");
-            var url = "/users/transactions/" + id;
+            var id;
             var key = sessionStorage.getItem("sessionToken");
+
+            if (sessionStorage.getItem("userRole") == "employee" && $("#userId").val() != "") {
+                id = $("#userId").val();
+            } else {
+                id = sessionStorage.getItem("user");
+            }
+
+            var url = "/users/transactions/" + id;
 
             console.log("success");
             $.ajax({
@@ -152,7 +166,7 @@
                 success: function (transactions) {
                     console.log("success");
                     $.each(transactions, function (i, transaction) {
-                        document.getElementById("content").innerHTML += '<li>transaction id: ' + transaction.TransactionId + ', name: ' + transaction.sender + ', receiver: ' + transaction.reciever + ', amount: ' + transaction.amount + "\u20ac" + ', timestamp: ' + transaction.timestamp + '</li>';
+                        document.getElementById("content").innerHTML += '<li>transaction id: ' + transaction.TransactionId + ', id: ' + transaction.sender + ', receiver: ' + transaction.reciever + ', amount: ' + transaction.amount + "\u20ac" + ', timestamp: ' + transaction.timestamp + '</li>';
                     })
                 },
                 statusCode: {

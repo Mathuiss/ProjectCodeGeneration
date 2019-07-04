@@ -8,7 +8,15 @@
         "timestamp": "2019-06-11 10:22:11"
     },
     {
-        "TransactionId": 0,
+        "TransactionId": 1,
+        "sender": "NL00INHO0000000005",
+        "reciever": "NL00INHO0000000000",
+        "user": 2,
+        "amount": 24.6,
+        "timestamp": "2019-06-11 10:22:11"
+    },
+    {
+        "TransactionId": 2,
         "sender": "NL00INHO0000000003",
         "reciever": "NL00INHO0000000000",
         "user": 2,
@@ -16,7 +24,7 @@
         "timestamp": "2019-06-11 10:22:11"
     },
     {
-        "TransactionId": 1,
+        "TransactionId": 3,
         "sender": "NL00INHO0000000003",
         "reciever": "NL00INHO0000000000",
         "user": 3,
