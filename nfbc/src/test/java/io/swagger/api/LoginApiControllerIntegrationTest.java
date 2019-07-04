@@ -25,16 +25,23 @@ public class LoginApiControllerIntegrationTest {
 
     @Test
     public void loginPostTest() throws Exception {
-        Body body = new Body("test@gmail.com", "W@chtwoord1");
+        Body body = new Body("test@gmail.com", "test");
         ResponseEntity<SessionToken> responseEntity = loginApi.loginPost(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void LoginPostTest() {
-        Body body = new Body("test@gmail.com", "W@chtwoord1");
+        Body body = new Body("test@gmail.com", "test");
         ResponseEntity<SessionToken> responseEntity = loginApi.loginPost(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void loginPostUserNotActiveTest() {
+        Body body = new Body("actief@gmail.com", "test");
+        ResponseEntity<SessionToken> responseEntity = loginApi.loginPost(body);
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
     }
 
     @Test
@@ -43,8 +50,18 @@ public class LoginApiControllerIntegrationTest {
     }
 
     @Test
-    public void GetUserIdTest() {
+    public void GetUserIdByEmailTest() {
         assertEquals(3, sessionService.getUserIdByEmail("test@gmail.com"));
+    }
+
+    @Test
+    public void passwordCheckTest() throws Exception {
+        assertEquals(true, sessionService.passwordCheck(3, "test"));
+    }
+
+    @Test
+    public void isEmployeeTest() {
+        assertEquals(true, sessionService.isEmployee(3));
     }
 
     @Test
@@ -52,5 +69,3 @@ public class LoginApiControllerIntegrationTest {
         assertEquals(true, sessionService.isUserActive(3));
     }
 }
-
-

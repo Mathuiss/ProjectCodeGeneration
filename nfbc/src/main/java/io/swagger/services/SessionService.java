@@ -8,16 +8,12 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 import io.swagger.Swagger2SpringBoot;
-import io.swagger.model.Body;
 import io.swagger.model.SessionToken;
 import io.swagger.model.User;
 import io.swagger.repositories.SessionRepository;
 import io.swagger.repositories.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class SessionService {
