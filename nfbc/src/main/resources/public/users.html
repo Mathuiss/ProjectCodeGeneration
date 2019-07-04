@@ -6,49 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <script>
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
+    </script>
 </head>
 
 <body>
     <input id="Home" type="submit" value="Home">
     <input id="getUsers" type="submit" value="find users">
-    <input id="getUsersById" type="submit" value="find users by id">
+    <input id="getUsersById" type="submit" value="find yourself">
+    <input id="TransactionsOfUserById" type="submit" value="find transactions">
     <input id="deleteUserById" type="submit" value="delete user by id">
     <input id="postNewUser" type="submit" value="create new user">
     <input id="updateUser" type="submit" value="update user">
 
     <ul id="content"></ul>
 
-    <input id="userId" type="userId" name="userId" placeholder="user id">
-    <input id="name" type="name" name="name" placeholder="name">
-    <input id="email" type="email" name="email" placeholder="email">
-    <input id="password" type="password" name="password" placeholder="password">
-    <input id="streetname" type="streetname" name="streetname" placeholder="streetname">
-    <input id="zipcode" type="zipcode" name="zipcode" placeholder="zipcode">
-    <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
-    <input id="appendix" type="appendix" name="appendix" placeholder="appendix">
-    <input id="phoneNumber" type="phoneNumber" name="phoneNumber" placeholder="phoneNumber">
-    <input id="isEmployee" type="isEmployee" name="isEmployee" placeholder="isEmployee">
+    <p>
+        <input id="userId" type="userId" name="userId" placeholder="user id">
+        <label>id for deleting a user</label>
+    </p>
 
+    <p>
+        <select id="option">
+            <option value="all">all</option>
+            <option value="disabled">disabled</option>
+            <option value="employees">employees</option>
+            <option value="notemployees">customers</option>
+        </select>
+        <label>option for searching all users</label>
+    </p>
 
+    <p>
+        <input id="name" type="name" name="name" placeholder="name">
+        <input id="email" type="email" name="email" placeholder="email">
+        <input id="password" type="password" name="password" placeholder="password">
+        <input id="isEmployee" type="isEmployee" name="isEmployee" placeholder="isEmployee">
+        <label>required for creating a user</label>
+
+    </p>
+
+    <p>
+        <input id="streetname" type="streetname" name="streetname" placeholder="streetname">
+        <input id="zipcode" type="zipcode" name="zipcode" placeholder="zipcode">
+        <input id="addressnumber" type="addressnumber" name="addressnumber" placeholder="addressnumber">
+        <input id="appendix" type="appendix" name="appendix" placeholder="appendix">
+        <input id="phoneNumber" type="phoneNumber" name="phoneNumber" placeholder="phone number">
+    </p>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
 
+
+
         document.getElementById("getUsers").addEventListener("click", function () {
 
+            document.getElementById("content").innerHTML = "";
             var url = "/users";
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
+
+            var json = "{";
+
+            if (document.getElementById("option").value != "") {
+                json += '"state": "' + document.getElementById("option").value + '",';
+            }
+
+            json += "}"
+            if (json.includes(",")) {
+                json = json.replace(",}", "}");
+            }
 
             console.log("success");
             $.ajax({
                 type: "GET",
                 url: url,
+                data: JSON.parse(json),
                 contentType: "application/json",
                 headers: { "session": key },
                 success: function (users) {
                     console.log("success");
                     $.each(users, function (i, item) {
-                        document.getElementById("content").innerHTML += '<li>id: ' + item.userId + ' name: ' + item.name + ' email: ' + item.email + '</li>';
+                        document.getElementById("content").innerHTML += '<li>id: ' + item.userId + ', name: ' + item.name + ', email: ' + item.email + ', zipcode: ' + item.zipcode + ', phone number: ' + item.phoneNumber + '</li>';
                     })
                 },
                 statusCode: {
@@ -65,9 +106,11 @@
         });
 
         document.getElementById("getUsersById").addEventListener("click", function () {
+
+            document.getElementById("content").innerHTML = "";
             var id = sessionStorage.getItem("user");
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
 
             console.log("success");
@@ -78,7 +121,39 @@
                 headers: { "session": key },
                 success: function (user) {
                     console.log("success");
-                    document.getElementById("content").innerHTML += '<li>id: ' + user.userId + ' name: ' + user.name + ' email: ' + user.email + '</li>';
+                    document.getElementById("content").innerHTML += '<li>id: ' + user.userId + ', name: ' + user.name + ', email: ' + user.email + ', zipcode: ' + user.zipcode + ', phone number: ' + user.phoneNumber + '</li>';
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    }
+                }
+
+            });
+
+        });
+
+        document.getElementById("TransactionsOfUserById").addEventListener("click", function () {
+
+            document.getElementById("content").innerHTML = "";
+            var id = sessionStorage.getItem("user");
+            var url = "/users/transactions/" + id;
+            var key = sessionStorage.getItem("sessionToken");
+
+            console.log("success");
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/json",
+                headers: { "session": key },
+                success: function (transactions) {
+                    console.log("success");
+                    $.each(transactions, function (i, transaction) {
+                        document.getElementById("content").innerHTML += '<li>transaction id: ' + transaction.TransactionId + ', name: ' + transaction.sender + ', receiver: ' + transaction.reciever + ', amount: ' + transaction.amount + "\u20ac" + ', timestamp: ' + transaction.timestamp + '</li>';
+                    })
                 },
                 statusCode: {
                     400: function () {
@@ -96,7 +171,7 @@
         document.getElementById("deleteUserById").addEventListener("click", function () {
             var id = $("#userId").val();
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
 
             console.log("success");
@@ -105,6 +180,7 @@
                 url: url.trim(),
                 headers: { "session": key },
                 success: function (success) {
+                    document.getElementById("content").innerHTML = "Deleted user of id: " + id;
                 },
                 statusCode: {
                     400: function () {
@@ -121,7 +197,27 @@
 
         document.getElementById("postNewUser").addEventListener("click", function () {
             var url = "/users";
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
+
+            if (document.getElementById("name").value == "") {
+                document.getElementById("content").innerHTML = "name cannot be empty ";
+                throw new ArgumentException("name cannot be empty");
+            }
+
+            if (document.getElementById("email").value == "") {
+                document.getElementById("content").innerHTML = "email cannot be empty ";
+                throw new ArgumentException("email cannot be empty");
+            }
+
+            if (document.getElementById("password").value == "") {
+                document.getElementById("content").innerHTML = "password cannot be empty ";
+                throw new ArgumentException("password cannot be empty");
+            }
+
+            if (document.getElementById("isEmployee").value == "") {
+                document.getElementById("content").innerHTML = "isEmployee cannot be empty ";
+                throw new ArgumentException("isEmployee cannot be empty");
+            }
 
             $.ajax({
                 type: "POST",
@@ -144,6 +240,7 @@
                     "session": key
                 },
                 success: function (success, data) {
+                    document.getElementById("content").innerHTML = "created user: " + document.getElementById("name").value;
                 },
                 statusCode: {
                     400: function () {
@@ -161,7 +258,7 @@
         document.getElementById("updateUser").addEventListener("click", function () {
             var id = sessionStorage.getItem("user");
             var url = "/users/" + id;
-            var key = sessionStorage.getItem("ApiKeyAuth");
+            var key = sessionStorage.getItem("sessionToken");
 
             var name = document.getElementById("name").value;
             var email = document.getElementById("email").value;
@@ -222,6 +319,7 @@
 
                     doUpdateUser(key, id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts, isEmployee, isActive)
 
+                    document.getElementById("content").innerHTML = "Changes saved";
                 },
                 statusCode: {
                     400: function () {
