@@ -49,7 +49,8 @@ public class LoginApiController implements LoginApi {
                     }
 
                 } else {
-                    return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+                    // return new ResponseEntity<SessionToken>(HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<SessionToken>(HttpStatus.FORBIDDEN);
                 }
             } else {
                 log.info("user name not found: " + body.getUsername());

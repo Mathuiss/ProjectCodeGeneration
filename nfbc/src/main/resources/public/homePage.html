@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NFBC HOME</title>
-    <!--<link rel="stylesheet" href="Style.css">-->
+    <link rel="stylesheet" href="Style.css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>
@@ -17,15 +17,38 @@
 </head>
 
 <body>
+    <div class="signin">
+        <h2>Menu</h2>
 
-    <input id="logout" type="submit" value="logout">
+        <input id="users" type="submit" value="users">
+        <input type="submit" value="Accounts" id="redirect-accounts">
+        <input type="submit" value="Transactions" id="redirect-transactions">
 
-    <input type="submit" value="Accounts" id="redirect-accounts">
-    <input type="submit" value="Transactions" id="redirect-transactions">
+    </div>
+
+    <div class="signout">
+        <input id="logout" type="submit" value="Logout">
+        <form id="logOutForm">
+            <h3>User info</h3>
+            user id: <span id="getUserId"></span>
+            <br />
+            user role: <span id="userOrEmployee"></span>
+            <br />
+            login time: <span id="getLoginTime"></span>
+        </form>
+    </div>
+
+    <footer>
+        ©NFBC
+    </footer>
 </body>
 
 
 <script>
+    document.getElementById("getUserId").innerHTML = sessionStorage.getItem('user');
+    document.getElementById("userOrEmployee").innerHTML = sessionStorage.getItem('userRole');
+    document.getElementById("getLoginTime").innerHTML = sessionStorage.getItem('timestamp');
+
     document.getElementById("redirect-transactions").addEventListener("click", function () {
         location.href = "transactions.html";
     });

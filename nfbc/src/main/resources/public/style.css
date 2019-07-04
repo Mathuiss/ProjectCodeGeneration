@@ -9,7 +9,6 @@ header{
 }
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-seri;
-    color: #fff;
 }
 
 .signin{
@@ -83,9 +82,24 @@ a:hover{
     width: 240px;
 }
 
+.signout{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.8);
+    height: 250px;
+    width: 240px;;
+    border-style: groove;
+}
 #logout{
-    float: right;
-    background-color: aqua;
+    background-color: aliceblue;
+    border-style: outset;
+}
+footer{
+    text-align: center;
+    color: #000;
+    font-weight: bold;
 }
 
 

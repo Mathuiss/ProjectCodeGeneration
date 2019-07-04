@@ -46,13 +46,6 @@ public class SessionService {
             return user.getuserId();
         }
         return 0;
-
-        // for (User user : userRepository.findAll()) {
-        // if (user.getEmail().equals(email)) {
-        // return user.getuserId();
-        // }
-        // }
-        // return 0;
     }
 
     public boolean passwordCheck(long id, String password) throws NoSuchAlgorithmException {
@@ -65,25 +58,26 @@ public class SessionService {
     }
 
     public boolean isUserActive(long id) {
-        for (User user : userRepository.findAll()) {
-            if (user.getuserId() == id) {
-                if (user.getIsActive()) {
-                    return true;
-                } else {
-                    logger.info("user is not active");
-                }
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            if (user.get().getIsActive()) {
+                return true;
+            } else {
+                logger.info("user is not active");
             }
         }
+
         return false;
     }
 
     public boolean isEmployee(long id) {
-        for (User user : userRepository.findAll()) {
-            if (user.getuserId() == id) {
-                if (user.getIsEmployee()) {
-                    logger.info("user is employee");
-                    return true;
-                }
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            if (user.get().getIsEmployee()) {
+                logger.info("user is employee");
+                return true;
             }
         }
 

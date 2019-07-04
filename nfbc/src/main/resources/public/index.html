@@ -6,6 +6,8 @@
     <meta name="keywords" content="banking app, nfbc, notfoundbankingcoorparation, not found banking corparation" />
     <title>NFBC</title>
     <link rel="stylesheet" href="Style.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script>sessionStorage.clear();</script>
 </head>
 
@@ -27,49 +29,52 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>
-
-        document.getElementById("login").addEventListener("click", function (e) {
-            e.preventDefault();
-
-            var url = "/login";
-
-            var body = {
-                "username": $("#username").val(),
-                "password": $("#password").val()
-            };
-
-            $.ajax({
-                method: "POST",
-                url: url,
-                data: JSON.stringify(body),
-                contentType: "application/json",
-                success: function (success) {
-                    $("#result").text((success));
-
-                    sessionStorage.setItem('active', success.active);
-                    sessionStorage.setItem('sessionToken', success.sessionToken);
-                    sessionStorage.setItem('user', success.user);
-                    sessionStorage.setItem('userRole', success.userRole);
-                    sessionStorage.setItem('timestamp', success.timestamp);
-                    sessionStorage.setItem('isActive', success.isActive);
-
-                    location.href = "homepage.html";
-                },
-                statusCode: {
-                    400: function () {
-                        alert("Bad request");
-                    },
-                    401: function () {
-                        alert("Unauthorized, username of password incorrect");
-                    }
-                }
-            })
-        });
-
-    </script>
+    <footer>
+        ©NFBC
+    </footer>
 
 </body>
+<script>
+    document.getElementById("login").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        var url = "/login";
+
+        var body = {
+            "username": $("#username").val(),
+            "password": $("#password").val()
+        };
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: JSON.stringify(body),
+            contentType: "application/json",
+            success: function (success) {
+                $("#result").text((success));
+
+                sessionStorage.setItem('active', success.active);
+                sessionStorage.setItem('sessionToken', success.sessionToken);
+                sessionStorage.setItem('user', success.user);
+                sessionStorage.setItem('userRole', success.userRole);
+                sessionStorage.setItem('timestamp', success.timestamp);
+                sessionStorage.setItem('isActive', success.isActive);
+
+                location.href = "homepage.html";
+            },
+            statusCode: {
+                400: function () {
+                    alert("Bad request");
+                },
+                401: function () {
+                    alert("Unauthorized, username of password incorrect");
+                },
+                403: function () {
+                    alert("User is not active");
+                }
+            }
+        })
+    });
+</script>
 
 </html>
