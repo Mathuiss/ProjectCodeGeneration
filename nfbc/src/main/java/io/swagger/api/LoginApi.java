@@ -24,12 +24,12 @@ import io.swagger.model.Body;
 @Api(value = "login", description = "the login API")
 public interface LoginApi {
 
-    @ApiOperation(value = "", nickname = "loginPost", notes = "", response = SessionToken.class, tags = {
-            "Login", })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "ok", response = SessionToken.class),
-            @ApiResponse(code = 400, message = "Abnormal input") })
-    @RequestMapping(value = "/login", produces = { "application/json" }, consumes = {
-            "application/json" }, method = RequestMethod.POST)
-    ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body);
+        @ApiOperation(value = "", nickname = "loginPost", notes = "", response = SessionToken.class, tags = {
+                        "Login", })
+        @ApiResponses(value = { @ApiResponse(code = 200, message = "ok", response = SessionToken.class),
+                        @ApiResponse(code = 400, message = "Abnormal input") })
+        @RequestMapping(value = "/login", produces = { "application/json" }, consumes = {
+                        "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<SessionToken> loginPost(@ApiParam(value = "", required = true) @Valid @RequestBody Body body);
 
 }
