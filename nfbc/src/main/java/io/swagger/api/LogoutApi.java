@@ -29,7 +29,9 @@ public interface LogoutApi {
         @ApiResponses(value = { @ApiResponse(code = 200, message = "Post succesfull"),
                         @ApiResponse(code = 400, message = "bad input parameter"),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.POST)
+        // @RequestMapping(value = "/logout", consumes = { "application/json" }, method
+        // = RequestMethod.POST)
+        @RequestMapping(value = "/logout", consumes = { "application/json" }, method = RequestMethod.DELETE)
         ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody SessionToken body);
         // ResponseEntity<Void> logoutPost(@ApiParam(value = "") @Valid @RequestBody
         // String sessionToken);
