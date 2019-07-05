@@ -49,7 +49,7 @@ public interface TransactionsApi {
                         @ApiParam(value = "") @Valid @RequestParam(value = "user", required = false) Long userId,
                         @ApiParam(value = "") @Valid @RequestParam(value = "sender", required = false) String sender,
                         @ApiParam(value = "") @Valid @RequestParam(value = "reciever", required = false) String reciever,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "accounttype", required = false) String accounttype,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "accountType", required = false) String accountType,
                         @ApiParam(value = "") @Valid @RequestParam(value = "minvalue", required = false) BigDecimal minvalue,
                         @ApiParam(value = "") @Valid @RequestParam(value = "maxvalue", required = false) BigDecimal maxvalue,
                         @ApiParam(value = "") @Valid @RequestParam(value = "transactiontype", required = false) String transactiontype);
