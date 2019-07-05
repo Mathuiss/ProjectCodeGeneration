@@ -350,7 +350,7 @@
 
         function doUpdateUser(key, id, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber, accounts, isEmployee, isActive) {
 
-            var url = "/users";
+            var url = "/users/ + " + id;
 
             $.ajax({
                 type: "PUT",
