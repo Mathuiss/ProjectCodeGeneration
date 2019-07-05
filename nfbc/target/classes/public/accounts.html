@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Accounts</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js">
+        if (sessionStorage.getItem("sessionToken") == null) {
+            location.href = "index.html";
+        }
+    </script>
+</head>
+
+<body>
+
+    <input type="submit" value="Home" id="home-btn">
+
+    <input type="submit" value="Create new account" id="create">
+    <input type="submit" value="View all" id="read">
+    <input type="submit" value="View single" id="readSingle">
+    <input type="submit" value="Update account" id="update">
+    <input type="submit" value="Delete account" id="delete">
+
+    <div id="query-box">
+        <form>
+            <p>
+                <input id="iban" name="iban" type="text">
+                <label>What is the IBAN of the account?</label>
+            </p>
+            <p>
+                <input id="userId" name="userId" type="number">
+                <label>What is the user's id?</label>
+            </p>
+            <p>
+                <select id="accountType">
+                    <option value="all">All</option>
+                    <option value="savings">Savings</option>
+                    <option value="current">Current</option>
+                </select>
+                <label>What is the type of account?</label>
+            </p>
+            <p>
+                <select id="isActive">
+                    <option></option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label>Is the account active? Empty means all</label>
+            </p>
+            <p>
+                <input id="balanceMin" type="number" step="0.01">
+                <input id="balanceMax" type="number" step="0.01">
+                <label>What are the minimum and maximum balance?</label>
+            </p>
+            <p>
+                <input id="absoluteLimitMin" type="number" step="0.01">
+                <input id="absoluteLimitMax" type="number" step="0.01">
+                <label>What are the allowed minimum and maximum absolute limits?</label>
+            </p>
+            <p>
+                <input id="dailyLimitMin" type="number">
+                <input id="dailyLimitMax" type="number">
+                <label>What are the minimum and maximum transactions allowed per day?</label>
+            </p>
+            <p>
+                <input id="transactionLimitMin" type="number" step="0.01">
+                <input id="transactionLimitMax" type="number" step="0.01">
+                <label>What are the minimum and maximum amount allowed per transaction?</label>
+            </p>
+        </form>
+    </div>
+    <ul id="content"></ul>
+</body>
+
+<script>
+    document.getElementById("home-btn").addEventListener("click", function () {
+        location.href = "homepage.html";
+    });
+
+    document.getElementById("create").addEventListener("click", function () {
+        if (sessionStorage.getItem("userRole") == "employee") {
+            location.href = "createaccount.html";
+        }
+        else {
+            // TODO: Finish non-employee functionality
+        }
+    });
+
+    document.getElementById("read").addEventListener("click", function () {
+        document.getElementById("content").innerHTML = "";
+        var url = "/accounts";
+
+        if (sessionStorage.getItem("userRole") == "employee") {
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: JSON.parse(buildJson()),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (accounts) {
+                    $.each(accounts, function (i, item) {
+                        document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
+                        document.getElementById("content").innerHTML += "userId: " + item.userId + " ";
+                        document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
+                        document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
+                        document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
+                        document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
+                        document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
+                        document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
+                    })
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+        else {
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: JSON.parse(buildJson()),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (accounts) {
+                    $.each(accounts, function (i, item) {
+                        document.getElementById("content").innerHTML += "<li>iban: " + item.iban + " ";
+                        document.getElementById("content").innerHTML += "active: " + item.isActive + " ";
+                        document.getElementById("content").innerHTML += "account type: " + item.accountType + " ";
+                        document.getElementById("content").innerHTML += "balance: " + item.balance + " ";
+                        document.getElementById("content").innerHTML += "absolute limit: " + item.absoluteLimit + " ";
+                        document.getElementById("content").innerHTML += "daily limit: " + item.dailyLimit + " ";
+                        document.getElementById("content").innerHTML += "transaction limit: " + item.transactionLimit + "</li>";
+                    })
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+    });
+
+    document.getElementById("readSingle").addEventListener("click", function () {
+        document.getElementById("content").innerHTML = "";
+        var iban = document.getElementById("iban").value;
+        var url = "/accounts/" + iban;
+
+        if (sessionStorage.getItem("userRole") == "employee" && iban != "") {
+            $.ajax({
+                method: "GET",
+                url: url,
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (account) {
+                    console.log("success");
+                    document.getElementById("content").innerHTML += "<li>iban: " + account.iban + " ";
+                    document.getElementById("content").innerHTML += "userId: " + account.userId + " ";
+                    document.getElementById("content").innerHTML += "active: " + account.isActive + " ";
+                    document.getElementById("content").innerHTML += "account type: " + account.accountType + " ";
+                    document.getElementById("content").innerHTML += "balance: " + account.balance + " ";
+                    document.getElementById("content").innerHTML += "absolute limit: " + account.absoluteLimit + " ";
+                    document.getElementById("content").innerHTML += "daily limit: " + account.dailyLimit + " ";
+                    document.getElementById("content").innerHTML += "transaction limit: " + account.transactionLimit + "</li>";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+        else if (iban != "") {
+            $.ajax({
+                method: "GET",
+                url: url,
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (account) {
+                    console.log("success");
+                    document.getElementById("content").innerHTML += "<li>iban: " + account.iban + " ";
+                    document.getElementById("content").innerHTML += "active: " + account.isActive + " ";
+                    document.getElementById("content").innerHTML += "account type: " + account.accountType + " ";
+                    document.getElementById("content").innerHTML += "balance: " + account.balance + " ";
+                    document.getElementById("content").innerHTML += "absolute limit: " + account.absoluteLimit + " ";
+                    document.getElementById("content").innerHTML += "daily limit: " + account.dailyLimit + " ";
+                    document.getElementById("content").innerHTML += "transaction limit: " + account.transactionLimit + "</li>";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+        else {
+            document.getElementById("content").innerHTML += "<li>iban can't be empty</li>";
+        }
+    });
+
+    document.getElementById("update").addEventListener("click", function () {
+        document.getElementById("content").innerHTML = "";
+        var iban = document.getElementById("iban").value;
+        var url = "/accounts/" + iban;
+
+        var dailyLimit = document.getElementById("dailyLimit").value;
+        var transactionLimit = document.getElementById("transactionLimit").value;
+        var absoluteLimit = document.getElementById("absoluteLimit").value;
+
+        if (sessionStorage.getItem("userRole") == "employee") {
+            $.ajax({
+                method: "GET",
+                url: url.trim(),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (account) {
+
+                    if (absoluteLimit == "") {
+                        absoluteLimit = account.absoluteLimit;
+                    }
+
+                    if (dailyLimit == "") {
+                        dailyLimit = account.dailyLimit;
+                    }
+
+                    if (transactionLimit == "") {
+                        transactionLimit = account.transactionLimit;
+                    }
+
+                    updateAccount(account.iban, account.userId, account.isActive, account.accountType, account.balance, absoluteLimit, dailyLimit, transactionLimit);
+                    document.getElementById("content").innerHTML += "<li>Account: " + account.iban + ", is updated</li>";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+    });
+
+    document.getElementById("delete").addEventListener("click", function () {
+        document.getElementById("content").innerHTML = "";
+        var iban = document.getElementById("iban").value;
+        var url = "/accounts/" + iban;
+
+        if (sessionStorage.getItem("userRole") == "employee") {
+            $.ajax({
+                method: "DELETE",
+                url: url.trim(),
+                headers: {
+                    "session": sessionStorage.getItem("sessionToken")
+                },
+                success: function (success) {
+                    document.getElementById("content").innerHTML += "<li>iban: " + iban + " is soft deleted</li>";
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Bad request");
+                    },
+                    401: function () {
+                        alert("Unauthorized");
+                    },
+                    404: function () {
+                        alert("Not found");
+                    }
+                }
+            });
+        }
+    });
+
+    function buildJson() {
+        var json = "{";
+
+        if (document.getElementById("iban").value != "") {
+            json += '"iban": "' + document.getElementById("iban").value + '",';
+        }
+
+        if (document.getElementById("userId").value != "") {
+            json += '"userId": "' + document.getElementById("userId").value + '",';
+        }
+
+        if (document.getElementById("isActive").value != "") {
+            json += '"isActive": "' + document.getElementById("isActive").value + '",';
+        }
+
+        if (document.getElementById("accountType").value != "") {
+            json += '"accountType": "' + document.getElementById("accountType").value + '",';
+        }
+
+        if (document.getElementById("balanceMin").value != "") {
+            json += '"balanceMin": "' + document.getElementById("balanceMin").value + '",';
+        }
+
+        if (document.getElementById("balanceMax").value != "") {
+            json += '"balanceMax": "' + document.getElementById("balanceMax").value + '",';
+        }
+
+        if (document.getElementById("absoluteLimitMin").value != "") {
+            json += '"absoluteLimitMin": "' + document.getElementById("absoluteLimitMin").value + '",';
+        }
+
+        if (document.getElementById("absoluteLimitMax").value != "") {
+            json += '"absoluteLimitMax": "' + document.getElementById("absoluteLimitMax").value + '",';
+        }
+
+        if (document.getElementById("dailyLimitMin").value != "") {
+            json += '"dailyLimitMin": "' + document.getElementById("dailyLimitMin").value + '",';
+        }
+
+        if (document.getElementById("dailyLimitMax").value != "") {
+            json += '"dailyLimitMax": "' + document.getElementById("dailyLimitMax").value + '",';
+        }
+
+        if (document.getElementById("transactionLimitMin").value != "") {
+            json += '"transactionLimitMin": "' + document.getElementById("transactionLimitMin").value + '",';
+        }
+
+        if (document.getElementById("transactionLimitMax").value != "") {
+            json += '"transactionLimitMax": "' + document.getElementById("transactionLimitMax").value + '",';
+        }
+
+        json += "}";
+        if (json.includes(",")) {
+            json = json.replace(",}", "}");
+        }
+
+        return json;
+    }
+
+    function updateAccount(iban, userId, isActive, accountType, balance, absoluteLimit, dailyLimit, transactionLimit) {
+        var url = "/accounts/" + iban;
+
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: JSON.stringify({
+                "iban": iban,
+                "userId": userId,
+                "isActive": isActive,
+                "accountType": accountType,
+                "balance": balance,
+                "absoluteLimit": absoluteLimit,
+                "dailyLimit": dailyLimit,
+                "transactionLimit": transactionLimit
+            }),
+            contentType: "application/json",
+            headers: {
+                "session": sessionStorage.getItem("sessionToken")
+            },
+            success: function (success, data) {
+                document.getElementById("content").innerHTML += "<li>iban: " + iban + " is updated</li>";
+            },
+            statusCode: {
+                400: function () {
+                    alert("Bad request");
+                },
+                401: function () {
+                    alert("Unauthorized");
+                }
+            }
+        });
+    }
+
+</script>
+
+</html>

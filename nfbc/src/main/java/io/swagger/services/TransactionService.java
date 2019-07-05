@@ -155,7 +155,6 @@ public class TransactionService {
                 }
             }
         }
-
         return resultList;
     }
 

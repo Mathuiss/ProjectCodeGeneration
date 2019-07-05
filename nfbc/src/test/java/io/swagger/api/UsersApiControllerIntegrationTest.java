@@ -1,7 +1,6 @@
 package io.swagger.api;
 
 import io.swagger.model.Account;
-import io.swagger.model.CurrentAccount;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.Transaction;
 import io.swagger.model.User;
@@ -31,15 +30,6 @@ public class UsersApiControllerIntegrationTest {
         ResponseEntity<InlineResponse200> responseEntity = api.deleteUserById(id);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
-
-    //@Test
-    //public void getTransactionOfUserTest() throws Exception {
-    //Account account = new CurrentAccount();
-    //long id = 2;
-    //ResponseEntity<Iterable<Transaction>> responseEntity =
-    //api.getTransactionOfUser(id, account);
-    //assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    //}
 
     @Test
     public void getUserByIdTest() throws Exception {

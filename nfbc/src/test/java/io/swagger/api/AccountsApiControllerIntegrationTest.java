@@ -1,15 +1,8 @@
 package io.swagger.api;
 
-import io.swagger.CustomIbanGenerator;
 import io.swagger.model.Account;
-// import io.swagger.model.Iban;
-import io.swagger.model.CurrentAccount;
 
 import java.math.BigDecimal;
-import java.util.*;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +23,8 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void fetchAccountTest() throws Exception {
-        String accountType = "";
-        ResponseEntity<Iterable<Account>> responseEntity = api.fetchAccount(accountType);
+        ResponseEntity<Iterable<Account>> responseEntity = api.fetchAccount(null, null, null, null, null, null, null,
+                null, null, null, null, null);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
@@ -53,7 +46,7 @@ public class AccountsApiControllerIntegrationTest {
         Boolean isActive = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
+        Account body = new Account(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
                 accountType);
         ResponseEntity<Account> responseEntity = api.createAccount(body);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -70,7 +63,7 @@ public class AccountsApiControllerIntegrationTest {
         Boolean isActive = true;
         String accountType = "current";
 
-        Account body = new CurrentAccount(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
+        Account body = new Account(userId, iban, balance, transactionLimit, absoluteLimit, dailyLimit, isActive,
                 accountType);
         ResponseEntity<Account> responseEntity = api.updateAccountByIban(body);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
