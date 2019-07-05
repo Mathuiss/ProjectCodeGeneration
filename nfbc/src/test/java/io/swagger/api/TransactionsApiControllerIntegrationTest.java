@@ -41,13 +41,13 @@ public class TransactionsApiControllerIntegrationTest {
         long user = 0;
         String sender = "NL00INHO0000000002";
         String reciever = "NL00INHO0000000001";
-        String accounttype = "";
+        String accountType = "";
         BigDecimal minvalue = new BigDecimal(0);
         BigDecimal maxvalue = new BigDecimal(Double.MAX_VALUE);
         String transactiontype = "";
 
         ResponseEntity<Iterable<Transaction>> responseEntity = api.fetchTransaction(null, null, user, sender, reciever,
-                accounttype, minvalue, maxvalue, transactiontype);
+                accountType, minvalue, maxvalue, transactiontype);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 

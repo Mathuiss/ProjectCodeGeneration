@@ -88,8 +88,8 @@ public class AccountsApiController implements AccountsApi {
                     Object[] params = { iban, userId, isActive, accountType, balanceMin, balanceMax, dailyLimitMin,
                             dailyLimitMax, transactionLimitMax, transactionLimitMin, absoluteLimitMin,
                             absoluteLimitMax };
-                    log.info(MessageFormat.format("Accounts fetched with args: {0} {1} {2} {3} {4} {5} {6} {7}",
-                            params));
+                    log.info(MessageFormat.format(
+                            "Accounts fetched with args: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}", params));
 
                     return new ResponseEntity<Iterable<Account>>(accounts, HttpStatus.OK);
                 } catch (Exception ex) {
