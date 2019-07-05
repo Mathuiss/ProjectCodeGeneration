@@ -54,16 +54,6 @@ public class User {
     @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-    // @JsonProperty("CurrentAccounts")
-    // @Valid
-    // @OneToMany(mappedBy = "user")
-    // private List<CurrentAccount> currentAccounts;
-
-    // @JsonProperty("SavingsAccounts")
-    // @Valid
-    // @OneToMany(mappedBy = "user")
-    // private List<SavingsAccount> savingsAccounts;
-
     @JsonProperty("accounts")
     @Valid
     @OneToMany(cascade = CascadeType.ALL)
@@ -345,12 +335,6 @@ public class User {
         this.accounts = accounts;
     }
 
-    /**
-     * Get currentAccounts
-     *
-     * @return currentAccounts
-     **/
-
     public User isActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
@@ -405,16 +389,14 @@ public class User {
                 && Objects.equals(this.streetname, user.streetname) && Objects.equals(this.zipcode, user.zipcode)
                 && Objects.equals(this.addressnumber, user.addressnumber)
                 && Objects.equals(this.appendix, user.appendix) && Objects.equals(this.phoneNumber, user.phoneNumber)
-                && Objects.equals(this.accounts, user.accounts)
-                // && Objects.equals(this.currentAccounts, user.currentAccounts)
-                // && Objects.equals(this.savingsAccounts, user.savingsAccounts)
-                && Objects.equals(this.isEmployee, user.isEmployee) && Objects.equals(this.isActive, user.isActive);
+                && Objects.equals(this.accounts, user.accounts) && Objects.equals(this.isEmployee, user.isEmployee)
+                && Objects.equals(this.isActive, user.isActive);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(userId, name, email, hash, streetname, zipcode, addressnumber, appendix, phoneNumber,
-                accounts, /* currentAccounts, savingsAccounts, */ isEmployee, isActive);
+                accounts, isEmployee, isActive);
     }
 
     @Override
@@ -432,10 +414,6 @@ public class User {
         sb.append("    appendix: ").append(toIndentedString(appendix)).append("\n");
         sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
         sb.append("    accounts: ").append(toIndentedString(accounts)).append("\n");
-        // sb.append(" currentAccounts:
-        // ").append(toIndentedString(currentAccounts)).append("\n");
-        // sb.append(" savingsAccounts:
-        // ").append(toIndentedString(savingsAccounts)).append("\n");
         sb.append("    isEmployee: ").append(toIndentedString(isEmployee)).append("\n");
         sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
         sb.append("}");

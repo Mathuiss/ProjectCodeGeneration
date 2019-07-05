@@ -39,7 +39,7 @@ public interface AccountsApi {
         ResponseEntity<Account> deleteAccountByIban(
                         @ApiParam(value = "id of the account you want to (soft)delete", required = true) @PathVariable("iban") String iban);
 
-        @ApiOperation(value = "base for savingsaccount and currentAccounts", nickname = "fetchAccount", notes = "Calling this allows you to fetch the account data", response = Account.class, responseContainer = "List", authorizations = {
+        @ApiOperation(value = "base for accounts", nickname = "fetchAccount", notes = "Calling this allows you to fetch the account data", response = Account.class, responseContainer = "List", authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
         @ApiResponses(value = {
                         @ApiResponse(code = 200, message = "List of all accounts", response = Account.class, responseContainer = "List"),
@@ -49,12 +49,16 @@ public interface AccountsApi {
         ResponseEntity<Iterable<Account>> fetchAccount(
                         @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
                         @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Long userId,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) String isActive,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "balance", required = false) BigDecimal balance,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) Boolean isActive,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "balanceMin", required = false) BigDecimal balanceMin,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "balanceMax", required = false) BigDecimal balanceMax,
                         @ApiParam(value = "") @Valid @RequestParam(value = "accountType", required = false) String accountType,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimit", required = false) Integer dailyLimit,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimit", required = false) BigDecimal transactionLimit,
-                        @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimit", required = false) BigDecimal absoluteLimit);
+                        @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimitMin", required = false) Integer dailyLimitMin,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimitMax", required = false) Integer dailyLimitMax,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimitMin", required = false) BigDecimal transactionLimitMin,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimitMax", required = false) BigDecimal transactionLimitMax,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimitMin", required = false) BigDecimal absoluteLimitMin,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimitMax", required = false) BigDecimal absoluteLimitMax);
 
         @ApiOperation(value = "Get the account related to given id", nickname = "getAccountByIban", notes = "Get the account related to given id", response = Account.class, authorizations = {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
@@ -78,7 +82,7 @@ public interface AccountsApi {
                         @Authorization(value = "ApiKeyAuth") }, tags = { "Accounts", })
         @ApiResponses(value = { @ApiResponse(code = 201, message = "CREATED", response = Account.class),
                         @ApiResponse(code = 401, message = "Unauthorized") })
-        @RequestMapping(value = "/accounts/", produces = { "application/json" }, consumes = {
+        @RequestMapping(value = "/accounts", produces = { "application/json" }, consumes = {
                         "application/json" }, method = RequestMethod.POST)
         ResponseEntity<Account> createAccount(@ApiParam(value = "", required = true) @Valid @RequestBody Account body);
 

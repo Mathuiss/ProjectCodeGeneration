@@ -22,23 +22,14 @@ import io.swagger.annotations.ApiModelProperty;
  * Account
  */
 
-// @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-// property = "type")
-// @JsonSubTypes({ @Type(value = SavingsAccount.class, name = "savings"),
-// @Type(value = CurrentAccount.class, name = "current") })
 @Validated
 @Entity
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-06-03T08:32:11.998Z[GMT]")
-public abstract class Account {
+public class Account {
   Random random = new Random();
 
   @JsonProperty("userId")
   private Long userId = null;
-
-  // @ManyToOne()
-  // @JoinColumn(name = "user")
-  // @JsonProperty("user")
-  // private User user = null;
 
   @JsonProperty("iban")
   @Id
@@ -62,10 +53,9 @@ public abstract class Account {
   @JsonProperty("accountType")
   private String accountType = null;
 
-  protected Account(Long userId/* , User user */, String iban, BigDecimal balance, BigDecimal transactionLimit,
-      BigDecimal absoluteLimit, Integer dailyLimit, Boolean isActive, String accountType) {
+  public Account(long userId, String iban, BigDecimal balance, BigDecimal transactionLimit, BigDecimal absoluteLimit,
+      Integer dailyLimit, Boolean isActive, String accountType) {
     this.userId = userId;
-    // this.user = user;
     this.iban = iban;
     this.balance = balance;
     this.transactionLimit = transactionLimit;
@@ -75,7 +65,7 @@ public abstract class Account {
     this.accountType = accountType;
   }
 
-  protected Account() {
+  public Account() {
   }
 
   public Account userId(Long userId) {
@@ -91,21 +81,13 @@ public abstract class Account {
   @ApiModelProperty(value = "")
 
   @Valid
-  public Long getUserId() {
+  public long getUserId() {
     return userId;
   }
 
   public void setuserId(Long userId) {
     this.userId = userId;
   }
-
-  // public User getUser() {
-  // return user;
-  // }
-
-  // public void setUser(User user) {
-  // this.user = user;
-  // }
 
   public Account iban(String iban) {
     this.iban = iban;
@@ -124,12 +106,6 @@ public abstract class Account {
     return iban;
   }
 
-  // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iban_seq")
-  // @GenericGenerator(name = "iban_seq", strategy =
-  // "io.swagger.CustomIbanGenerator", parameters = {
-  // @Parameter(name = CustomIbanGenerator.COUNTRY_CODE_PARAMETER, value = "NL"),
-  // @Parameter(name = CustomIbanGenerator.BANK_CODE_PARAMETER, value = "INHO0")
-  // })
   public void setIban() {
     final String COUNTRY_CODE = "NL";
     NumberFormat controlFormatter = new DecimalFormat("00");
@@ -200,7 +176,9 @@ public abstract class Account {
     return absoluteLimit;
   }
 
-  public abstract void setAbsoluteLimit(BigDecimal absoluteLimit) throws Exception;
+  public void setAbsoluteLimit(BigDecimal absoluteLimit) {
+    this.absoluteLimit = absoluteLimit;
+  };
 
   public Account dailyLimit(Integer dailyLimit) {
     this.dailyLimit = dailyLimit;

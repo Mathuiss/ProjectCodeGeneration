@@ -48,6 +48,7 @@ public class AccountsApiController implements AccountsApi {
             if (security.isAllowed(request.getHeader("session"), "employee")) {
                 try {
                     service.deleteAccountByIban(iban);
+                    log.info(iban + " is soft deleted");
                     return new ResponseEntity<Account>(HttpStatus.OK);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
@@ -65,22 +66,28 @@ public class AccountsApiController implements AccountsApi {
     public ResponseEntity<Iterable<Account>> fetchAccount(
             @ApiParam(value = "") @Valid @RequestParam(value = "iban", required = false) String iban,
             @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Long userId,
-            @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) String isActive,
-            @ApiParam(value = "") @Valid @RequestParam(value = "balance", required = false) BigDecimal balance,
+            @ApiParam(value = "") @Valid @RequestParam(value = "isActive", required = false) Boolean isActive,
+            @ApiParam(value = "") @Valid @RequestParam(value = "balanceMin", required = false) BigDecimal balanceMin,
+            @ApiParam(value = "") @Valid @RequestParam(value = "balanceMax", required = false) BigDecimal balanceMax,
             @ApiParam(value = "") @Valid @RequestParam(value = "accountType", required = false) String accountType,
-            @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimit", required = false) Integer dailyLimit,
-            @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimit", required = false) BigDecimal transactionLimit,
-            @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimit", required = false) BigDecimal absoluteLimit) {
+            @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimitMin", required = false) Integer dailyLimitMin,
+            @ApiParam(value = "") @Valid @RequestParam(value = "dailyLimitMax", required = false) Integer dailyLimitMax,
+            @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimitMin", required = false) BigDecimal transactionLimitMin,
+            @ApiParam(value = "") @Valid @RequestParam(value = "transactionLimitMax", required = false) BigDecimal transactionLimitMax,
+            @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimitMin", required = false) BigDecimal absoluteLimitMin,
+            @ApiParam(value = "") @Valid @RequestParam(value = "absoluteLimitMax", required = false) BigDecimal absoluteLimitMax) {
 
         try {
             if (security.isAllowed(request.getHeader("session"), "employee")) {
                 try {
-                    Iterable<Account> accounts = service.getAccounts(iban, userId, isActive, balance, accountType,
-                            dailyLimit, transactionLimit, absoluteLimit);
+                    Iterable<Account> accounts = service.getAccounts(iban, userId, isActive, balanceMin, balanceMax,
+                            accountType, dailyLimitMin, dailyLimitMax, transactionLimitMin, transactionLimitMax,
+                            absoluteLimitMin, absoluteLimitMax);
                     request.getHeader("session");
 
-                    Object[] params = { iban, userId, isActive, accountType, balance, dailyLimit, transactionLimit,
-                            absoluteLimit };
+                    Object[] params = { iban, userId, isActive, accountType, balanceMin, balanceMax, dailyLimitMin,
+                            dailyLimitMax, transactionLimitMax, transactionLimitMin, absoluteLimitMin,
+                            absoluteLimitMax };
                     log.info(MessageFormat.format("Accounts fetched with args: {0} {1} {2} {3} {4} {5} {6} {7}",
                             params));
 

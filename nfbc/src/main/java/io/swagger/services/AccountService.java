@@ -1,29 +1,25 @@
 package io.swagger.services;
 
+import java.io.Console;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder.Case;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.util.concurrent.ExecutionError;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.model.Account;
-import io.swagger.model.CurrentAccount;
-import io.swagger.model.SavingsAccount;
 import io.swagger.model.User;
+import io.swagger.models.auth.In;
 import io.swagger.repositories.AccountRepository;
 import io.swagger.repositories.UserRepository;
 
@@ -45,7 +41,7 @@ public class AccountService {
     // load in all accounts from json on startup
     @Bean("loadAccounts")
     public void loadOnStartup() {
-        TypeReference<List<CurrentAccount>> typeReference = new TypeReference<List<CurrentAccount>>() {
+        TypeReference<List<Account>> typeReference = new TypeReference<List<Account>>() {
         };
         InputStream inputStream = TypeReference.class.getResourceAsStream("/AccountPersist.json");
         ObjectMapper mapper = new ObjectMapper();
@@ -53,37 +49,14 @@ public class AccountService {
 
         ArrayList<Account> accountList = new ArrayList<>();
         try {
-            List<CurrentAccount> accountJsonList = mapper.readValue(inputStream, typeReference);
-            // We're using CurrentAccount because it accepts all types of accounts
-            // and Account is abstract
-            for (CurrentAccount acc : accountJsonList) {
+            List<Account> accountJsonList = mapper.readValue(inputStream, typeReference);
+            for (Account acc : accountJsonList) {
 
-                // Optional<User> userRes = users.findById(acc.userId());
+                Account account = new Account(acc.getUserId(), /* user, */ acc.getIban(), acc.getBalance(),
+                        acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(), acc.getIsActive(),
+                        acc.getAccountType());
 
-                // if (!userRes.isPresent()) {
-                // throw new Exception("User not found for id: " + acc.userId());
-                // }
-
-                // User user = userRes.get();
-
-                switch (acc.getAccountType()) {
-                case "current":
-                    CurrentAccount currentAccount = new CurrentAccount(acc.getUserId(), /* user, */ acc.getIban(),
-                            acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
-                            acc.getIsActive(), acc.getAccountType());
-
-                    accountList.add(currentAccount);
-                    break;
-                case "savings":
-                    SavingsAccount savingsAccount = new SavingsAccount(acc.getUserId(), /* user, */ acc.getIban(),
-                            acc.getBalance(), acc.getTransactionLimit(), acc.getAbsoluteLimit(), acc.getDailyLimit(),
-                            acc.getIsActive(), acc.getAccountType());
-
-                    accountList.add(savingsAccount);
-                    break;
-                default:
-                    throw new Exception("Unknown accountType");
-                }
+                accountList.add(account);
             }
             accounts.saveAll(accountList);
         } catch (Exception ex) {
@@ -92,78 +65,100 @@ public class AccountService {
     }
 
     // Get all accounts
-    public Iterable<Account> getAccounts(String iban, Long userId, String isActive, BigDecimal balance,
-            String accountType, Integer dailyLimit, BigDecimal transactionLimit, BigDecimal absoluteLimit) {
+    public Iterable<Account> getAccounts(String iban, Long userId, Boolean isActive, BigDecimal balanceMin,
+            BigDecimal balanceMax, String accountType, Integer dailyLimitMin, Integer dailyLimitMax,
+            BigDecimal transactionLimitMin, BigDecimal transactionLimitMax, BigDecimal absoluteLimitMin,
+            BigDecimal absoluteLimitMax) {
 
         Iterable<Account> accountList = accounts.findAll();
         ArrayList<Account> resultList = new ArrayList<Account>();
+
+        if (balanceMin == null) {
+            balanceMin = BigDecimal.valueOf(-Double.MAX_VALUE);
+        }
+
+        if (balanceMax == null) {
+            balanceMax = BigDecimal.valueOf(Double.MAX_VALUE);
+        }
+
+        if (dailyLimitMin == null) {
+            dailyLimitMin = 0;
+        }
+
+        if (dailyLimitMax == null) {
+            dailyLimitMax = Integer.MAX_VALUE;
+        }
+
+        if (transactionLimitMin == null) {
+            transactionLimitMin = BigDecimal.valueOf(0);
+        }
+
+        if (transactionLimitMax == null) {
+            transactionLimitMax = BigDecimal.valueOf(Double.MAX_VALUE);
+        }
+
+        if (absoluteLimitMin == null) {
+            absoluteLimitMin = BigDecimal.valueOf(-Double.MAX_VALUE);
+        }
+
+        if (absoluteLimitMax == null) {
+            absoluteLimitMax = BigDecimal.valueOf(Double.MAX_VALUE);
+        }
 
         // Apply filters
         for (Account account : accountList) {
 
             // check if iban is found in the list
             if (iban != null) {
-                if (iban != account.getIban()) {
+                if (!iban.equals(account.getIban())) {
                     continue;
                 }
             }
 
             // check for userId
             if (userId != null) {
-                if (userId != account.getUserId()) {
+                if (!userId.equals(account.getUserId())) {
                     continue;
-                }
-            }
-
-            // check for active
-            if (isActive != null) {
-                switch (isActive) {
-                case "all":
-                    continue;
-                case "true":
-                    if (account.getIsActive() == true) {
-                        continue;
-                    }
-                    break;
-                case "false":
-                    if (account.getIsActive() == false) {
-                        continue;
-                    }
-                    break;
-                default:
-                    break;
                 }
             }
 
             // check for account type
             if (accountType != null) {
-                if (accountType == "all") {
-                    continue;
+                if (!accountType.equals("all")) {
+                    if (!accountType.equals(account.getAccountType())) {
+                        continue;
+                    }
                 }
-                if (accountType != account.getAccountType()) {
+            }
+
+            // check for active
+            if (isActive != null) {
+                if (!isActive.equals(account.getIsActive())) {
                     continue;
                 }
             }
 
-            // check for daily limit
-            if (dailyLimit != null) {
-                if (dailyLimit != account.getDailyLimit()) {
-                    continue;
-                }
-            }
-
-            // check for transaction limit
-            if (transactionLimit != null) {
-                if (transactionLimit != account.getTransactionLimit()) {
-                    continue;
-                }
+            // check for balance
+            if (account.getBalance().doubleValue() <= balanceMin.doubleValue()
+                    || account.getBalance().doubleValue() >= balanceMax.doubleValue()) {
+                continue;
             }
 
             // check for absolute limit
-            if (absoluteLimit != null) {
-                if (absoluteLimit != account.getAbsoluteLimit()) {
-                    continue;
-                }
+            if (account.getAbsoluteLimit().doubleValue() <= absoluteLimitMin.doubleValue()
+                    || account.getAbsoluteLimit().doubleValue() >= absoluteLimitMax.doubleValue()) {
+                continue;
+            }
+
+            // check for daily limit
+            if (account.getDailyLimit() <= dailyLimitMin || account.getDailyLimit() >= dailyLimitMax) {
+                continue;
+            }
+
+            // check for transaction limit
+            if (account.getTransactionLimit().doubleValue() <= transactionLimitMin.doubleValue()
+                    || account.getTransactionLimit().doubleValue() >= transactionLimitMax.doubleValue()) {
+                continue;
             }
 
             resultList.add(account);
@@ -202,21 +197,9 @@ public class AccountService {
         if (body.getAccountType() == "savings") {
             BigDecimal big = new BigDecimal("0");
             body.setAbsoluteLimit(big);
-
-            Account savAcc = new SavingsAccount(body.getUserId(), body.getIban(), body.getBalance(),
-                    body.getTransactionLimit(), body.getAbsoluteLimit(), body.getDailyLimit(), body.getIsActive(),
-                    body.getAccountType());
-
-            accounts.save(savAcc);
         }
 
-        if (body.getAccountType() == "current") {
-            Account curAcc = new CurrentAccount(body.getUserId(), body.getIban(), body.getBalance(),
-                    body.getTransactionLimit(), body.getAbsoluteLimit(), body.getDailyLimit(), body.getIsActive(),
-                    body.getAccountType());
-
-            accounts.save(curAcc);
-        }
+        accounts.save(body);
         // Optional<User> userResult = users.findById(body.getUserId());
         // if (!userResult.isPresent()) {
         // throw new Exception("User not found for id: " + body.getUserId());
